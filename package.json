@@ -1,0 +1,36 @@
+{
+  "name": "@rocapine/react-native-onboarding-studio",
+  "version": "0.1.0",
+  "description": "React Native client for Rocapine Onboarding Studio - Fetch and display onboarding steps from your CMS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "react-native",
+    "onboarding",
+    "rocapine",
+    "cms",
+    "onboarding-studio"
+  ],
+  "author": "Rocapine",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rocapine/react-native-onboarding-studio.git"
+  }
+}
