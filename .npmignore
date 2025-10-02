@@ -8,6 +8,7 @@ tsconfig.json
 *.spec.ts
 *.spec.tsx
 __tests__/
+example/
 
 # IDE
 .idea/
