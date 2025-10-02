@@ -24,6 +24,9 @@
   "devDependencies": {
     "typescript": "^5.0.0"
   },
+  "peerDependencies": {
+    "react-native": "^0.72.0"
+  },
   "files": [
     "dist",
     "src",

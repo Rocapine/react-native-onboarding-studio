@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 dist/
+rocapine-react-native-onboarding-studio-*.tgz
 
 # TypeScript cache
 *.tsbuildinfo
