@@ -1,9 +1,11 @@
-import { GetStepsParams, GetStepsResponse } from "./types";
+import {
+  GetStepsResponse,
+  OnboardingOptions,
+  OnboardingStudioClientOptions,
+  UserDefinedParams,
+} from "./types";
 
-type OnboardingStudioClientOptions = {
-  baseUrl?: string;
-  isSanbdox?: boolean;
-};
+import { Platform } from "react-native";
 
 export class OnboardingStudioClient {
   private baseUrl: string;
@@ -19,10 +21,39 @@ export class OnboardingStudioClient {
       "https://takbcvjljqialzqyksic.supabase.co/functions/v1";
   }
 
-  async getSteps(params: GetStepsParams): Promise<GetStepsResponse> {
-    console.info("OnboardingStudioClient getSteps", params);
+  async getSteps(
+    onboardingOptions?: OnboardingOptions,
+    userDefinedParams?: UserDefinedParams
+  ): Promise<GetStepsResponse> {
+    console.info("OnboardingStudioClient getSteps");
     const isSandbox = this.options.isSanbdox;
-    const url = `${this.baseUrl}/get-onboarding-steps?projectId=${this.projectId}?draft=${isSandbox}`;
+
+    const urlParams = new URLSearchParams();
+    // Add userDefinedParams to URL
+    if (userDefinedParams) {
+      Object.entries(userDefinedParams).forEach(([key, value]) => {
+        urlParams.append(key, value);
+      });
+    }
+
+    urlParams.append("projectId", this.projectId);
+    urlParams.append("platform", Platform.OS);
+
+    const appVersion = this.options.appVersion; // TODO get the version from the expo app
+    if (appVersion) {
+      urlParams.append("appVersion", appVersion);
+    }
+
+    if (isSandbox) {
+      urlParams.append("draft", "true");
+    }
+
+    // Add onboardingOptions to URL
+    if (onboardingOptions?.locale) {
+      urlParams.append("locale", onboardingOptions.locale);
+    }
+
+    const url = `${this.baseUrl}/get-onboarding-steps?${urlParams.toString()}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(

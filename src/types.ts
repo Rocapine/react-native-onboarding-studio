@@ -1,11 +1,16 @@
-export interface GetStepsParams {
-  projectId: string;
-  paywallVariant?: string;
-  appEnv?: string;
-  locale?: string;
-  platform?: string;
+export type OnboardingStudioClientOptions = {
   appVersion?: string;
-}
+  isSanbdox?: boolean;
+  baseUrl?: string;
+};
+
+export type OnboardingOptions = {
+  locale?: string;
+};
+
+export type UserDefinedParams = {
+  [key: string]: string;
+};
 
 export interface OnboardingStep {
   id: string;
