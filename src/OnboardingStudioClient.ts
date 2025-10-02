@@ -14,7 +14,7 @@ export class OnboardingStudioClient {
   private options: OnboardingStudioClientOptions;
 
   constructor(projectId: string, options: OnboardingStudioClientOptions) {
-    console.info("OnboardingStudioClient constructor", options.baseUrl);
+    console.info("OnboardingStudioClient init: projectId ", projectId);
     this.projectId = projectId;
     this.options = options;
     this.baseUrl =
@@ -55,6 +55,7 @@ export class OnboardingStudioClient {
     }
 
     const url = `${this.baseUrl}/get-onboarding-steps?${urlParams.toString()}`;
+    console.info("OnboardingStudioClient getSteps url", url);
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(
