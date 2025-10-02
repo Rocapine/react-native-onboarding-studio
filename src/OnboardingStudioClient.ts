@@ -1,5 +1,6 @@
 import {
   GetStepsResponse,
+  GetStepsResponseHeaders,
   OnboardingOptions,
   OnboardingStudioClientOptions,
   UserDefinedParams,
@@ -24,7 +25,7 @@ export class OnboardingStudioClient {
   async getSteps(
     onboardingOptions?: OnboardingOptions,
     userDefinedParams?: UserDefinedParams
-  ): Promise<GetStepsResponse> {
+  ): Promise<{ data: GetStepsResponse; headers: GetStepsResponseHeaders }> {
     console.info("OnboardingStudioClient getSteps");
     const isSandbox = this.options.isSanbdox;
 
@@ -61,6 +62,13 @@ export class OnboardingStudioClient {
       );
     }
     const data = await response.json();
-    return data;
+    return {
+      data,
+      headers: {
+        "ONBS-Onboarding-Id": response.headers.get("ONBS-Onboarding-Id"),
+        "ONBS-Audience-Id": response.headers.get("ONBS-Audience-Id"),
+        "ONBS-Onboarding-Name": response.headers.get("ONBS-Onboarding-Name"),
+      },
+    };
   }
 }
