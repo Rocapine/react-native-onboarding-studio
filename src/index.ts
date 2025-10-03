@@ -4,4 +4,5 @@ export {
   RatingsRenderer,
   RatingsSchema,
   SocialProofSchema,
+  RatingsStep,
 } from "./Pages/Ratings";
