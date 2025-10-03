@@ -1,10 +1,5 @@
 import z from "zod";
-
-export const SocialProofSchema = z.object({
-  numberOfStar: z.number(),
-  content: z.string(),
-  authorName: z.string(),
-});
+import { SocialProofSchema } from "../types";
 
 export const RatingsSchema = z.object({
   title: z.string(),
