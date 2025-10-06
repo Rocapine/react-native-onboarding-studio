@@ -4,13 +4,13 @@ import { RatingsSchema, RatingsStep } from './types';
 
 
 interface RatingsRendererProps {
-  ratingStep: RatingsStep;
+  step: RatingsStep;
   onContinue?: () => void;
 }
 
-export const RatingsRenderer = ({ ratingStep, onContinue }: RatingsRendererProps) => {
+export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
   // Validate the schema
-  const validatedData = RatingsSchema.parse(ratingStep);
+  const validatedData = RatingsSchema.parse(step);
   const { title, subtitle, socialProofs } = validatedData;
 
   // Get the first social proof to display (as shown in design)
