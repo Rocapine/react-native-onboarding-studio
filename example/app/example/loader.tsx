@@ -25,7 +25,7 @@ export default function LoaderExample() {
     <View style={{ flex: 1 }}>
       <OnboardingStudio.LoaderRenderer step={step} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backButtonText}>← Back</Text>
+        <Text style={styles.backButtonText}>‹</Text>
       </Pressable>
     </View>
   );
@@ -35,16 +35,24 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     top: 50,
-    left: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
+    left: 20,
+    width: 32,
+    height: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 1000,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   backButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: '#007AFF',
+    fontSize: 32,
+    fontWeight: '400',
+    lineHeight: 32,
   },
 });
