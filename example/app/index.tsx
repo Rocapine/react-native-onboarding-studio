@@ -1,10 +1,6 @@
-// import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-// import { Stack } from 'expo-router';
-// import { StatusBar } from 'expo-status-bar';
+import { Text } from 'react-native';
 import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
-import 'react-native-reanimated';
 
-// import { useColorScheme } from '@/hooks/use-color-scheme';
 
 
 
@@ -34,6 +30,7 @@ export default function RootLayout() {
     figmaUrl: null,
   } satisfies OnboardingStudio.RatingsStep;
 
+  // return <Text>Hello</Text>
   return (
     <OnboardingStudio.RatingsRenderer step={step} />
   );
