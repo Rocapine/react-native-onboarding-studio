@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { RatingsStepTypeSchema, RatingsStep } from './types';
+import { RatingsStepTypeSchema, RatingsStepType } from './types';
 import Svg, { Path } from 'react-native-svg';
 
 
 interface RatingsRendererProps {
-  step: RatingsStep;
+  step: RatingsStepType;
   onContinue?: () => void;
 }
 

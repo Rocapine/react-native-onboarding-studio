@@ -19,7 +19,7 @@ export default function RatingsExample() {
       { numberOfStar: 2, content: 'Great app!', authorName: 'Lisa Anderson' },
       { numberOfStar: 1, content: 'Love it!', authorName: 'David Martinez' },
     ],
-  } satisfies OnboardingStudio.RatingsStep['payload'];
+  } satisfies OnboardingStudio.RatingsStepType['payload'];
 
   const step = {
     id: '1',
@@ -29,7 +29,7 @@ export default function RatingsExample() {
     payload: stepPayload,
     customPayload: null,
     figmaUrl: null,
-  } satisfies OnboardingStudio.RatingsStep;
+  } satisfies OnboardingStudio.RatingsStepType;
 
   return (
     <View style={{ flex: 1 }}>

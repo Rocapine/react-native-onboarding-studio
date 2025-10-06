@@ -10,8 +10,8 @@ import { Platform } from "react-native";
 
 export class OnboardingStudioClient {
   private baseUrl: string;
-  private projectId: string;
-  private options: OnboardingStudioClientOptions;
+  public projectId: string;
+  public options: OnboardingStudioClientOptions;
 
   constructor(projectId: string, options: OnboardingStudioClientOptions) {
     console.info("OnboardingStudioClient init: projectId ", projectId);

@@ -17,4 +17,4 @@ export const RatingsStepTypeSchema = z.object({
   figmaUrl: z.string().nullable(),
 });
 
-export type RatingsStep = z.infer<typeof RatingsStepTypeSchema>;
+export type RatingsStepType = z.infer<typeof RatingsStepTypeSchema>;
