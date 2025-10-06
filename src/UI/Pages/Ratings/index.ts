@@ -1,2 +1,2 @@
-export { RatingsRenderer } from "./Renderer";
-export { RatingsSchema, RatingsStep } from "./types";
+export * from "./Renderer";
+export * from "./types";

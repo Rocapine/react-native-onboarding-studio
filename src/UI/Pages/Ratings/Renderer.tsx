@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { RatingsSchema, RatingsStep } from './types';
+import { RatingsStepTypeSchema, RatingsStep } from './types';
 
 
 interface RatingsRendererProps {
@@ -10,8 +10,8 @@ interface RatingsRendererProps {
 
 export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
   // Validate the schema
-  const validatedData = RatingsSchema.parse(step);
-  const { title, subtitle, socialProofs } = validatedData;
+  const validatedData = RatingsStepTypeSchema.parse(step);
+  const { title, subtitle, socialProofs } = validatedData.payload;
 
   // Get the first social proof to display (as shown in design)
   const mainReview = socialProofs[0];
