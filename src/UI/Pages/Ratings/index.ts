@@ -1,2 +1,2 @@
 export { RatingsRenderer } from "./Renderer";
-export { RatingsSchema, SocialProofSchema, RatingsStep } from "./types";
+export { RatingsSchema, RatingsStep } from "./types";
