@@ -15,7 +15,7 @@ yarn add @rocapine/react-native-onboarding-studio
 ### Initialize the Client
 
 ```typescript
-import { OnboardingStudioClient } from '@rocapine/react-native-onboarding-studio';
+import { OnboardingStudioClient } from "@rocapine/react-native-onboarding-studio";
 
 // Create a client instance
 const client = new OnboardingStudioClient();
@@ -25,12 +25,12 @@ const client = new OnboardingStudioClient();
 
 ```typescript
 const steps = await client.getSteps({
-  projectId: 'your-project-id',
-  paywallVariant: 'variant-a',
-  appEnv: 'production',
-  locale: 'en',
-  platform: 'ios',
-  appVersion: '1.0.0'
+  projectId: "your-project-id",
+  paywallVariant: "variant-a",
+  appEnv: "production",
+  locale: "en",
+  platform: "ios",
+  appVersion: "1.0.0",
 });
 
 console.log(steps);
@@ -50,17 +50,20 @@ console.log(steps);
 ### Setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/rocapine/react-native-onboarding-studio.git
 cd react-native-onboarding-studio
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Build the package:
+
 ```bash
 npm run build
 ```
@@ -70,21 +73,25 @@ npm run build
 #### Option 1: npm link (Recommended for active development)
 
 1. In this package directory:
+
 ```bash
 npm link
 ```
 
 2. In your React Native app directory:
+
 ```bash
 npm link @rocapine/react-native-onboarding-studio
 ```
 
 3. Watch for changes in the package:
+
 ```bash
 npm run watch
 ```
 
 4. When done, unlink:
+
 ```bash
 # In your app directory
 npm unlink @rocapine/react-native-onboarding-studio
@@ -96,6 +103,7 @@ npm unlink
 #### Option 2: Local file path
 
 In your app's `package.json`:
+
 ```json
 {
   "dependencies": {
@@ -108,9 +116,9 @@ Then run `npm install` in your app.
 
 ### Development Workflow
 
-1. Make changes to the source code in `src/`
-2. Build the package: `npm run build`
-3. Test in your linked app
+1. Build the package (in watch mode): `npm run watch`
+2. Run the example project `cd example` then `npm start`
+3. Make changes to the source code of the package in `src/`
 4. Repeat
 
 ## Publishing to npm
@@ -120,6 +128,7 @@ Then run `npm install` in your app.
 1. Create an npm account at https://www.npmjs.com/signup
 
 2. Login to npm:
+
 ```bash
 npm login
 ```
@@ -129,6 +138,7 @@ npm login
 ### Publishing Steps
 
 1. Update the version in `package.json`:
+
 ```bash
 # Patch release (0.1.0 -> 0.1.1)
 npm version patch
@@ -141,11 +151,13 @@ npm version major
 ```
 
 2. Build the package:
+
 ```bash
 npm run build
 ```
 
 3. Publish to npm:
+
 ```bash
 # For scoped packages
 npm publish --access public

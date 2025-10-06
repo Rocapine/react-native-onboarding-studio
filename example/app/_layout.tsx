@@ -13,7 +13,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const step = {
+  const stepPayload = {
     title: 'Why users love us',
     subtitle: 'Simple, effective, and reliable',
     socialProofs: [
@@ -23,6 +23,15 @@ export default function RootLayout() {
       { numberOfStar: 2, content: 'Great app!', authorName: 'Lisa Anderson' },
       { numberOfStar: 1, content: 'Love it!', authorName: 'David Martinez' },
     ],
+  } satisfies OnboardingStudio.RatingsStep['payload'];
+  const step = {
+    id: '1',
+    type: 'Ratings',
+    name: 'Ratings',
+    displayProgressHeader: true,
+    payload: stepPayload,
+    customPayload: null,
+    figmaUrl: null,
   } satisfies OnboardingStudio.RatingsStep;
 
   return (
