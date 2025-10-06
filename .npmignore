@@ -44,3 +44,6 @@ coverage/
 # Environment
 .env
 .env.*
+
+# Example
+example/
