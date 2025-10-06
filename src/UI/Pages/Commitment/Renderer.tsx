@@ -1,15 +1,17 @@
 import { CommitmentStepType } from "./types";
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 
 type ContentProps = {
   step: CommitmentStepType;
+  onContinue: () => void;
 };
 
-export const CommitmentRenderer = ({ step }: ContentProps) => {
+export const CommitmentRenderer = ({ step, onContinue }: ContentProps) => {
   return (<View>
     <Text>{step.type}</Text>
     <Text>{step.name}</Text>
     <Text>{JSON.stringify(step.payload)}</Text>
+    <Button title="Continue" onPress={onContinue} />
   </View>)
 };

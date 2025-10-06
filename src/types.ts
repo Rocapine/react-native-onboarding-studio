@@ -1,3 +1,5 @@
+import { OnboardingStepType } from "./UI/types";
+
 export type OnboardingStudioClientOptions = {
   appVersion?: string;
   isSanbdox?: boolean;
@@ -12,11 +14,6 @@ export type UserDefinedParams = {
   [key: string]: string;
 };
 
-export interface OnboardingStep {
-  id: string;
-  [key: string]: any;
-}
-
 export interface OnboardingStepMetadata {
   id: string;
   name?: string;
@@ -29,7 +26,7 @@ export interface OnboardingStepMetadata {
 
 export interface GetStepsResponse {
   metadata: OnboardingStepMetadata;
-  steps: OnboardingStep[];
+  steps: OnboardingStepType[];
   configuration: any;
 }
 

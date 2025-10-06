@@ -1,12 +1,26 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { RatingsStepTypeSchema, RatingsStep } from './types';
+import { RatingsStepTypeSchema, RatingsStepType } from './types';
+import Svg, { Path } from 'react-native-svg';
 
 
 interface RatingsRendererProps {
-  step: RatingsStep;
+  step: RatingsStepType;
   onContinue?: () => void;
 }
+
+const StarIcon = ({ size, filled }: { size: number; filled: boolean }) => (
+  <Svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+    <Path
+      d="M16 2L20.12 11.76L31 13.24L23.5 20.48L25.24 31.24L16 26.76L6.76 31.24L8.5 20.48L1 13.24L11.88 11.76L16 2Z"
+      fill={filled ? "#FED64B" : "none"}
+      stroke={filled ? "#FED64B" : "#D1D1D6"}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
 
 export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
   // Validate the schema
@@ -17,13 +31,15 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
   const mainReview = socialProofs[0];
   const otherUsersCount = socialProofs.length > 1 ? socialProofs.length - 1 : 0;
 
-  const renderStars = (numberOfStar: number) => {
+  const renderStars = (numberOfStar: number, size: number = 20) => {
     return (
       <View style={styles.starsContainer}>
         {Array.from({ length: 5 }).map((_, index) => (
-          <Text key={index} style={styles.star}>
-            {index < numberOfStar ? '★' : '☆'}
-          </Text>
+          <StarIcon
+            key={index}
+            size={size}
+            filled={index < numberOfStar}
+          />
         ))}
       </View>
     );
@@ -42,12 +58,20 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
         {/* Award Section */}
         <View style={styles.awardSection}>
           <View style={styles.awardContainer}>
-            <Text style={styles.awardLeaf}>🌿</Text>
+            <Image
+              source={require('../../../assets/laurel-left.png')}
+              style={styles.laurelImage}
+              resizeMode="contain"
+            />
             <View style={styles.awardTextContainer}>
-              {renderStars(5)}
+              {renderStars(5, 32)}
               <Text style={styles.awardTitle}>Users Choice</Text>
             </View>
-            <Text style={styles.awardLeaf}>🌿</Text>
+            <Image
+              source={require('../../../assets/laurel-right.png')}
+              style={styles.laurelImage}
+              resizeMode="contain"
+            />
           </View>
         </View>
 
@@ -134,8 +158,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  awardLeaf: {
-    fontSize: 32,
+  laurelImage: {
+    width: 27,
+    height: 63,
   },
   awardTextContainer: {
     alignItems: 'center',
@@ -150,11 +175,8 @@ const styles = StyleSheet.create({
   },
   starsContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     gap: 4,
-  },
-  star: {
-    fontSize: 20,
-    color: '#FFD700',
   },
   reviewSection: {
     paddingHorizontal: 32,

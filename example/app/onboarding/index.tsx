@@ -5,27 +5,20 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-export default function RootLayout() {
+export default function OnboardingIndex() {
   const router = useRouter();
 
-  const handleStartOnboarding = () => {
+  const handleStartQuestion1 = () => {
     router.push('/onboarding/1');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Onboarding</Text>
-      <Text style={styles.subtitle}>Get started with your journey</Text>
+      <Text style={styles.title}>Onboarding</Text>
+      <Text style={styles.subtitle}>Choose your starting point</Text>
 
-      <Pressable style={styles.button} onPress={handleStartOnboarding}>
-        <Text style={styles.buttonText}>Start the onboarding</Text>
-      </Pressable>
-
-      <Pressable
-        style={[styles.button, styles.secondaryButton]}
-        onPress={() => router.push('/example')}
-      >
-        <Text style={styles.buttonText}>View Examples</Text>
+      <Pressable style={styles.button} onPress={handleStartQuestion1}>
+        <Text style={styles.buttonText}>Start Question 1</Text>
       </Pressable>
     </View>
   );
@@ -65,10 +58,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginBottom: 16,
-  },
-  secondaryButton: {
-    backgroundColor: '#5856D6',
   },
   buttonText: {
     color: 'white',
