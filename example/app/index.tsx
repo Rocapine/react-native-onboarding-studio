@@ -13,7 +13,7 @@ export default function RootLayout() {
     title: 'Why users love us',
     subtitle: 'Simple, effective, and reliable',
     socialProofs: [
-      { numberOfStar: 5, content: 'Best app Ive used.', authorName: 'Emma Davis' },
+      { numberOfStar: 5, content: 'Finally found a nutrition app that’s helping me hit my fitness goals. It’s all about eating the right foods and staying disciplined. I’ve already seen real changes in my body in just a month!', authorName: 'Emma Davis' },
       { numberOfStar: 4, content: 'Intuitive and powerful.', authorName: 'Mike Chen' },
       { numberOfStar: 3, content: 'This app has completely transformed how I manage my daily tasks. Highly recommended!', authorName: 'Sarah Johnson' },
       { numberOfStar: 2, content: 'Great app!', authorName: 'Lisa Anderson' },

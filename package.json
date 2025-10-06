@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp -r src/assets dist/",
     "prepare": "npm run build",
     "watch": "tsc --watch"
   },
@@ -23,14 +23,16 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
     "react": "19.1.0",
-    "react-native": "0.81.4"
+    "react-native": "0.81.4",
+    "react-native-svg": "^15.13.0",
+    "typescript": "^5.0.0"
   },
   "peerDependencies": {
     "@types/react": "*",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-svg": ">=13.0.0"
   },
   "files": [
     "dist",

@@ -24,6 +24,16 @@ config.resolver.extraNodeModules = {
   "react-native": path.resolve(projectRoot, "node_modules/react-native"),
 };
 
+// Allow Metro to resolve assets from the workspace
+config.resolver.assetExts = [
+  ...config.resolver.assetExts,
+  "png",
+  "jpg",
+  "jpeg",
+  "gif",
+  "svg",
+];
+
 // Prevent Metro from looking for modules in parent directories
 config.resolver.disableHierarchicalLookup = true;
 
