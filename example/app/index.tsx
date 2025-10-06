@@ -20,6 +20,13 @@ export default function RootLayout() {
       <Pressable style={styles.button} onPress={handleStartOnboarding}>
         <Text style={styles.buttonText}>Start the onboarding</Text>
       </Pressable>
+
+      <Pressable
+        style={[styles.button, styles.secondaryButton]}
+        onPress={() => router.push('/example')}
+      >
+        <Text style={styles.buttonText}>View Examples</Text>
+      </Pressable>
     </View>
   );
 }
@@ -58,6 +65,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginBottom: 16,
+  },
+  secondaryButton: {
+    backgroundColor: '#5856D6',
   },
   buttonText: {
     color: 'white',

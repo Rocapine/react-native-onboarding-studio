@@ -6,8 +6,7 @@ export const unstable_settings = {
 };
 
 export default function QuestionPage() {
-  const { questionId } = useLocalSearchParams();
-  console.log('questionId', questionId);
+
   const stepPayload = {
     title: 'Why users love us',
     subtitle: 'Simple, effective, and reliable',
