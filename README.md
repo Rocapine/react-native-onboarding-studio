@@ -121,6 +121,11 @@ Then run `npm install` in your app.
 3. Make changes to the source code of the package in `src/`
 4. Repeat
 
+#### Assets management
+
+1. Add the asset in `./src/assets``
+2. rerun the `npm run build` command to copy the asset in the dist folder
+
 ## Publishing to npm
 
 ### First-time Setup
