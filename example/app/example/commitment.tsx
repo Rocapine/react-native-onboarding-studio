@@ -21,9 +21,14 @@ export default function CommitmentExample() {
     figmaUrl: null,
   } satisfies OnboardingStudio.CommitmentStepType;
 
+  const handleContinue = () => {
+    console.log('Commitment completed!');
+    router.back();
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.CommitmentRenderer step={step} />
+      <OnboardingStudio.CommitmentRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

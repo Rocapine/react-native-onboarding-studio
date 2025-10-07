@@ -17,8 +17,9 @@ export default function MediaContentExample() {
     title: 'Welcome to Our Platform',
     description: 'Start your journey with us today and unlock amazing features',
     socialProof: {
-      numberOfUsers: 276000,
-      stars: 5,
+      numberOfStar: 5,
+      content: 'This app changed my life! Highly recommended for everyone.',
+      authorName: 'John Doe',
     },
   } satisfies OnboardingStudio.MediaContentStepType['payload'];
 
@@ -29,12 +30,18 @@ export default function MediaContentExample() {
     displayProgressHeader: true,
     payload: stepPayload,
     customPayload: null,
+    continueButtonLabel: 'Continue',
     figmaUrl: null,
   } satisfies OnboardingStudio.MediaContentStepType;
 
+  const handleContinue = () => {
+    console.log('MediaContent completed!');
+    router.back();
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.MediaContentRenderer step={step} />
+      <OnboardingStudio.MediaContentRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

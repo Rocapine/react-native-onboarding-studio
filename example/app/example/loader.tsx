@@ -21,9 +21,14 @@ export default function LoaderExample() {
     figmaUrl: null,
   } satisfies OnboardingStudio.LoaderStepType;
 
+  const handleContinue = () => {
+    console.log('Loader completed!');
+    router.back();
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.LoaderRenderer step={step} />
+      <OnboardingStudio.LoaderRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

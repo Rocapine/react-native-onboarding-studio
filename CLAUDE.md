@@ -55,7 +55,7 @@ Available page types:
 - `MediaContent`: Image/video content with title/description
 - `Picker`: Selection UI for user choices
 - `Commitment`: User commitment/agreement screens
-- `Carousel`: Multi-slide content presentation
+- `Carousel`: Multi-slide content presentation with horizontal pagination
 - `Loader`: Loading/transition screens
 - `Question`: Question/answer interactions
 
@@ -73,7 +73,8 @@ Available page types:
 - Wraps content in `SafeAreaProvider`
 
 **Common Types** (`src/UI/Pages/types.ts`)
-- Shared Zod schemas: `CustomPayloadSchema`, `SocialProofSchema`, `InfoBoxSchema`
+- Shared Zod schemas: `CustomPayloadSchema`, `MediaSourceSchema`, `SocialProofSchema`, `InfoBoxSchema`
+- `MediaSourceSchema`: Defines media types (image/lottie/rive) with url or localPathId
 - Used across multiple page types for consistency
 
 ### Type System
@@ -101,6 +102,67 @@ Common step properties:
 3. Publish: `npm publish --access public`
 
 The `prepare` script automatically runs build on `npm install`.
+
+## Example App
+
+The `example/` directory contains an Expo app demonstrating all page types.
+
+### Development Commands
+
+```bash
+cd example/
+npm install           # Install dependencies
+npm start            # Start Expo dev server
+npm run type         # Run TypeScript type checking
+npm run android      # Run on Android
+npm run ios          # Run on iOS
+```
+
+### Structure
+
+- `app/example/` - Individual page type examples
+  - `carousel.tsx` - Carousel page example
+  - `media-content.tsx` - MediaContent page example
+  - `picker.tsx` - Picker page example
+  - `commitment.tsx` - Commitment page example
+  - `loader.tsx` - Loader page example
+- `app/onboarding/` - Full onboarding flow examples
+- `onboarding/OnboardingProvider.tsx` - Shows proper setup with `OnboardingProgressProvider` and `ProgressBar`
+
+### Example Pattern
+
+All examples follow this pattern:
+
+```typescript
+import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+
+const stepPayload = { /* ... */ } satisfies OnboardingStudio.XxxStepType['payload'];
+
+const step = {
+  id: 'example-1',
+  type: 'MediaContent',
+  name: 'Example',
+  displayProgressHeader: true,
+  payload: stepPayload,
+  customPayload: null,
+  continueButtonLabel: 'Continue', // Optional but recommended for type safety
+  figmaUrl: null,
+} satisfies OnboardingStudio.MediaContentStepType;
+
+const handleContinue = () => {
+  console.log('Step completed!');
+  // Navigate or continue to next step
+};
+
+return <OnboardingStudio.MediaContentRenderer step={step} onContinue={handleContinue} />;
+```
+
+### Important Notes
+
+- The example app uses `@rocapine/react-native-onboarding-studio` as a local dependency via `"file:.."`
+- After making changes to the library, run `npm run build` in the root, then reload the example app
+- `OnboardingProgressProvider` wraps the app and includes the global `ProgressBar` component
+- Individual renderers should NEVER include their own `ProgressBar`
 
 ## File Organization
 
@@ -150,3 +212,15 @@ src/
 - **Component Reuse**: Only reuse components that make sense for the specific page type. For example:
   - Star ratings and social proof cards belong in `Ratings` screens
   - Don't copy components from other renderers unless they're truly needed for the design
+- **Media Rendering**: Use `MediaSourceSchema` for consistent media handling across page types
+  - Supports image (url or localPathId), lottie, and rive media types
+  - Implement placeholder views for unsupported media types during development
+
+### Special Page Patterns
+
+**Carousel**: Multi-screen horizontal pagination
+- Uses horizontal `ScrollView` with `pagingEnabled`
+- Tracks current page with `useState` and `onMomentumScrollEnd`
+- Button label changes based on page: "Next" for intermediate pages, `continueButtonLabel` for last page
+- Includes page indicators (dots) showing progress through carousel
+- Each screen has its own media and text content

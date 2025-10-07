@@ -25,9 +25,14 @@ export default function PickerExample() {
     figmaUrl: null,
   } satisfies OnboardingStudio.PickerStepType;
 
+  const handleContinue = () => {
+    console.log('Picker completed!');
+    router.back();
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.PickerRenderer step={step} />
+      <OnboardingStudio.PickerRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

@@ -1,16 +1,5 @@
 import { z } from "zod";
-import { CustomPayloadSchema, SocialProofSchema } from "../types";
-
-export const MediaSourceSchema = z.union([
-  z.object({
-    type: z.literal("image").or(z.literal("lottie")).or(z.literal("rive")),
-    localPathId: z.string(),
-  }),
-  z.object({
-    type: z.literal("image").or(z.literal("lottie")).or(z.literal("rive")),
-    url: z.string(),
-  }),
-]);
+import { CustomPayloadSchema, MediaSourceSchema, SocialProofSchema } from "../types";
 
 export const MediaContentStepPayloadSchema = z.object({
   mediaSource: MediaSourceSchema,

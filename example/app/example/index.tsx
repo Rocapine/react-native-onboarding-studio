@@ -28,7 +28,7 @@ export default function ExampleIndex() {
             <Pressable
               key={example.route}
               style={styles.card}
-              onPress={() => router.push(example.route)}
+              onPress={() => router.push(example.route as any)}
             >
               <Text style={styles.cardText}>{example.name}</Text>
             </Pressable>

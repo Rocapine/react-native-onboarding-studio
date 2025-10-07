@@ -12,17 +12,26 @@ export default function CarouselExample() {
   const stepPayload = {
     screens: [
       {
-        mediaUrl: 'https://picsum.photos/400/600',
+        mediaSource: {
+          type: 'image' as const,
+          url: 'https://picsum.photos/400/600',
+        },
         title: 'Welcome to Our App',
         subtitle: 'Discover amazing features',
       },
       {
-        mediaUrl: 'https://picsum.photos/400/601',
+        mediaSource: {
+          type: 'image' as const,
+          url: 'https://picsum.photos/400/601',
+        },
         title: 'Track Your Progress',
         subtitle: 'See your improvements over time',
       },
       {
-        mediaUrl: 'https://picsum.photos/400/602',
+        mediaSource: {
+          type: 'image' as const,
+          url: 'https://picsum.photos/400/602',
+        },
         title: 'Achieve Your Goals',
         subtitle: 'Stay motivated and reach new heights',
       },
@@ -36,12 +45,18 @@ export default function CarouselExample() {
     displayProgressHeader: true,
     payload: stepPayload,
     customPayload: null,
+    continueButtonLabel: 'Continue',
     figmaUrl: null,
   } satisfies OnboardingStudio.CarouselStepType;
 
+  const handleContinue = () => {
+    console.log('Carousel completed!');
+    router.back();
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.CarouselRenderer step={step} />
+      <OnboardingStudio.CarouselRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>
