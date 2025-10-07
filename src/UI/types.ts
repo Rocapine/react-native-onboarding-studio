@@ -5,6 +5,7 @@ import {
   MediaContentStepType,
   PickerStepType,
   RatingsStepType,
+  QuestionStepType,
 } from "./Pages";
 
 export type OnboardingStepType =
@@ -13,4 +14,5 @@ export type OnboardingStepType =
   | PickerStepType
   | CommitmentStepType
   | CarouselStepType
-  | LoaderStepType;
+  | LoaderStepType
+  | QuestionStepType;

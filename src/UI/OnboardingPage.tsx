@@ -1,6 +1,6 @@
 import { OnboardingStudioClient } from "../OnboardingStudioClient";
 import { OnboardingStepType } from "./types";
-import { RatingsRenderer, PickerRenderer, CommitmentRenderer, CarouselRenderer, LoaderRenderer, MediaContentRenderer } from "./Pages";
+import { RatingsRenderer, PickerRenderer, CommitmentRenderer, CarouselRenderer, LoaderRenderer, MediaContentRenderer, QuestionRenderer } from "./Pages";
 import { View, Text, Button } from 'react-native';
 
 
@@ -24,6 +24,8 @@ export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps
       return <MediaContentRenderer step={step} onContinue={onContinue} />;
     case 'Loader':
       return <LoaderRenderer step={step} onContinue={onContinue} />;
+    case 'Question':
+      return <QuestionRenderer step={step} onContinue={onContinue} />;
     default:
       if (client.options.isSanbdox) {
         // @ts-ignore
