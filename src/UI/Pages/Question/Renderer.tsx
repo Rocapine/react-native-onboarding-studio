@@ -70,7 +70,7 @@ export const QuestionRenderer = ({
   return (
     <OnboardingTemplate
       step={step}
-      onContinue={onContinue || (() => {})}
+      onContinue={onContinue || (() => { })}
       button={multipleAnswer ? { text: "Continue" } : undefined}
     >
       <View style={styles.container}>
@@ -82,7 +82,7 @@ export const QuestionRenderer = ({
           {/* Header */}
           <View style={styles.headerSection}>
             <Text style={styles.title}>{title}</Text>
-            {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+            {Boolean(subtitle?.length) ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
           </View>
 
           {/* Answers */}
