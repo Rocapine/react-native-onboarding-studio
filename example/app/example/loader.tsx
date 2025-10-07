@@ -9,7 +9,20 @@ export const unstable_settings = {
 export default function LoaderExample() {
   const router = useRouter();
 
-  const stepPayload = {};
+  const stepPayload = {
+    title: 'Curating your personalized profile...',
+    steps: [
+      { label: 'Analyzing your cycles', completed: 'Cycles analyzed' },
+      { label: 'Adjusting your profile', completed: 'Profile adjusted' },
+      { label: 'Preparing your recommendations', completed: 'Recommendations ready' },
+    ],
+    didYouKnowImages: [
+      { type: 'image' as const, url: 'https://picsum.photos/300/200?random=1' },
+      { type: 'image' as const, url: 'https://picsum.photos/300/200?random=2' },
+      { type: 'image' as const, url: 'https://picsum.photos/300/200?random=3' },
+    ],
+    duration: 2000,
+  } satisfies OnboardingStudio.LoaderStepType['payload'];
 
   const step = {
     id: 'loader-1',
@@ -18,6 +31,7 @@ export default function LoaderExample() {
     displayProgressHeader: false,
     payload: stepPayload,
     customPayload: null,
+    continueButtonLabel: 'Access my profile',
     figmaUrl: null,
   } satisfies OnboardingStudio.LoaderStepType;
 

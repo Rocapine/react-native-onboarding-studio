@@ -237,3 +237,28 @@ src/
   - Returns value as "value-unit" format (e.g., "70-kg")
 - `onContinue` callback receives selected value as parameter
 - Easy to extend: add new picker types by checking `pickerType` in main renderer
+
+**Loader**: Sequential progress animation with optional carousel
+- Uses React Native's built-in `Animated` API (NOT Reanimated)
+- Displays sequential progress bars for each step with configurable duration
+- Each step shows:
+  - Label text while loading (e.g., "Analyzing your cycles")
+  - Completed text when done (e.g., "Cycles analyzed")
+  - Animated progress bar (0% → 100%)
+  - Green checkmark (✓) on completion
+- Animation system:
+  - Creates `Animated.Value` for each step's progress
+  - Uses `Animated.sequence()` to chain animations
+  - Each animation has delay: `index * duration`
+  - Default duration: 2000ms per step
+- Optional "Did you know?" carousel section with horizontal scrolling images
+- Button fades in after all steps complete using `Animated.timing()`
+- Payload structure:
+  ```typescript
+  {
+    title: string,
+    steps: Array<{ label: string, completed: string }>,
+    didYouKnowImages?: Array<MediaSourceSchema>,
+    duration?: number // milliseconds per step, default 2000
+  }
+  ```
