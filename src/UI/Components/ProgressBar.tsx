@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Animated, Dimensions, StyleSheet } from 'react-native';
+import React, { useContext } from "react";
+import { View, Animated, Dimensions, StyleSheet } from "react-native";
+import { OnboardingProgressContext } from "../Provider";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ProgressBarProps {
   value?: number;
@@ -11,18 +13,19 @@ interface ProgressBarProps {
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
-  value = 70,
   height = 6,
-  backgroundColor = '#E5E5E7',
-  progressColor = '#007AFF',
-  width = '70%',
+  backgroundColor = "#E5E5E7",
+  progressColor = "#007AFF",
+  width = "70%",
   animated = true,
 }) => {
-  const screenWidth = Dimensions.get('window').width;
-  const progressWidth = typeof width === 'string' ?
-    (parseFloat(width) / 100) * screenWidth : width;
-
-  const animatedWidth = React.useRef(new Animated.Value(0)).current;
+  const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
+  const { top } = useSafeAreaInsets();
+  const value = (activeStep.number / totalSteps) * 100;
+  const screenWidth = Dimensions.get("window").width;
+  const progressWidth =
+    typeof width === "string" ? (parseFloat(width) / 100) * screenWidth : width;
+  const animatedWidth = new Animated.Value(0);
 
   React.useEffect(() => {
     if (animated) {
@@ -37,31 +40,38 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   }, [value, progressWidth, animated, animatedWidth]);
 
   return (
-    <View style={[styles.container]}>
-      <View style={[styles.track, { height, backgroundColor }]}>
-        <Animated.View
-          style={[
-            styles.progress,
-            {
-              height,
-              backgroundColor: progressColor,
-              width: animatedWidth,
-            },
-          ]}
-        />
+    activeStep.displayProgressHeader && (
+      <View style={[styles.container, { paddingTop: top }]}>
+        <View style={[styles.track, { height, backgroundColor }]}>
+          <Animated.View
+            style={[
+              styles.progress,
+              {
+                height,
+                backgroundColor: progressColor,
+                width: animatedWidth,
+              },
+            ]}
+          />
+        </View>
       </View>
-    </View>
+    )
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    paddingHorizontal: 70,
+    position: "absolute",
+    top: 20,
+    left: 0,
+    right: 0,
+    zIndex: 1,
   },
   track: {
-    width: '100%',
+    width: "100%",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progress: {
     borderRadius: 10,

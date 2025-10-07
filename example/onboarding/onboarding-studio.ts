@@ -1,9 +1,12 @@
 import {
+  OnboardingProgressContext,
   OnboardingStepType,
   OnboardingStudioClient,
 } from "@rocapine/react-native-onboarding-studio";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useContext } from "react";
+import { useFocusEffect } from "expo-router";
 
 const isSandbox = true;
 const STORAGE_KEY = "rocapine-onboarding-studio";
@@ -62,6 +65,18 @@ export const useOnboardingQuestions = ({
     queryFn: () => getOnboardingQuery(),
     queryKey: ["onboardingQuestions"],
     staleTime: Infinity,
+  });
+
+  const { setActiveStep, setTotalSteps } = useContext(
+    OnboardingProgressContext
+  );
+
+  useFocusEffect(() => {
+    setActiveStep({
+      number: onboardingStepNumber,
+      displayProgressHeader: true,
+    });
+    setTotalSteps(onboardingSteps.length);
   });
 
   const step = onboardingSteps[onboardingStepNumber - 1];

@@ -58,6 +58,7 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
 
   return (
     <OnboardingTemplate
+      step={step}
       onContinue={handlePress}
       button={{
         text: !hasOpenedRequestReview
@@ -66,9 +67,6 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
       }}
     >
       <View style={styles.container}>
-        {/* Status Bar Spacer */}
-        <View style={styles.statusBarSpacer} />
-
         {/* Main Content */}
         <ScrollView
           contentContainerStyle={styles.scrollContent}
@@ -150,19 +148,17 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
   },
-  statusBarSpacer: {
-    height: 48,
-  },
+
   scrollContent: {
     flexGrow: 1,
-    paddingTop: 24,
     paddingBottom: 48,
+    paddingTop: 20,
+    justifyContent: "space-between",
   },
   awardSection: {
+    flex: 1,
     alignItems: "center",
-    paddingVertical: 24,
   },
   awardContainer: {
     flexDirection: "row",
@@ -192,6 +188,8 @@ const styles = StyleSheet.create({
   reviewSection: {
     paddingHorizontal: 32,
     gap: 24,
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
   reviewCard: {

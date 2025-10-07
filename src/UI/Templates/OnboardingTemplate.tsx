@@ -1,4 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { OnboardingStepType } from "../types";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type OnboardingTemplateProps = {
   children: React.ReactNode;
@@ -6,15 +8,24 @@ type OnboardingTemplateProps = {
   button: {
     text: string;
   };
+  step: OnboardingStepType;
 };
 
 export const OnboardingTemplate = ({
   children,
   onContinue,
+  step,
   button,
 }: OnboardingTemplateProps) => {
+  const { top } = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: step.displayProgressHeader ? top + 40 : top },
+      ]}
+    >
       {children}
       {button && (
         <View style={styles.bottomSection}>
@@ -34,7 +45,6 @@ export const OnboardingTemplate = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
   },
   bottomSection: {
     paddingHorizontal: 32,
