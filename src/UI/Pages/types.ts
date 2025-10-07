@@ -7,3 +7,8 @@ export const SocialProofSchema = z.object({
   content: z.string(),
   authorName: z.string(),
 });
+
+export const InfoBoxSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+});

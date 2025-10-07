@@ -11,6 +11,7 @@ const examples = [
   { name: 'Loader', route: '/example/loader' },
   { name: 'Media Content', route: '/example/media-content' },
   { name: 'Picker', route: '/example/picker' },
+  { name: 'Question', route: '/example/question' },
   { name: 'Ratings', route: '/example/ratings' },
 ];
 
