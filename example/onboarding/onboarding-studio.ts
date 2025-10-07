@@ -82,9 +82,6 @@ export const useOnboardingQuestions = ({
   const step = onboardingSteps[onboardingStepNumber - 1];
 
   const isLastStep = onboardingStepNumber >= onboardingSteps.length;
-  console.log("onboardingStepNumber", onboardingStepNumber);
-  console.log("onboardingSteps.length", onboardingSteps.length);
-  console.log("isLastStep", isLastStep);
   const ONBOARDING_STEPS_COUNT = onboardingSteps.length;
 
   return {
