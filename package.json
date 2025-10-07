@@ -25,6 +25,7 @@
   "devDependencies": {
     "react": "19.1.0",
     "react-native": "0.81.4",
+    "expo-store-review": "^9.0.8",
     "react-native-svg": "^15.13.0",
     "typescript": "^5.0.0"
   },

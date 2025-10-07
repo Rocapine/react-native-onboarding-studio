@@ -5,6 +5,7 @@ export const RatingsStepPayloadSchema = z.object({
   title: z.string(),
   subtitle: z.string(),
   socialProofs: z.array(SocialProofSchema),
+  rateTheAppButtonLabel: z.string().optional().default("Rate the app"),
 });
 
 export const RatingsStepTypeSchema = z.object({
@@ -14,6 +15,7 @@ export const RatingsStepTypeSchema = z.object({
   displayProgressHeader: z.boolean(),
   payload: RatingsStepPayloadSchema,
   customPayload: CustomPayloadSchema,
+  continueButtonLabel: z.string().optional().default("Continue"),
   figmaUrl: z.string().nullable(),
 });
 

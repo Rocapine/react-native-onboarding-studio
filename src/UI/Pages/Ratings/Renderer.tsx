@@ -2,6 +2,8 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { RatingsStepType, RatingsStepTypeSchema } from "./types";
+import { useState } from "react";
+import * as StoreReview from "expo-store-review";
 
 interface RatingsRendererProps {
   step: RatingsStepType;
@@ -22,9 +24,23 @@ const StarIcon = ({ size, filled }: { size: number; filled: boolean }) => (
 );
 
 export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
+  const [hasOpenedRequestReview, setHasOpenedRequestReview] = useState(false);
+
+  const handlePress = async () => {
+    if (!hasOpenedRequestReview) {
+      setHasOpenedRequestReview(true);
+      if (await StoreReview.hasAction()) {
+        // you can call StoreReview.requestReview()
+        await StoreReview.requestReview();
+      }
+    } else {
+      onContinue?.();
+    }
+  };
   // Validate the schema
   const validatedData = RatingsStepTypeSchema.parse(step);
-  const { title, subtitle, socialProofs } = validatedData.payload;
+  const { title, subtitle, socialProofs, rateTheAppButtonLabel } =
+    validatedData.payload;
 
   // Get the first social proof to display (as shown in design)
   const mainReview = socialProofs[0];
@@ -42,8 +58,12 @@ export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
 
   return (
     <OnboardingTemplate
-      onContinue={onContinue || (() => {})}
-      button={{ text: "Rate the app" }}
+      onContinue={handlePress}
+      button={{
+        text: !hasOpenedRequestReview
+          ? rateTheAppButtonLabel
+          : validatedData.continueButtonLabel,
+      }}
     >
       <View style={styles.container}>
         {/* Status Bar Spacer */}
