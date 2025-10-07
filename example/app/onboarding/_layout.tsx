@@ -6,7 +6,9 @@ export default function OnboardingLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <OnboardingProvider>
-    <Stack />
-  </OnboardingProvider >;
+  return (
+    <OnboardingProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </OnboardingProvider>
+  );
 }

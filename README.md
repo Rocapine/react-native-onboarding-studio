@@ -68,58 +68,19 @@ npm install
 npm run build
 ```
 
-### Using Locally in Your App
-
-#### Option 1: npm link (Recommended for active development)
-
-1. In this package directory:
-
-```bash
-npm link
-```
-
-2. In your React Native app directory:
-
-```bash
-npm link @rocapine/react-native-onboarding-studio
-```
-
-3. Watch for changes in the package:
+4. Watch the changes
 
 ```bash
 npm run watch
 ```
 
-4. When done, unlink:
+### Using in the example App
 
-```bash
-# In your app directory
-npm unlink @rocapine/react-native-onboarding-studio
-
-# In the package directory
-npm unlink
-```
-
-#### Option 2: Local file path
-
-In your app's `package.json`:
-
-```json
-{
-  "dependencies": {
-    "@rocapine/react-native-onboarding-studio": "file:../path/to/react-native-onboarding"
-  }
-}
-```
-
-Then run `npm install` in your app.
-
-### Development Workflow
-
-1. Build the package (in watch mode): `npm run watch`
-2. Run the example project `cd example` then `npm start`
-3. Make changes to the source code of the package in `src/`
-4. Repeat
+1. Go to example App : `cd example/`
+2. Install dependencies : `npm install`
+3. Start the app : `npm start`
+4. Make changes to the source code of the package in `src/`
+5. Repeat
 
 #### Assets management
 
