@@ -224,3 +224,16 @@ src/
 - Button label changes based on page: "Next" for intermediate pages, `continueButtonLabel` for last page
 - Includes page indicators (dots) showing progress through carousel
 - Each screen has its own media and text content
+
+**Picker**: Type-specific input pickers with routing pattern
+- **Requires**: `@react-native-picker/picker` peer dependency
+- Main renderer routes to specific picker implementations based on `pickerType`
+- Supports: `weight`, `height`, `age`, `gender`, `coach`, `name` (extend as needed)
+- Example: Weight Picker
+  - Uses native `Picker` component from `@react-native-picker/picker`
+  - Two-column layout: weight value (65%) and unit (35%)
+  - Weight range: 1-300 kg or 1-660 lb (descending order)
+  - Unit switch resets weight to default (70 kg or 154 lb)
+  - Returns value as "value-unit" format (e.g., "70-kg")
+- `onContinue` callback receives selected value as parameter
+- Easy to extend: add new picker types by checking `pickerType` in main renderer

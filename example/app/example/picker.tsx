@@ -10,9 +10,9 @@ export default function PickerExample() {
   const router = useRouter();
 
   const stepPayload = {
-    title: 'How old are you?',
-    description: 'This helps us personalize your experience',
-    pickerType: 'age' as const,
+    title: 'What is your weight?',
+    description: 'This helps us personalize your fitness plan',
+    pickerType: 'weight' as const,
   } satisfies OnboardingStudio.PickerStepType['payload'];
 
   const step = {
@@ -22,11 +22,12 @@ export default function PickerExample() {
     displayProgressHeader: true,
     payload: stepPayload,
     customPayload: null,
+    continueButtonLabel: 'Continue',
     figmaUrl: null,
   } satisfies OnboardingStudio.PickerStepType;
 
-  const handleContinue = () => {
-    console.log('Picker completed!');
+  const handleContinue = (value?: string | number) => {
+    console.log('Picker completed! Weight:', value);
     router.back();
   };
 

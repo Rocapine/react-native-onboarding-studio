@@ -23,7 +23,10 @@ export const PickerStepTypeSchema = z.object({
   displayProgressHeader: z.boolean(),
   payload: PickerStepPayloadSchema,
   customPayload: CustomPayloadSchema,
+  continueButtonLabel: z.string().optional().default("Continue"),
   figmaUrl: z.string().nullable(),
 });
 
 export type PickerStepType = z.infer<typeof PickerStepTypeSchema>;
+
+export type WeightUnit = "kg" | "lb";

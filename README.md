@@ -10,6 +10,17 @@ npm install @rocapine/react-native-onboarding-studio
 yarn add @rocapine/react-native-onboarding-studio
 ```
 
+### Peer Dependencies
+
+Some page types require additional peer dependencies:
+
+- **Picker pages** (weight, height, etc.): `@react-native-picker/picker`
+- All pages: `react-native-svg` (for icons and graphics)
+
+```bash
+npm install @react-native-picker/picker react-native-svg
+```
+
 ## Usage
 
 ### Initialize the Client
