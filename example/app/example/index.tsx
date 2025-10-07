@@ -12,6 +12,7 @@ const examples = [
   { name: "Media Content", route: "/example/media-content" },
   { name: "Picker", route: "/example/picker" },
   { name: "Ratings", route: "/example/ratings" },
+  { name: "Question", route: "/example/question" },
 ];
 
 export default function ExampleIndex() {

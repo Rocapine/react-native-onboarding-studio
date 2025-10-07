@@ -15,7 +15,6 @@ export default function QuestionPage() {
   const router = useRouter();
 
   const onContinue = (args?: any) => {
-    console.log("isLastStep", isLastStep);
     if (isLastStep) {
       router.push('/');
       return;
