@@ -26,6 +26,7 @@ export const MediaContentStepTypeSchema = z.object({
   displayProgressHeader: z.boolean(),
   payload: MediaContentStepPayloadSchema,
   customPayload: CustomPayloadSchema,
+  continueButtonLabel: z.string().optional().default("Continue"),
   figmaUrl: z.string().nullable(),
 });
 
