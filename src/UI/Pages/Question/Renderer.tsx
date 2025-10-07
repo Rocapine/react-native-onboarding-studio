@@ -1,13 +1,23 @@
 import { useState } from "react";
 import { QuestionStepTypeSchema, QuestionStepType } from "./types";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 
 interface QuestionRendererProps {
   step: QuestionStepType;
   onContinue?: (...args: any[]) => void;
 }
 
-export const QuestionRenderer = ({ step, onContinue }: QuestionRendererProps) => {
+export const QuestionRenderer = ({
+  step,
+  onContinue,
+}: QuestionRendererProps) => {
   // Validate the schema
   const validatedData = QuestionStepTypeSchema.parse(step);
   const { title, subtitle, answers, multipleAnswer } = validatedData.payload;
@@ -16,7 +26,9 @@ export const QuestionRenderer = ({ step, onContinue }: QuestionRendererProps) =>
 
   const handleContinue = () => {
     if (!onContinue) return;
-    const selectedAnswers = Object.keys(selected).filter((key) => selected[key]);
+    const selectedAnswers = Object.keys(selected).filter(
+      (key) => selected[key]
+    );
     onContinue(multipleAnswer ? selectedAnswers : selectedAnswers[0]);
   };
 
@@ -56,76 +68,61 @@ export const QuestionRenderer = ({ step, onContinue }: QuestionRendererProps) =>
   const isAnySelected = Object.values(selected).some((value) => value);
 
   return (
-    <View style={styles.container}>
-      {/* Status Bar Spacer */}
-      <View style={styles.statusBarSpacer} />
+    <OnboardingTemplate
+      step={step}
+      onContinue={onContinue || (() => {})}
+      button={multipleAnswer ? { text: "Continue" } : undefined}
+    >
+      <View style={styles.container}>
+        {/* Status Bar Spacer */}
+        <View style={styles.statusBarSpacer} />
 
-      {/* Main Content */}
-      <View style={styles.contentContainer}>
-        {/* Header */}
-        <View style={styles.headerSection}>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle && (
-            <Text style={styles.subtitle}>{subtitle}</Text>
-          )}
-        </View>
-
-        {/* Answers */}
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.answersContainer}>
-            {answers.map((answer) => (
-              <TouchableOpacity
-                key={answer.value}
-                style={[
-                  styles.answerButton,
-                  selected[answer.value] && styles.answerButtonSelected,
-                ]}
-                onPress={() => onAnswerSelected(answer.value)}
-                activeOpacity={0.7}
-              >
-                <Text
-                  style={[
-                    styles.answerText,
-                    selected[answer.value] && styles.answerTextSelected,
-                  ]}
-                >
-                  {answer.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
+        {/* Main Content */}
+        <View style={styles.contentContainer}>
+          {/* Header */}
+          <View style={styles.headerSection}>
+            <Text style={styles.title}>{title}</Text>
+            {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           </View>
-        </ScrollView>
-      </View>
 
-      {/* Continue Button (only for multiple answer) */}
-      {multipleAnswer && (
-        <View style={styles.bottomSection}>
-          <TouchableOpacity
-            style={[
-              styles.continueButton,
-              !isAnySelected && styles.continueButtonDisabled,
-            ]}
-            onPress={handleContinue}
-            disabled={!isAnySelected}
-            activeOpacity={0.8}
+          {/* Answers */}
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.continueButtonText}>Continue</Text>
-          </TouchableOpacity>
-          <View style={styles.homeIndicator} />
+            <View style={styles.answersContainer}>
+              {answers.map((answer) => (
+                <TouchableOpacity
+                  key={answer.value}
+                  style={[
+                    styles.answerButton,
+                    selected[answer.value] && styles.answerButtonSelected,
+                  ]}
+                  onPress={() => onAnswerSelected(answer.value)}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.answerText,
+                      selected[answer.value] && styles.answerTextSelected,
+                    ]}
+                  >
+                    {answer.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
-      )}
-    </View>
+      </View>
+    </OnboardingTemplate>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
   },
   statusBarSpacer: {
     height: 48,
@@ -140,19 +137,19 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontFamily: 'System',
+    fontFamily: "System",
     fontSize: 32,
-    fontWeight: '600',
-    color: '#262626',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#262626",
+    textAlign: "center",
     lineHeight: 40,
   },
   subtitle: {
-    fontFamily: 'System',
+    fontFamily: "System",
     fontSize: 17,
-    fontWeight: '400',
-    color: '#8e8e93',
-    textAlign: 'center',
+    fontWeight: "400",
+    color: "#8e8e93",
+    textAlign: "center",
     lineHeight: 22.1,
   },
   scrollView: {
@@ -165,56 +162,56 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   answerButton: {
-    backgroundColor: '#f6f6f6',
+    backgroundColor: "#f6f6f6",
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: "transparent",
   },
   answerButtonSelected: {
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
+    backgroundColor: "#007AFF",
+    borderColor: "#007AFF",
   },
   answerText: {
-    fontFamily: 'System',
+    fontFamily: "System",
     fontSize: 17,
-    fontWeight: '500',
-    color: '#262626',
-    textAlign: 'center',
+    fontWeight: "500",
+    color: "#262626",
+    textAlign: "center",
   },
   answerTextSelected: {
-    color: '#ffffff',
-    fontWeight: '600',
+    color: "#ffffff",
+    fontWeight: "600",
   },
   bottomSection: {
     paddingHorizontal: 32,
     paddingBottom: 8,
     gap: 24,
-    alignItems: 'center',
+    alignItems: "center",
   },
   continueButton: {
-    backgroundColor: '#262626',
+    backgroundColor: "#262626",
     borderRadius: 90,
     paddingVertical: 18,
     paddingHorizontal: 24,
     minWidth: 234,
-    alignItems: 'center',
+    alignItems: "center",
   },
   continueButtonDisabled: {
-    backgroundColor: '#d1d1d6',
+    backgroundColor: "#d1d1d6",
   },
   continueButtonText: {
-    fontFamily: 'System',
+    fontFamily: "System",
     fontSize: 16,
-    fontWeight: '500',
-    color: '#ffffff',
-    textAlign: 'center',
+    fontWeight: "500",
+    color: "#ffffff",
+    textAlign: "center",
   },
   homeIndicator: {
     width: 148,
     height: 5,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     borderRadius: 100,
     opacity: 0.3,
   },

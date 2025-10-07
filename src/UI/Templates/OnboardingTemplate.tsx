@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 type OnboardingTemplateProps = {
   children: React.ReactNode;
   onContinue: () => void;
-  button: {
+  button?: {
     text: string;
   };
   step: OnboardingStepType;
@@ -44,6 +44,7 @@ export const OnboardingTemplate = ({
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#ffffff",
     flex: 1,
   },
   bottomSection: {
