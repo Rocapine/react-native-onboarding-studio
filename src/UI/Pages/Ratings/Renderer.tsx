@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   scrollContent: {
     flexGrow: 1,
     paddingBottom: 48,
@@ -310,6 +309,9 @@ const styles = StyleSheet.create({
   },
 });
 
-import { withErrorBoundary } from '../../ErrorBoundary';
+import { withErrorBoundary } from "../../ErrorBoundary";
 
-export const RatingsRenderer = withErrorBoundary(RatingsRendererBase, 'Ratings');
+export const RatingsRenderer = withErrorBoundary(
+  RatingsRendererBase,
+  "Ratings"
+);

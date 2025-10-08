@@ -7,6 +7,7 @@ type OnboardingTemplateProps = {
   onContinue: () => void;
   button?: {
     text: string;
+    disabled?: boolean;
   };
   step: OnboardingStepType;
 };
@@ -30,11 +31,22 @@ export const OnboardingTemplate = ({
       {button && (
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            style={styles.ctaButton}
+            style={[
+              styles.ctaButton,
+              button.disabled && styles.ctaButtonDisabled,
+            ]}
             onPress={onContinue}
             activeOpacity={0.8}
+            disabled={button.disabled}
           >
-            <Text style={styles.ctaButtonText}>{button.text}</Text>
+            <Text
+              style={[
+                styles.ctaButtonText,
+                button.disabled && styles.ctaButtonTextDisabled,
+              ]}
+            >
+              {button.text}
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -67,5 +79,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 24,
     color: "#fff",
+  },
+  ctaButtonDisabled: {
+    backgroundColor: "#E0E0E0",
+    opacity: 0.6,
+  },
+  ctaButtonTextDisabled: {
+    color: "#9E9E9E",
   },
 });

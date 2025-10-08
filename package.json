@@ -24,9 +24,11 @@
   },
   "devDependencies": {
     "@react-native-picker/picker": "^2.11.2",
+    "@shopify/react-native-skia": "^2.3.0",
     "expo-store-review": "^9.0.8",
     "react": "19.1.0",
     "react-native": "0.81.4",
+    "react-native-gesture-handler": "^2.28.0",
     "react-native-reanimated": "^4.1.2",
     "react-native-safe-area-context": "^5.6.1",
     "react-native-svg": "^15.13.0",
@@ -34,9 +36,11 @@
   },
   "peerDependencies": {
     "@react-native-picker/picker": "*",
+    "@shopify/react-native-skia": ">=1.0.0",
     "@types/react": "*",
     "react": "*",
     "react-native": "*",
+    "react-native-gesture-handler": ">=2.0.0",
     "react-native-reanimated": ">=3.0.0",
     "react-native-svg": ">=13.0.0"
   },
