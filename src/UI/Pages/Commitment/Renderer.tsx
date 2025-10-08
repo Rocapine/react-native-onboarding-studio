@@ -7,7 +7,7 @@ type ContentProps = {
   onContinue: () => void;
 };
 
-export const CommitmentRenderer = ({ step, onContinue }: ContentProps) => {
+const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
   return (<View>
     <Text>{step.type}</Text>
     <Text>{step.name}</Text>
@@ -15,3 +15,7 @@ export const CommitmentRenderer = ({ step, onContinue }: ContentProps) => {
     <Button title="Continue" onPress={onContinue} />
   </View>)
 };
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const CommitmentRenderer = withErrorBoundary(CommitmentRendererBase, 'Commitment');

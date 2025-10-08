@@ -7,7 +7,7 @@ type ContentProps = {
   onContinue: () => void;
 };
 
-export const MediaContentRenderer = ({ step, onContinue }: ContentProps) => {
+const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
   // Validate the schema
   const validatedData = MediaContentStepTypeSchema.parse(step);
   const { mediaSource, title, description } = validatedData.payload;
@@ -134,3 +134,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const MediaContentRenderer = withErrorBoundary(MediaContentRendererBase, 'MediaContent');

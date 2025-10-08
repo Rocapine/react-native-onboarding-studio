@@ -16,7 +16,7 @@ type ContentProps = {
   onContinue: () => void;
 };
 
-export const LoaderRenderer = ({ step, onContinue }: ContentProps) => {
+const LoaderRendererBase = ({ step, onContinue }: ContentProps) => {
   const validatedData = LoaderStepTypeSchema.parse(step);
   const { title, steps, didYouKnowImages, duration } = validatedData.payload;
 
@@ -269,3 +269,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const LoaderRenderer = withErrorBoundary(LoaderRendererBase, 'Loader');

@@ -23,7 +23,7 @@ const StarIcon = ({ size, filled }: { size: number; filled: boolean }) => (
   </Svg>
 );
 
-export const RatingsRenderer = ({ step, onContinue }: RatingsRendererProps) => {
+const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
   const [hasOpenedRequestReview, setHasOpenedRequestReview] = useState(false);
 
   const handlePress = async () => {
@@ -309,3 +309,7 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const RatingsRenderer = withErrorBoundary(RatingsRendererBase, 'Ratings');

@@ -21,7 +21,7 @@ type ContentProps = {
   onContinue: () => void;
 };
 
-export const CarouselRenderer = ({ step, onContinue }: ContentProps) => {
+const CarouselRendererBase = ({ step, onContinue }: ContentProps) => {
   const validatedData = CarouselStepTypeSchema.parse(step);
   const { screens } = validatedData.payload;
   const { width } = useWindowDimensions();
@@ -233,3 +233,7 @@ const styles = StyleSheet.create({
     width: 24,
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const CarouselRenderer = withErrorBoundary(CarouselRendererBase, 'Carousel');

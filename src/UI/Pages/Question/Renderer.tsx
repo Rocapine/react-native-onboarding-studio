@@ -14,7 +14,7 @@ interface QuestionRendererProps {
   onContinue?: (...args: any[]) => void;
 }
 
-export const QuestionRenderer = ({
+const QuestionRendererBase = ({
   step,
   onContinue,
 }: QuestionRendererProps) => {
@@ -216,3 +216,7 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
 });
+
+import { withErrorBoundary } from "../../ErrorBoundary";
+
+export const QuestionRenderer = withErrorBoundary(QuestionRendererBase, 'Question');
