@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { CustomPayloadSchema, MediaSourceSchema } from "../types";
+import { CustomPayloadSchema } from "../types";
 
 export const CarouselScreenSchema = z.object({
-  mediaSource: MediaSourceSchema,
+  mediaUrl: z.string(),
   title: z.string(),
   subtitle: z.string().nullable(),
 });
