@@ -1,10 +1,14 @@
 import { createContext, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeProvider } from "../Theme/ThemeProvider";
+import { ColorScheme } from "../Theme/types";
 
 export const OnboardingProgressProvider = ({
   children,
+  initialColorScheme = "light",
 }: {
   children: React.ReactNode;
+  initialColorScheme?: ColorScheme;
 }) => {
   const [activeStep, setActiveStep] = useState({
     number: 0,
@@ -14,11 +18,13 @@ export const OnboardingProgressProvider = ({
 
   return (
     <SafeAreaProvider>
-      <OnboardingProgressContext.Provider
-        value={{ activeStep, setActiveStep, totalSteps, setTotalSteps }}
-      >
-        {children}
-      </OnboardingProgressContext.Provider>
+      <ThemeProvider initialColorScheme={initialColorScheme}>
+        <OnboardingProgressContext.Provider
+          value={{ activeStep, setActiveStep, totalSteps, setTotalSteps }}
+        >
+          {children}
+        </OnboardingProgressContext.Provider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 };

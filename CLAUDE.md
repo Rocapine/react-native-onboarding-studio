@@ -9,20 +9,25 @@ This is a React Native library (`@rocapine/react-native-onboarding-studio`) that
 ## Development Commands
 
 ### Build
+
 ```bash
 npm run build
 ```
+
 Compiles TypeScript to `dist/` and copies assets from `src/assets` to `dist/assets`.
 
 ### Watch Mode
+
 ```bash
 npm run watch
 ```
+
 Watches for changes and rebuilds automatically (does not copy assets).
 
 **Important**: When adding or modifying assets in `src/assets/`, you must run `npm run build` to copy them to `dist/`.
 
 ### Testing in Example App
+
 ```bash
 cd example/
 npm install
@@ -34,23 +39,27 @@ npm start
 ### Core Components
 
 **OnboardingStudioClient** (`src/OnboardingStudioClient.ts`)
+
 - Main API client class
 - Fetches onboarding steps from Supabase backend
 - Handles URL parameters: `projectId`, `platform`, `appVersion`, `locale`, `draft` mode
 - Returns step data along with custom headers (`ONBS-Onboarding-Id`, `ONBS-Audience-Id`, `ONBS-Onboarding-Name`)
 
 **OnboardingPage** (`src/UI/OnboardingPage.tsx`)
+
 - Central routing component that renders the appropriate page based on step type
 - Uses switch statement to delegate to specific Renderers
 - Handles fallback for unimplemented step types (sandbox mode shows dev message, production auto-continues)
 
 **Page Types** (`src/UI/Pages/`)
 Each page type follows a consistent pattern:
+
 - `types.ts`: Zod schemas defining step structure and validation
 - `Renderer.tsx`: React component that renders the step
 - `index.ts`: Exports
 
 Available page types:
+
 - `Ratings`: App store rating prompts with social proofs
 - `MediaContent`: Image/video content with title/description
 - `Picker`: Selection UI for user choices
@@ -62,17 +71,20 @@ Available page types:
 ### Shared Infrastructure
 
 **OnboardingTemplate** (`src/UI/Templates/OnboardingTemplate.tsx`)
+
 - Reusable layout wrapper for onboarding screens
 - Handles safe area insets
 - Manages progress header display based on `step.displayProgressHeader`
 - Provides standardized CTA button at bottom
 
 **OnboardingProgressProvider** (`src/UI/Provider/OnboardingProgressProvider.tsx`)
+
 - React Context for tracking onboarding progress
 - Manages `activeStep` (number + displayProgressHeader flag) and `totalSteps`
 - Wraps content in `SafeAreaProvider`
 
 **Common Types** (`src/UI/Pages/types.ts`)
+
 - Shared Zod schemas: `CustomPayloadSchema`, `MediaSourceSchema`, `SocialProofSchema`, `InfoBoxSchema`
 - `MediaSourceSchema`: Defines media types (image/lottie/rive) with url or localPathId
 - Used across multiple page types for consistency
@@ -80,12 +92,14 @@ Available page types:
 ### Type System
 
 All step types use Zod for runtime validation and TypeScript type inference:
+
 ```typescript
 const StepTypeSchema = z.object({ ... });
 export type StepType = z.infer<typeof StepTypeSchema>;
 ```
 
 Common step properties:
+
 - `id`: Unique identifier
 - `type`: Discriminated union field (e.g., "Ratings", "MediaContent")
 - `name`: Display name
@@ -134,27 +148,34 @@ npm run ios          # Run on iOS
 All examples follow this pattern:
 
 ```typescript
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
 
-const stepPayload = { /* ... */ } satisfies OnboardingStudio.XxxStepType['payload'];
+const stepPayload = {
+  /* ... */
+} satisfies OnboardingStudio.XxxStepType["payload"];
 
 const step = {
-  id: 'example-1',
-  type: 'MediaContent',
-  name: 'Example',
+  id: "example-1",
+  type: "MediaContent",
+  name: "Example",
   displayProgressHeader: true,
   payload: stepPayload,
   customPayload: null,
-  continueButtonLabel: 'Continue', // Optional but recommended for type safety
+  continueButtonLabel: "Continue", // Optional but recommended for type safety
   figmaUrl: null,
 } satisfies OnboardingStudio.MediaContentStepType;
 
 const handleContinue = () => {
-  console.log('Step completed!');
+  console.log("Step completed!");
   // Navigate or continue to next step
 };
 
-return <OnboardingStudio.MediaContentRenderer step={step} onContinue={handleContinue} />;
+return (
+  <OnboardingStudio.MediaContentRenderer
+    step={step}
+    onContinue={handleContinue}
+  />
+);
 ```
 
 ### Important Notes
@@ -201,6 +222,7 @@ src/
 5. Export from `src/UI/Pages/index.ts`
 6. Add type to union in `src/UI/types.ts`
 7. Add case to switch in `src/UI/OnboardingPage.tsx`
+8. Always use values from useTheme() like in Loader/Renderer.tsx
 
 ### Screen Implementation Guidelines
 
@@ -219,6 +241,7 @@ src/
 ### Special Page Patterns
 
 **Carousel**: Multi-screen horizontal pagination
+
 - Uses horizontal `ScrollView` with `pagingEnabled`
 - Tracks current page with `useState` and `onMomentumScrollEnd`
 - Button label changes based on page: "Next" for intermediate pages, `continueButtonLabel` for last page
@@ -226,6 +249,7 @@ src/
 - Each screen has its own media and text content
 
 **Picker**: Type-specific input pickers with routing pattern
+
 - **Requires**: `@react-native-picker/picker` peer dependency
 - Main renderer routes to specific picker implementations based on `pickerType`
 - Supports: `weight`, `height`, `age`, `gender`, `coach`, `name` (extend as needed)
@@ -239,6 +263,7 @@ src/
 - Easy to extend: add new picker types by checking `pickerType` in main renderer
 
 **Loader**: Sequential progress animation with optional carousel
+
 - Uses React Native's built-in `Animated` API (NOT Reanimated)
 - Displays sequential progress bars for each step with configurable duration
 - Each step shows:
