@@ -7,7 +7,8 @@ export const unstable_settings = {
 
 const examples = [
   { name: "Carousel", route: "/example/carousel" },
-  { name: "Commitment", route: "/example/commitment" },
+  { name: "Commitment (List)", route: "/example/commitment" },
+  { name: "Commitment (Description)", route: "/example/commitment-description" },
   { name: "Loader (Bars)", route: "/example/loader" },
   { name: "Loader (Circle)", route: "/example/loader-circle" },
   { name: "Media Content", route: "/example/media-content" },

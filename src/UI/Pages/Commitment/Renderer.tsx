@@ -9,7 +9,11 @@ import {
 import { CommitmentStepType, CommitmentStepTypeSchema } from "./types";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { Canvas, Path, Skia, SkPath } from "@shopify/react-native-skia";
-import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { useTheme } from "../../Theme/useTheme";
 
@@ -67,6 +71,7 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}
       >
         <View style={styles.container}>
           {/* Title */}
@@ -79,7 +84,10 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
             {/* Subtitle */}
             {payload.subtitle && (
               <Text
-                style={[styles.subtitle, { color: theme.colors.text.secondary }]}
+                style={[
+                  styles.subtitle,
+                  { color: theme.colors.text.secondary },
+                ]}
               >
                 {payload.subtitle}
               </Text>
@@ -98,26 +106,28 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
             ) : (
               payload.commitments && (
                 <View style={styles.commitmentsContainer}>
-                  {payload.commitments.map((commitment: { text: string }, index: number) => (
-                    <View key={index} style={styles.commitmentRow}>
-                      <View
-                        style={[
-                          styles.checkmark,
-                          { backgroundColor: theme.colors.primary },
-                        ]}
-                      >
-                        <Text style={styles.checkmarkText}>✓</Text>
+                  {payload.commitments.map(
+                    (commitment: { text: string }, index: number) => (
+                      <View key={index} style={styles.commitmentRow}>
+                        <View
+                          style={[
+                            styles.checkmark,
+                            { backgroundColor: theme.colors.primary },
+                          ]}
+                        >
+                          <Text style={styles.checkmarkText}>✓</Text>
+                        </View>
+                        <Text
+                          style={[
+                            styles.commitmentText,
+                            { color: theme.colors.text.tertiary },
+                          ]}
+                        >
+                          {commitment.text}
+                        </Text>
                       </View>
-                      <Text
-                        style={[
-                          styles.commitmentText,
-                          { color: theme.colors.text.tertiary },
-                        ]}
-                      >
-                        {commitment.text}
-                      </Text>
-                    </View>
-                  ))}
+                    )
+                  )}
                 </View>
               )
             )}
