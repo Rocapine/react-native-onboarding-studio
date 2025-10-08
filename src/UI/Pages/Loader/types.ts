@@ -11,6 +11,10 @@ export const LoaderStepPayloadSchema = z.object({
   steps: z.array(LoaderStepSchema),
   didYouKnowImages: z.array(MediaSourceSchema).optional(),
   duration: z.number().optional().default(2000),
+  variant: z
+    .enum(["bars", "circle", "texts_fading"])
+    .optional()
+    .default("bars"),
 });
 
 export const LoaderStepTypeSchema = z.object({

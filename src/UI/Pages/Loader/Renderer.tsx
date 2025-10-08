@@ -12,6 +12,8 @@ import {
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useTheme } from "../../Theme/useTheme";
 import { Theme } from "../../Theme/types";
+import { CircularProgress } from "../../Components/CircularProgress";
+import { StaggeredTextList } from "../../Components/StaggeredTextList";
 
 type ContentProps = {
   step: LoaderStepType;
@@ -20,6 +22,41 @@ type ContentProps = {
 
 const LoaderRendererBase = ({ step, onContinue }: ContentProps) => {
   const validatedData = LoaderStepTypeSchema.parse(step);
+  const { title, steps, didYouKnowImages, duration, variant } =
+    validatedData.payload;
+  const { theme } = useTheme();
+
+  // Route to appropriate variant
+  if (variant === "circle") {
+    return (
+      <CircleVariant
+        step={step}
+        onContinue={onContinue}
+        validatedData={validatedData}
+      />
+    );
+  }
+
+  // Default to bars variant
+  return (
+    <BarsVariant
+      step={step}
+      onContinue={onContinue}
+      validatedData={validatedData}
+    />
+  );
+};
+
+// Bars Variant (original implementation)
+const BarsVariant = ({
+  step,
+  onContinue,
+  validatedData,
+}: {
+  step: LoaderStepType;
+  onContinue: () => void;
+  validatedData: LoaderStepType;
+}) => {
   const { title, steps, didYouKnowImages, duration } = validatedData.payload;
   const { theme } = useTheme();
 
@@ -99,6 +136,59 @@ const LoaderRendererBase = ({ step, onContinue }: ContentProps) => {
           style={[styles.buttonContainer, { opacity: buttonFadeAnim }]}
         />
       )}
+    </OnboardingTemplate>
+  );
+};
+
+// Circle Variant
+const CircleVariant = ({
+  step,
+  onContinue,
+  validatedData,
+}: {
+  step: LoaderStepType;
+  onContinue: () => void;
+  validatedData: LoaderStepType;
+}) => {
+  const { title, steps, didYouKnowImages, duration } = validatedData.payload;
+  const { theme } = useTheme();
+
+  const handleAnimationComplete = useCallback(() => {
+    onContinue();
+  }, [onContinue]);
+
+  const styles = createStyles(theme);
+
+  return (
+    <OnboardingTemplate step={step} onContinue={onContinue}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          {/* Circular Progress */}
+          <View style={styles.circleSection}>
+            <CircularProgress
+              onProgressComplete={handleAnimationComplete}
+              duration={duration}
+              totalSteps={steps.length}
+            />
+          </View>
+
+          {/* Staggered Text List */}
+          <View style={styles.textListSection}>
+            <StaggeredTextList items={steps} duration={duration} />
+          </View>
+
+          {/* Did you know carousel */}
+          {didYouKnowImages && didYouKnowImages.length > 0 && (
+            <View style={styles.carouselSection}>
+              <Text style={styles.carouselTitle}>Did you know?</Text>
+              <DidYouKnowCarousel images={didYouKnowImages} />
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </OnboardingTemplate>
   );
 };
@@ -305,5 +395,15 @@ const createStyles = (theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
+    },
+    // Circle variant styles
+    circleSection: {
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    textListSection: {
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: 100,
     },
   });

@@ -6,42 +6,39 @@ export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-export default function LoaderExample() {
+export default function LoaderCircleExample() {
   const router = useRouter();
 
   const stepPayload = {
     title: "Curating your personalized profile...",
-    variant: "bars" as const,
+    variant: "circle" as const,
     steps: [
-      { label: "Analyzing your cycles", completed: "Cycles analyzed" },
-      { label: "Adjusting your profile", completed: "Profile adjusted" },
-      {
-        label: "Preparing your recommendations",
-        completed: "Recommendations ready",
-      },
+      { label: "Evaluating your answers...", completed: "Answers evaluated" },
+      { label: "Identifying patterns...", completed: "Patterns identified" },
+      { label: "Personalizing...", completed: "Personalized" },
     ],
     didYouKnowImages: [
-      { type: "image" as const, url: "https://picsum.photos/300/200?random=1" },
-      { type: "image" as const, url: "https://picsum.photos/300/200?random=2" },
-      { type: "image" as const, url: "https://picsum.photos/300/200?random=3" },
+      { type: "image" as const, url: "https://picsum.photos/300/200?random=4" },
+      { type: "image" as const, url: "https://picsum.photos/300/200?random=5" },
+      { type: "image" as const, url: "https://picsum.photos/300/200?random=6" },
     ],
-    duration: 1000,
+    duration: 2000,
   } satisfies OnboardingStudio.LoaderStepType["payload"];
 
   const step = {
-    id: "loader-1",
+    id: "loader-circle-1",
     type: "Loader",
-    name: "Loader",
+    name: "Loader Circle Variant",
     displayProgressHeader: false,
     payload: stepPayload,
     customPayload: null,
-    continueButtonLabel: "Access my profile",
+    continueButtonLabel: "Continue",
     figmaUrl: null,
   } satisfies OnboardingStudio.LoaderStepType;
 
   const handleContinue = () => {
-    console.log("Loader completed!");
-    router.back();
+    console.log("Loader circle completed!");
+    // router.back();
   };
 
   return (
