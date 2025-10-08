@@ -4,6 +4,7 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { RatingsStepType, RatingsStepTypeSchema } from "./types";
 import { useState } from "react";
 import * as StoreReview from "expo-store-review";
+import { useTheme } from "../../Theme/useTheme";
 
 interface RatingsRendererProps {
   step: RatingsStepType;
@@ -25,6 +26,7 @@ const StarIcon = ({ size, filled }: { size: number; filled: boolean }) => (
 
 const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
   const [hasOpenedRequestReview, setHasOpenedRequestReview] = useState(false);
+  const { theme } = useTheme();
 
   const handlePress = async () => {
     if (!hasOpenedRequestReview) {
@@ -82,7 +84,7 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
               />
               <View style={styles.awardTextContainer}>
                 {renderStars(5, 32)}
-                <Text style={styles.awardTitle}>Users Choice</Text>
+                <Text style={[styles.awardTitle, { color: theme.colors.text.secondary }]}>Users Choice</Text>
               </View>
               <Image
                 source={require("../../../assets/laurel-right.png")}
@@ -94,17 +96,17 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
 
           {/* Review Section */}
           <View style={styles.reviewSection}>
-            <View style={styles.reviewCard}>
+            <View style={[styles.reviewCard, { backgroundColor: theme.colors.neutral.lowest }]}>
               <View style={styles.reviewAuthor}>
                 <View style={styles.avatar}>
                   <Text style={styles.avatarText}>
                     {mainReview.authorName.charAt(0).toUpperCase()}
                   </Text>
                 </View>
-                <Text style={styles.authorName}>{mainReview.authorName}</Text>
+                <Text style={[styles.authorName, { color: theme.colors.neutral.higher }]}>{mainReview.authorName}</Text>
               </View>
 
-              <Text style={styles.reviewContent}>{mainReview.content}</Text>
+              <Text style={[styles.reviewContent, { color: theme.colors.text.primary }]}>{mainReview.content}</Text>
 
               {renderStars(mainReview.numberOfStar)}
             </View>
@@ -118,7 +120,11 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
                       key={index}
                       style={[
                         styles.smallAvatar,
-                        { zIndex: 3 - index, marginLeft: index > 0 ? -10 : 0 },
+                        {
+                          zIndex: 3 - index,
+                          marginLeft: index > 0 ? -10 : 0,
+                          borderColor: theme.colors.surface.lowest
+                        },
                       ]}
                     >
                       <Text style={styles.smallAvatarText}>
@@ -127,7 +133,7 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
                     </View>
                   ))}
                 </View>
-                <Text style={styles.usersCountText}>
+                <Text style={[styles.usersCountText, { color: theme.colors.neutral.higher }]}>
                   +{otherUsersCount.toLocaleString()} others
                 </Text>
               </View>
@@ -136,8 +142,8 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
 
           {/* Title and Subtitle */}
           <View style={styles.textSection}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+            <Text style={[styles.subtitle, { color: theme.colors.text.tertiary }]}>{subtitle}</Text>
           </View>
         </ScrollView>
       </View>
@@ -176,7 +182,6 @@ const styles = StyleSheet.create({
     fontFamily: "System",
     fontSize: 24,
     fontWeight: "600",
-    color: "#3d3d3d",
     textAlign: "center",
   },
   starsContainer: {
@@ -192,7 +197,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   reviewCard: {
-    backgroundColor: "#f6f6f6",
     borderRadius: 24,
     padding: 20,
     width: "100%",
@@ -220,13 +224,11 @@ const styles = StyleSheet.create({
   authorName: {
     fontFamily: "System",
     fontSize: 15,
-    color: "#4f4f4f",
   },
   reviewContent: {
     fontFamily: "System",
     fontSize: 16,
     lineHeight: 20.8,
-    color: "#262626",
     textAlign: "center",
   },
   usersCount: {
@@ -245,7 +247,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: "#ffffff",
   },
   smallAvatarText: {
     fontSize: 12,
@@ -256,7 +257,6 @@ const styles = StyleSheet.create({
     fontFamily: "System",
     fontSize: 16,
     fontWeight: "500",
-    color: "#4f4f4f",
   },
   textSection: {
     paddingHorizontal: 32,
@@ -269,14 +269,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "600",
     lineHeight: 40,
-    color: "#262626",
     textAlign: "center",
   },
   subtitle: {
     fontFamily: "System",
     fontSize: 17,
     lineHeight: 22.1,
-    color: "#8e8e93",
     textAlign: "center",
   },
   bottomSection: {

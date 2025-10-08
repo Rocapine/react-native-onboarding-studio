@@ -15,6 +15,7 @@ import {
   NativeScrollEvent,
 } from "react-native";
 import { useRef, useState } from "react";
+import { useTheme } from "../../Theme/useTheme";
 
 type ContentProps = {
   step: CarouselStepType;
@@ -22,6 +23,7 @@ type ContentProps = {
 };
 
 const CarouselRendererBase = ({ step, onContinue }: ContentProps) => {
+  const { theme } = useTheme();
   const validatedData = CarouselStepTypeSchema.parse(step);
   const { screens } = validatedData.payload;
   const { width } = useWindowDimensions();
@@ -83,6 +85,9 @@ const CarouselRendererBase = ({ step, onContinue }: ContentProps) => {
               key={index}
               style={[
                 styles.indicator,
+                {
+                  backgroundColor: index === currentPage ? theme.colors.primary : theme.colors.neutral.lower
+                },
                 index === currentPage && styles.indicatorActive,
               ]}
             />
@@ -99,6 +104,7 @@ type CarouselScreenProps = {
 };
 
 const CarouselScreen = ({ width, screen }: CarouselScreenProps) => {
+  const { theme } = useTheme();
   const renderMedia = () => {
     const { mediaUrl } = screen;
 
@@ -130,9 +136,9 @@ const CarouselScreen = ({ width, screen }: CarouselScreenProps) => {
 
       {/* Text Content */}
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{screen.title}</Text>
+        <Text style={[styles.title, { color: theme.colors.text.primary }]}>{screen.title}</Text>
         {screen.subtitle && (
-          <Text style={styles.subtitle}>{screen.subtitle}</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>{screen.subtitle}</Text>
         )}
       </View>
     </View>
@@ -183,7 +189,6 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "500",
     lineHeight: 49.4,
-    color: "#262626",
     textAlign: "center",
     letterSpacing: -0.76,
   },
@@ -192,7 +197,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "400",
     lineHeight: 31.2,
-    color: "#3d3d3d",
     textAlign: "center",
   },
   indicatorContainer: {
@@ -205,10 +209,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#e5e5e5",
   },
   indicatorActive: {
-    backgroundColor: "#1745de",
     width: 24,
   },
 });

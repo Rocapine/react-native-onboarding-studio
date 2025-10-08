@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { OnboardingStepType } from "../types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "../Theme/useTheme";
 
 type OnboardingTemplateProps = {
   children: React.ReactNode;
@@ -19,12 +20,16 @@ export const OnboardingTemplate = ({
   button,
 }: OnboardingTemplateProps) => {
   const { top } = useSafeAreaInsets();
+  const { theme } = useTheme();
 
   return (
     <View
       style={[
         styles.container,
-        { paddingTop: step.displayProgressHeader ? top + 40 : top },
+        {
+          backgroundColor: theme.colors.surface.lowest,
+          paddingTop: step.displayProgressHeader ? top + 40 : top
+        },
       ]}
     >
       {children}
@@ -33,6 +38,7 @@ export const OnboardingTemplate = ({
           <TouchableOpacity
             style={[
               styles.ctaButton,
+              { backgroundColor: theme.colors.surface.opposite },
               button.disabled && styles.ctaButtonDisabled,
             ]}
             onPress={onContinue}
@@ -42,6 +48,7 @@ export const OnboardingTemplate = ({
             <Text
               style={[
                 styles.ctaButtonText,
+                { color: theme.colors.text.opposite },
                 button.disabled && styles.ctaButtonTextDisabled,
               ]}
             >
@@ -56,7 +63,6 @@ export const OnboardingTemplate = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffffff",
     flex: 1,
   },
   bottomSection: {
@@ -66,7 +72,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ctaButton: {
-    backgroundColor: "#262626",
     borderRadius: 90,
     paddingVertical: 18,
     paddingHorizontal: 24,
@@ -78,7 +83,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     lineHeight: 24,
-    color: "#fff",
   },
   ctaButtonDisabled: {
     backgroundColor: "#E0E0E0",

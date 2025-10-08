@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -7,22 +8,27 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const router = useRouter();
+  const { theme, colorScheme, toggleTheme } = useTheme();
 
   const handleStartOnboarding = () => {
     router.push("/onboarding/1");
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Onboarding</Text>
-      <Text style={styles.subtitle}>Get started with your journey</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.surface.lowest }]}>
+      <Pressable style={styles.themeToggle} onPress={toggleTheme}>
+        <Text style={styles.themeToggleText}>{colorScheme === "light" ? "🌙" : "☀️"}</Text>
+      </Pressable>
 
-      <Pressable style={styles.button} onPress={handleStartOnboarding}>
+      <Text style={[styles.title, { color: theme.colors.text.primary }]}>Welcome to Onboarding</Text>
+      <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>Get started with your journey</Text>
+
+      <Pressable style={[styles.button, { backgroundColor: theme.colors.primary }]} onPress={handleStartOnboarding}>
         <Text style={styles.buttonText}>Start the onboarding</Text>
       </Pressable>
 
       <Pressable
-        style={[styles.button, styles.secondaryButton]}
+        style={[styles.button, { backgroundColor: theme.colors.secondary }]}
         onPress={() => router.push("/example")}
       >
         <Text style={styles.buttonText}>View Examples</Text>
@@ -37,23 +43,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
+  },
+  themeToggle: {
+    position: "absolute",
+    top: 60,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "rgba(128, 128, 128, 0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  themeToggleText: {
+    fontSize: 28,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
-    color: "#333",
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 40,
     textAlign: "center",
-    color: "#666",
   },
   button: {
-    backgroundColor: "#007AFF",
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 8,
@@ -66,9 +83,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 16,
-  },
-  secondaryButton: {
-    backgroundColor: "#5856D6",
   },
   buttonText: {
     color: "white",

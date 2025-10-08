@@ -1,6 +1,7 @@
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { MediaContentStepType, MediaContentStepTypeSchema } from "./types";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { useTheme } from "../../Theme/useTheme";
 
 type ContentProps = {
   step: MediaContentStepType;
@@ -8,6 +9,7 @@ type ContentProps = {
 };
 
 const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
+  const { theme } = useTheme();
   // Validate the schema
   const validatedData = MediaContentStepTypeSchema.parse(step);
   const { mediaSource, title, description } = validatedData.payload;
@@ -69,13 +71,13 @@ const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
       >
         <View style={styles.container}>
           {/* Title */}
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
 
           {/* Media Content */}
           <View style={styles.mediaContainer}>{renderMedia()}</View>
 
           {/* Description/Subtitle */}
-          {description && <Text style={styles.subtitle}>{description}</Text>}
+          {description && <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>{description}</Text>}
         </View>
       </ScrollView>
     </OnboardingTemplate>
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "500",
     lineHeight: 49.4,
-    color: "#262626",
     textAlign: "center",
     letterSpacing: -0.76,
   },
@@ -130,7 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "400",
     lineHeight: 31.2,
-    color: "#3d3d3d",
     textAlign: "center",
   },
 });
