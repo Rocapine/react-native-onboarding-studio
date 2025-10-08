@@ -237,6 +237,7 @@ src/
 - **Media Rendering**: Use `MediaSourceSchema` for consistent media handling across page types
   - Supports image (url or localPathId), lottie, and rive media types
   - Implement placeholder views for unsupported media types during development
+  - Always use alwaysBounceVertical={false} when using ScrollView
 
 ### Special Page Patterns
 

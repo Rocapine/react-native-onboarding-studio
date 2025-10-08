@@ -6,33 +6,29 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-export default function CommitmentExample() {
+export default function CommitmentDescriptionExample() {
   const router = useRouter();
 
-  // Commitment with commitments list variant (right side of Figma)
+  // Commitment with description variant (left side of Figma - no bullet points)
   const step = {
-    id: 'commitment-list',
+    id: 'commitment-description',
     type: 'Commitment',
-    name: 'Commitment with List',
+    name: 'Commitment with Description',
     displayProgressHeader: true,
     payload: {
-      title: "Let's commit",
-      subtitle: "Starting today, I will",
-      commitments: [
-        { text: "Take care of my mental health" },
-        { text: "Practice mindfulness daily" },
-        { text: "Build healthy habits" },
-      ],
+      title: "Terms & Commitment",
+      subtitle: "Please review and sign",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       signatureCaption: "Your signature is not recorded",
       variant: "signature" as const,
     },
     customPayload: null,
-    continueButtonLabel: "I commit to myself",
+    continueButtonLabel: "Rate the app",
     figmaUrl: "https://www.figma.com/design/oQ4b8R28pdkIq3nptR30uU/Concept-Base-Template?node-id=7119-2446&m=dev",
   } satisfies OnboardingStudio.CommitmentStepType;
 
   const handleContinue = () => {
-    console.log('Commitment completed!');
+    console.log('Commitment with description completed!');
     router.back();
   };
 
