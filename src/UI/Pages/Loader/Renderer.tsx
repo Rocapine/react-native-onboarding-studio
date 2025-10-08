@@ -407,3 +407,5 @@ const createStyles = (theme: Theme) =>
       minHeight: 100,
     },
   });
+
+export const LoaderRenderer = LoaderRendererBase;
