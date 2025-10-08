@@ -38,7 +38,7 @@ export default function LoaderCircleExample() {
 
   const handleContinue = () => {
     console.log("Loader circle completed!");
-    // router.back();
+    router.back();
   };
 
   return (
