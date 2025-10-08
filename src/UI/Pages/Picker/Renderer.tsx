@@ -9,7 +9,7 @@ type ContentProps = {
   onContinue: (value?: string | number) => void;
 };
 
-export const PickerRenderer = ({ step, onContinue }: ContentProps) => {
+const PickerRendererBase = ({ step, onContinue }: ContentProps) => {
   const validatedData = PickerStepTypeSchema.parse(step);
   const { title, description, pickerType } = validatedData.payload;
 
@@ -186,3 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const PickerRenderer = withErrorBoundary(PickerRendererBase, 'Picker');

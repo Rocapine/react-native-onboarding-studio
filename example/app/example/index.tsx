@@ -13,6 +13,7 @@ const examples = [
   { name: "Picker", route: "/example/picker" },
   { name: "Ratings", route: "/example/ratings" },
   { name: "Question", route: "/example/question" },
+  { name: "Error Test", route: "/example/error-test", style: { backgroundColor: "#dc2626" } },
 ];
 
 export default function ExampleIndex() {
@@ -28,10 +29,12 @@ export default function ExampleIndex() {
           {examples.map((example) => (
             <Pressable
               key={example.route}
-              style={styles.card}
+              style={[styles.card, example.style]}
               onPress={() => router.push(example.route as any)}
             >
-              <Text style={styles.cardText}>{example.name}</Text>
+              <Text style={[styles.cardText, example.style && { color: '#fff' }]}>
+                {example.name}
+              </Text>
             </Pressable>
           ))}
         </View>

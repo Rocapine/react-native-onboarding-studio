@@ -21,7 +21,7 @@ type ContentProps = {
   onContinue: () => void;
 };
 
-export const CarouselRenderer = ({ step, onContinue }: ContentProps) => {
+const CarouselRendererBase = ({ step, onContinue }: ContentProps) => {
   const validatedData = CarouselStepTypeSchema.parse(step);
   const { screens } = validatedData.payload;
   const { width } = useWindowDimensions();
@@ -100,48 +100,27 @@ type CarouselScreenProps = {
 
 const CarouselScreen = ({ width, screen }: CarouselScreenProps) => {
   const renderMedia = () => {
-    const { mediaSource } = screen;
+    const { mediaUrl } = screen;
 
-    if (mediaSource.type === "image") {
-      if ("localPathId" in mediaSource) {
-        // TODO: Map localPathId to actual local image path
-        return (
-          <View style={styles.mediaPlaceholder}>
-            <Text style={styles.placeholderText}>
-              Image: {mediaSource.localPathId}
-            </Text>
-          </View>
-        );
-      } else if ("url" in mediaSource) {
-        return (
-          <Image
-            source={{ uri: mediaSource.url }}
-            style={styles.mediaImage}
-            resizeMode="contain"
-          />
-        );
-      }
-    } else if (mediaSource.type === "lottie") {
-      // TODO: Implement Lottie animation support
-      return (
-        <View style={styles.mediaPlaceholder}>
-          <Text style={styles.placeholderText}>Lottie Animation</Text>
-        </View>
-      );
-    } else if (mediaSource.type === "rive") {
-      // Rive animation placeholder
+    if (mediaUrl.includes(".riv")) {
       return (
         <View style={styles.mediaPlaceholder}>
           <Text style={styles.placeholderText}>Rive Animation</Text>
         </View>
       );
-    }
-
-    return (
-      <View style={styles.mediaPlaceholder}>
-        <Text style={styles.placeholderText}>Media</Text>
+    } else if (mediaUrl.includes(".json")) {
+      return <View style={styles.mediaPlaceholder}>
+        <Text style={styles.placeholderText}>Lottie Animation</Text>
       </View>
-    );
+    } else {
+      return (
+        <Image
+          source={{ uri: mediaUrl }}
+          style={styles.mediaImage}
+          resizeMode="contain"
+        />
+      );
+    }
   };
 
   return (
@@ -233,3 +212,7 @@ const styles = StyleSheet.create({
     width: 24,
   },
 });
+
+import { withErrorBoundary } from '../../ErrorBoundary';
+
+export const CarouselRenderer = withErrorBoundary(CarouselRendererBase, 'Carousel');
