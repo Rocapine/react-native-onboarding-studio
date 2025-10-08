@@ -27,14 +27,19 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   formatZodError(error: ZodError<any>): string {
-    // @ts-ignore
-    return error.errors
+    try {
       // @ts-ignore
-      .map((err) => {
-        const path = err.path.join(' > ');
-        return `• ${path || 'root'}: ${err.message}`;
-      })
-      .join('\n');
+      return error.errors
+        // @ts-ignore
+        .map((err) => {
+          const path = err.path.join(' > ');
+          return `• ${path || 'root'}: ${err.message}`;
+        })
+        .join('\n');
+    } catch (error) {
+      console.error('Error formatting Zod error:', error);
+      return 'An error occurred while formatting the Zod error';
+    }
   }
 
   render() {
