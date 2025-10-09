@@ -359,6 +359,116 @@ export default function RootLayout() {
 
 For complete theme customization documentation, see [CLAUDE.md](./CLAUDE.md#theme-customization).
 
+## Custom Components
+
+For advanced customization beyond theme tokens, you can replace specific UI components with your own implementations. This allows complete control over styling, animations, and behavior.
+
+### Question Answer Button Customization
+
+Replace individual answer buttons while keeping the default list logic:
+
+```typescript
+import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
+
+const MinimalAnswerButton = ({ answer, selected, onPress, theme }: QuestionAnswerButtonProps) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{
+      height: 96,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: "#e5e5e5",
+      backgroundColor: selected ? theme.colors.primary : "transparent",
+    }}
+  >
+    <Text style={{ fontSize: 24, color: selected ? "#fff" : theme.colors.text.primary }}>
+      {answer.label}
+    </Text>
+  </TouchableOpacity>
+);
+
+<OnboardingProvider
+  client={client}
+  customComponents={{
+    QuestionAnswerButton: MinimalAnswerButton
+  }}
+/>
+```
+
+### Question Answers List Customization
+
+For full control over the entire list (animations, layout, complex behavior):
+
+```typescript
+import {
+  QuestionAnswersListProps,
+  DefaultQuestionAnswerButton,
+} from "@rocapine/react-native-onboarding-studio";
+
+const AnimatedAnswersList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswersListProps) => {
+  const animations = useRef(answers.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    // Staggered entrance animation
+    Animated.stagger(150,
+      animations.map(anim =>
+        Animated.spring(anim, { toValue: 1, useNativeDriver: true })
+      )
+    ).start();
+  }, []);
+
+  return (
+    <View style={{ gap: 10 }}>
+      {answers.map((answer, index) => (
+        <Animated.View
+          key={answer.value}
+          style={{
+            opacity: animations[index],
+            transform: [{
+              translateY: animations[index].interpolate({
+                inputRange: [0, 1],
+                outputRange: [20, 0]
+              })
+            }]
+          }}
+        >
+          <DefaultQuestionAnswerButton
+            answer={answer}
+            selected={selected[answer.value]}
+            onPress={() => onAnswerPress(answer.value)}
+            theme={theme}
+            index={index}
+            isFirst={index === 0}
+            isLast={index === answers.length - 1}
+          />
+        </Animated.View>
+      ))}
+    </View>
+  );
+};
+
+<OnboardingProvider
+  client={client}
+  customComponents={{
+    QuestionAnswersList: AnimatedAnswersList
+  }}
+/>
+```
+
+### Component Priority
+
+Components are resolved in this order:
+1. **QuestionAnswersList** (if provided) - full control over entire list
+2. **QuestionAnswerButton** (if provided) - individual button styling
+3. **Default implementation** - built-in styling
+
+### Available Custom Components
+
+- `QuestionAnswerButton` - Individual answer button in Question screens
+- `QuestionAnswersList` - Complete answers list in Question screens
+
+More customizable components coming soon!
+
 ## Local Development
 
 ### Setup

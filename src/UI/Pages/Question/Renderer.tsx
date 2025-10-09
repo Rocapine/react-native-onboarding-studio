@@ -10,6 +10,11 @@ import {
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { useTheme } from "../../Theme/useTheme";
 import { getTextStyle } from "../../Theme/helpers";
+import { useCustomComponents } from "../../../infra/provider/CustomComponentsContext";
+import {
+  DefaultQuestionAnswerButton,
+  DefaultQuestionAnswersList,
+} from "./components";
 
 interface QuestionRendererProps {
   step: QuestionStepType;
@@ -21,6 +26,8 @@ const QuestionRendererBase = ({
   onContinue,
 }: QuestionRendererProps) => {
   const { theme } = useTheme();
+  const customComponents = useCustomComponents();
+
   // Validate the schema
   const validatedData = QuestionStepTypeSchema.parse(step);
   const { title, subtitle, answers, multipleAnswer } = validatedData.payload;
@@ -70,6 +77,10 @@ const QuestionRendererBase = ({
 
   const isAnySelected = Object.values(selected).some((value) => value);
 
+  // Priority: Custom full list > Custom button (via DefaultList) > Default implementation
+  const AnswersList = customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+  const AnswerButton = customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+
   return (
     <OnboardingTemplate
       step={step}
@@ -94,31 +105,31 @@ const QuestionRendererBase = ({
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            <View style={styles.answersContainer}>
-              {answers.map((answer) => (
-                <TouchableOpacity
-                  key={answer.value}
-                  style={[
-                    styles.answerButton,
-                    { backgroundColor: theme.colors.neutral.lowest },
-                    selected[answer.value] && [styles.answerButtonSelected, { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary }],
-                  ]}
-                  onPress={() => onAnswerSelected(answer.value)}
-                  activeOpacity={0.7}
-                >
-                  <Text
-                    style={[
-                      getTextStyle(theme, "body"),
-                      styles.answerText,
-                      { color: theme.colors.text.primary },
-                      selected[answer.value] && [styles.answerTextSelected, { color: theme.colors.text.opposite }],
-                    ]}
-                  >
-                    {answer.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+            {/* Use custom list if provided, otherwise use default list which respects custom button */}
+            {customComponents.QuestionAnswersList ? (
+              <AnswersList
+                answers={answers}
+                selected={selected}
+                onAnswerPress={onAnswerSelected}
+                multipleAnswer={multipleAnswer}
+                theme={theme}
+              />
+            ) : (
+              <View style={styles.answersContainer}>
+                {answers.map((answer, index) => (
+                  <AnswerButton
+                    key={answer.value}
+                    answer={answer}
+                    selected={selected[answer.value]}
+                    onPress={() => onAnswerSelected(answer.value)}
+                    theme={theme}
+                    index={index}
+                    isFirst={index === 0}
+                    isLast={index === answers.length - 1}
+                  />
+                ))}
+              </View>
+            )}
           </ScrollView>
         </View>
       </View>
@@ -157,18 +168,6 @@ const styles = StyleSheet.create({
   answersContainer: {
     gap: 10,
   },
-  answerButton: {
-    borderRadius: 16,
-    paddingVertical: 20,
-    paddingHorizontal: 24,
-    borderWidth: 2,
-    borderColor: "transparent",
-  },
-  answerButtonSelected: {},
-  answerText: {
-    textAlign: "center",
-  },
-  answerTextSelected: {},
   bottomSection: {
     paddingHorizontal: 32,
     paddingBottom: 8,

@@ -1,12 +1,14 @@
 import {
   OnboardingProvider,
   OnboardingStudioClient,
+  DefaultQuestionAnswerButton,
   ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { MinimalAnswerButton } from "@/components/MinimalAnswerButton";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -43,6 +45,9 @@ export default function RootLayout() {
       getStepsParams={{
         myconfig: "myconfig",
         onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
+      }}
+      customComponents={{
+        QuestionAnswerButton: MinimalAnswerButton,
       }}
       // Demonstrate theme customization with custom font
       theme={{

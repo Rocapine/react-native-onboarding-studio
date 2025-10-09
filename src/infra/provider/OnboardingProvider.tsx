@@ -4,6 +4,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
 import { ColorScheme, DeepPartial, Theme } from "../../UI/Theme/types";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
+import {
+  CustomComponentsProvider,
+  CustomComponents,
+} from "./CustomComponentsContext";
 
 interface OnboardingProviderProps {
   children: React.ReactNode;
@@ -28,6 +32,20 @@ interface OnboardingProviderProps {
    * Partial overrides are supported - only provide the tokens you want to customize.
    */
   darkTheme?: DeepPartial<Theme>;
+  /**
+   * Custom components to replace default implementations.
+   * Allows full UI customization for specific parts of the onboarding flow.
+   * @example
+   * ```tsx
+   * <OnboardingProvider
+   *   customComponents={{
+   *     QuestionAnswerButton: MyCustomButton,
+   *     QuestionAnswersList: MyCustomList
+   *   }}
+   * />
+   * ```
+   */
+  customComponents?: CustomComponents;
 }
 
 export const OnboardingProvider = ({
@@ -41,6 +59,7 @@ export const OnboardingProvider = ({
   theme,
   lightTheme,
   darkTheme,
+  customComponents,
 }: OnboardingProviderProps) => {
   const [activeStep, setActiveStep] = useState({
     number: 0,
@@ -70,21 +89,23 @@ export const OnboardingProvider = ({
           customLightTheme={lightTheme}
           customDarkTheme={darkTheme}
         >
-          <OnboardingProgressContext.Provider
-            value={{
-              activeStep,
-              setActiveStep,
-              totalSteps,
-              setTotalSteps,
-              client,
-              isSandbox,
-              locale,
-              getStepsParams,
-              cacheKey,
-            }}
-          >
-            {children}
-          </OnboardingProgressContext.Provider>
+          <CustomComponentsProvider components={customComponents}>
+            <OnboardingProgressContext.Provider
+              value={{
+                activeStep,
+                setActiveStep,
+                totalSteps,
+                setTotalSteps,
+                client,
+                isSandbox,
+                locale,
+                getStepsParams,
+                cacheKey,
+              }}
+            >
+              {children}
+            </OnboardingProgressContext.Provider>
+          </CustomComponentsProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </QueryClientProvider>

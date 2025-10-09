@@ -804,3 +804,282 @@ src/
     duration?: number // milliseconds per step, default 2000
   }
   ```
+
+## Custom Components System
+
+### Overview
+
+The SDK provides a powerful component customization system that allows users to replace specific UI components with their own implementations. This enables complete control over styling, animations, and behavior while maintaining compatibility with the SDK's data flow and state management.
+
+### Architecture
+
+**CustomComponentsContext** (`src/infra/provider/CustomComponentsContext.tsx`)
+- React Context for distributing custom components throughout the app
+- Provides `CustomComponents` interface defining all customizable components
+- Exports `useCustomComponents()` hook for accessing custom components in renderers
+
+**Integration Points:**
+1. `OnboardingProvider` accepts `customComponents` prop
+2. `CustomComponentsProvider` wraps the app
+3. Renderers use `useCustomComponents()` to access custom implementations
+4. Falls back to default implementations when no custom component is provided
+
+### Component Interfaces
+
+All custom components must implement specific interfaces that define their props:
+
+**QuestionAnswerButtonProps** (`src/UI/Pages/Question/components.tsx`)
+```typescript
+interface QuestionAnswerButtonProps {
+  answer: { label: string; value: string };
+  selected: boolean;
+  onPress: () => void;
+  theme: Theme;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+}
+```
+
+**QuestionAnswersListProps** (`src/UI/Pages/Question/components.tsx`)
+```typescript
+interface QuestionAnswersListProps {
+  answers: Array<{ label: string; value: string }>;
+  selected: Record<string, boolean>;
+  onAnswerPress: (value: string) => void;
+  multipleAnswer: boolean;
+  theme: Theme;
+}
+```
+
+### Default Components
+
+Each customizable component has a default implementation exported for composition:
+
+**DefaultQuestionAnswerButton** (`src/UI/Pages/Question/components.tsx`)
+- Standard button with theme integration
+- Rounded corners (borderRadius: 16)
+- Semantic text styles (body)
+- 2px border, theme-aware colors
+- 20px vertical padding, 24px horizontal padding
+
+**DefaultQuestionAnswersList** (`src/UI/Pages/Question/components.tsx`)
+- Container with 10px gap between items
+- Maps over answers and renders DefaultQuestionAnswerButton for each
+- Respects custom button component if provided via context
+
+### Usage Patterns
+
+#### Pattern 1: Simple Button Styling
+
+Replace button appearance while keeping list logic:
+
+```typescript
+const MinimalButton = ({ answer, selected, onPress, theme }: QuestionAnswerButtonProps) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{
+      height: 96,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: theme.colors.neutral.lower,
+      backgroundColor: selected ? theme.colors.primary : "transparent",
+    }}
+  >
+    <Text style={{ fontSize: 24 }}>{ answer.label}</Text>
+  </TouchableOpacity>
+);
+
+<OnboardingProvider customComponents={{ QuestionAnswerButton: MinimalButton }} />
+```
+
+#### Pattern 2: Animated List
+
+Full control over list rendering with animations:
+
+```typescript
+const AnimatedList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswersListProps) => {
+  const animations = useRef(answers.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    Animated.stagger(150,
+      animations.map(anim => Animated.spring(anim, { toValue: 1, useNativeDriver: true }))
+    ).start();
+  }, []);
+
+  return (
+    <View style={{ gap: 10 }}>
+      {answers.map((answer, index) => (
+        <Animated.View
+          key={answer.value}
+          style={{
+            opacity: animations[index],
+            transform: [{ translateY: animations[index].interpolate({
+              inputRange: [0, 1],
+              outputRange: [20, 0]
+            })}]
+          }}
+        >
+          <DefaultQuestionAnswerButton
+            answer={answer}
+            selected={selected[answer.value]}
+            onPress={() => onAnswerPress(answer.value)}
+            theme={theme}
+            index={index}
+            isFirst={index === 0}
+            isLast={index === answers.length - 1}
+          />
+        </Animated.View>
+      ))}
+    </View>
+  );
+};
+
+<OnboardingProvider customComponents={{ QuestionAnswersList: AnimatedList }} />
+```
+
+#### Pattern 3: Wrapping Default Components
+
+Extend default behavior:
+
+```typescript
+const TrackedButton = (props: QuestionAnswerButtonProps) => {
+  const handlePress = () => {
+    analytics.track('answer_selected', { value: props.answer.value });
+    props.onPress();
+  };
+
+  return <DefaultQuestionAnswerButton {...props} onPress={handlePress} />;
+};
+```
+
+### Component Resolution Priority
+
+The system resolves components in this order:
+
+1. **Custom List Component** (`QuestionAnswersList`) - Takes complete control
+2. **Custom Button Component** (`QuestionAnswerButton`) - Used by DefaultList
+3. **Default Implementation** - Built-in SDK styling
+
+This priority system ensures:
+- List customization overrides everything
+- Button customization works with default list logic
+- No custom components means full default behavior
+
+### Renderer Implementation Pattern
+
+Renderers follow this pattern for custom component support:
+
+```typescript
+const QuestionRendererBase = ({ step, onContinue }: QuestionRendererProps) => {
+  const { theme } = useTheme();
+  const customComponents = useCustomComponents();
+  const AnswersList = customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+  const AnswerButton = customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+
+  return (
+    <OnboardingTemplate>
+      {/* Header content */}
+      {customComponents.QuestionAnswersList ? (
+        <AnswersList {...listProps} />
+      ) : (
+        <View style={styles.answersContainer}>
+          {answers.map((answer, index) => (
+            <AnswerButton key={answer.value} {...buttonProps} />
+          ))}
+        </View>
+      )}
+    </OnboardingTemplate>
+  );
+};
+```
+
+### Adding New Customizable Components
+
+To add a new customizable component:
+
+1. **Define Props Interface** in the component's file:
+   ```typescript
+   export interface NewComponentProps {
+     // Define all props the component receives
+   }
+   ```
+
+2. **Create Default Implementation**:
+   ```typescript
+   export const DefaultNewComponent: React.FC<NewComponentProps> = (props) => {
+     // Default rendering logic
+   };
+   ```
+
+3. **Add to CustomComponents Interface**:
+   ```typescript
+   export interface CustomComponents {
+     // Existing components...
+     NewComponent?: React.ComponentType<NewComponentProps>;
+   }
+   ```
+
+4. **Update Renderer** to use custom component:
+   ```typescript
+   const customComponents = useCustomComponents();
+   const Component = customComponents.NewComponent || DefaultNewComponent;
+   ```
+
+5. **Export from Module**:
+   ```typescript
+   export { DefaultNewComponent, NewComponentProps } from "./components";
+   ```
+
+### Example Components
+
+The `example/components/` directory contains reference implementations:
+
+**MinimalAnswerButton.tsx**
+- Matches Figma minimal design
+- 96px height, top/bottom borders only
+- No border-radius
+- 24px font size
+
+**AnimatedAnswersList.tsx**
+- Staggered entrance animation (150ms delay)
+- Slide + fade effect
+- Uses React Native Animated API
+- Composes with DefaultQuestionAnswerButton
+
+### Testing Custom Components
+
+When testing custom components:
+
+1. **Build SDK**: `npm run build`
+2. **Test in Example App**: `cd example && npm start`
+3. **Update Provider** in `example/app/_layout.tsx`:
+   ```typescript
+   <OnboardingProvider
+     customComponents={{
+       QuestionAnswerButton: MinimalAnswerButton,
+       // or
+       QuestionAnswersList: AnimatedAnswersList,
+     }}
+   />
+   ```
+
+### Best Practices
+
+1. **Type Safety**: Always implement the exact props interface
+2. **Theme Integration**: Use `theme` prop for consistent styling
+3. **Composition**: Extend default components when possible
+4. **Performance**: Use `React.memo` for complex custom components
+5. **Accessibility**: Maintain or improve accessibility features
+6. **Testing**: Test both single and multiple selection scenarios
+
+### Future Extensibility
+
+The system is designed to support more customizable components:
+- Carousel slide components
+- Picker input components
+- MediaContent renderers
+- Progress indicators
+- Custom transitions
+
+Each new component follows the same pattern: interface definition, default implementation, context distribution, and renderer integration.
