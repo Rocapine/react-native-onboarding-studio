@@ -17,8 +17,9 @@ const config: Config = {
   // Set the production url of your site here
   url: 'https://rocapine.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/react-native-onboarding-studio/',
+  // Use '/' for root domain or Cloudflare/Netlify/Vercel
+  // Use '/<projectName>/' for GitHub Pages subdirectory (e.g., '/react-native-onboarding-studio/')
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.

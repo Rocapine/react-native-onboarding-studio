@@ -4,7 +4,7 @@ import {
   DefaultQuestionAnswerButton,
   ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -20,6 +20,20 @@ const client = new OnboardingStudioClient(
     isSanbdox: true,
   }
 );
+
+function RootLayoutNav() {
+  const router = useRouter();
+
+  return (
+    <>
+      <ProgressBar
+        canGoBack={router.canGoBack()}
+        onBack={() => router.back()}
+      />
+      <Stack screenOptions={{ headerShown: false }} />
+    </>
+  );
+}
 
 export default function RootLayout() {
   // Load custom fonts - Futura Bold for demonstration
@@ -62,8 +76,7 @@ export default function RootLayout() {
         },
       }}
     >
-      <ProgressBar />
-      <Stack screenOptions={{ headerShown: false }} />
+      <RootLayoutNav />
     </OnboardingProvider>
   );
 }

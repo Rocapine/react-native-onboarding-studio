@@ -124,6 +124,41 @@ USE_SSH=true npm run deploy
 3. **Deploy:**
    - Vercel will auto-deploy on every push
 
+### Cloudflare Pages
+
+1. **Connect Repository:**
+   - Sign up at [pages.cloudflare.com](https://pages.cloudflare.com)
+   - Click "Create a project" → "Connect to Git"
+   - Select your GitHub/GitLab repository
+
+2. **Configure Build Settings:**
+   - **Production branch:** `main`
+   - **Framework preset:** `Docusaurus`
+   - **Build command:** `npm run build`
+   - **Build output directory:** `build`
+   - **Root directory:** `website`
+
+3. **Advanced Settings (Optional):**
+   - **Node version:** Set to `20` or higher
+   - **Environment variables:** None required for basic setup
+
+4. **Deploy:**
+   - Click "Save and Deploy"
+   - Cloudflare Pages will auto-deploy on every push to `main`
+   - Preview deployments created automatically for pull requests
+
+**Benefits:**
+- ⚡ Global CDN with 200+ locations
+- 🔒 Free SSL certificate
+- 🚀 Unlimited bandwidth
+- 📊 Built-in analytics
+- 🔄 Automatic atomic deployments
+
+**Post-Deployment:**
+- Site will be available at `https://your-project.pages.dev`
+- Configure custom domain in Cloudflare Pages dashboard
+- Set up redirects and headers in `website/static/_redirects` if needed
+
 ### Custom Domain
 
 #### For GitHub Pages:
@@ -145,6 +180,30 @@ USE_SSH=true npm run deploy
 #### For Netlify/Vercel:
 
 - Follow their custom domain setup in dashboard settings
+
+#### For Cloudflare Pages:
+
+1. **Add Custom Domain:**
+   - Go to Cloudflare Pages dashboard
+   - Select your project → "Custom domains"
+   - Click "Set up a custom domain"
+   - Enter your domain (e.g., `docs.yourdomain.com`)
+
+2. **DNS Configuration:**
+   - If domain is on Cloudflare DNS: DNS records added automatically
+   - If domain is external: Add CNAME record pointing to `your-project.pages.dev`
+
+3. **Update Config:**
+   ```typescript
+   url: 'https://docs.yourdomain.com',
+   baseUrl: '/',
+   ```
+
+**Benefits of Cloudflare:**
+- Automatic SSL certificate provisioning
+- DNS managed in same dashboard
+- Advanced caching and performance settings
+- DDoS protection included
 
 ---
 
@@ -180,7 +239,7 @@ projectName: 'your-repo',
 
 **Check Node Version:**
 ```bash
-node --version  # Should be 18.x or higher
+node --version  # Should be 20.x or higher
 ```
 
 **Clear Cache and Rebuild:**
@@ -238,7 +297,7 @@ From website directory:
 The GitHub Actions workflow (`.github/workflows/deploy-docs.yml`) automatically:
 
 1. ✅ Checks out code
-2. ✅ Sets up Node.js 18
+2. ✅ Sets up Node.js 20
 3. ✅ Installs dependencies
 4. ✅ Builds site
 5. ✅ Deploys to GitHub Pages

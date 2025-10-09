@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,6 +8,7 @@ import Animated, {
 import { OnboardingProgressContext } from "../../infra/provider/OnboardingProvider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../Theme/useTheme";
+import { ChevronLeft } from "lucide-react-native";
 
 interface ProgressBarProps {
   value?: number;
@@ -16,6 +17,8 @@ interface ProgressBarProps {
   progressColor?: string;
   width?: string | number;
   animated?: boolean;
+  onBack?: () => void;
+  canGoBack?: boolean;
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -24,6 +27,8 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   progressColor,
   width = "70%",
   animated = true,
+  onBack,
+  canGoBack = false,
 }) => {
   const { theme } = useTheme();
   const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
@@ -60,6 +65,19 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   return (
     activeStep.displayProgressHeader && (
       <View style={[styles.container, { paddingTop: top }]}>
+        {canGoBack && onBack && (
+          <TouchableOpacity
+            onPress={onBack}
+            style={styles.backButton}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <ChevronLeft
+              size={24}
+              color={theme.colors.text.primary}
+              strokeWidth={2}
+            />
+          </TouchableOpacity>
+        )}
         <View style={[styles.track, { height, backgroundColor: trackBgColor }]}>
           <Animated.View
             style={[
@@ -86,6 +104,13 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
     backgroundColor: "transparent",
+  },
+  backButton: {
+    position: "absolute",
+    left: 20,
+    top: 0,
+    zIndex: 2,
+    padding: 4,
   },
   track: {
     width: "100%",

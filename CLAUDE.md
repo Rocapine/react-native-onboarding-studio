@@ -109,6 +109,51 @@ Available page types:
 - Should be placed once in the root `OnboardingProvider`
 - Automatically shows/hides based on `step.displayProgressHeader`
 - Uses Reanimated for smooth animations
+- Supports optional back navigation with chevron-left icon
+
+**Back Navigation**
+
+The `ProgressBar` component supports optional back navigation functionality:
+
+```typescript
+<ProgressBar
+  canGoBack={router.canGoBack()}
+  onBack={() => router.back()}
+/>
+```
+
+Props:
+- `canGoBack?: boolean` - Controls visibility of the back button (default: false)
+- `onBack?: () => void` - Callback function when back button is pressed
+
+The back button:
+- Renders a chevron-left icon using `lucide-react-native`
+- Automatically uses theme colors (`theme.colors.text.primary`)
+- Positioned on the left side of the progress bar
+- Only appears when `canGoBack` is true
+- Routing logic is the responsibility of the SDK user
+
+Example with expo-router:
+
+```typescript
+import { useRouter } from "expo-router";
+
+function RootLayoutNav() {
+  const router = useRouter();
+
+  return (
+    <>
+      <ProgressBar
+        canGoBack={router.canGoBack()}
+        onBack={() => router.back()}
+      />
+      <Stack screenOptions={{ headerShown: false }} />
+    </>
+  );
+}
+```
+
+**Note**: The ProgressBar must be inside a component that has access to the router. Extract navigation logic into a separate component if needed (see example app).
 
 **Common Types** (`src/UI/Pages/types.ts`)
 
