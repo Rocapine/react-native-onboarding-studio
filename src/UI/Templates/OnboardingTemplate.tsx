@@ -38,8 +38,8 @@ export const OnboardingTemplate = ({
           <TouchableOpacity
             style={[
               styles.ctaButton,
-              { backgroundColor: theme.colors.surface.opposite },
-              button.disabled && styles.ctaButtonDisabled,
+              { backgroundColor: theme.colors.primary },
+              button.disabled && { backgroundColor: theme.colors.disable },
             ]}
             onPress={onContinue}
             activeOpacity={0.8}
@@ -49,7 +49,7 @@ export const OnboardingTemplate = ({
               style={[
                 styles.ctaButtonText,
                 { color: theme.colors.text.opposite },
-                button.disabled && styles.ctaButtonTextDisabled,
+                button.disabled && { color: theme.colors.text.disable },
               ]}
             >
               {button.text}
@@ -79,16 +79,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ctaButtonText: {
-    fontFamily: "System",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "500",
     lineHeight: 24,
-  },
-  ctaButtonDisabled: {
-    backgroundColor: "#E0E0E0",
-    opacity: 0.6,
-  },
-  ctaButtonTextDisabled: {
-    color: "#9E9E9E",
   },
 });

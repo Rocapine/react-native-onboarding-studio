@@ -58,6 +58,9 @@ npm start
   - `getStepsParams`: Additional params for getSteps API call
   - `cacheKey`: AsyncStorage key for caching (default: "rocapine-onboarding-studio")
   - `initialColorScheme`: Theme color scheme (default: "light")
+  - `theme`: Custom theme to override both light and dark modes (optional)
+  - `lightTheme`: Custom theme tokens for light mode only (optional)
+  - `darkTheme`: Custom theme tokens for dark mode only (optional)
 
 **useOnboardingQuestions** (`src/infra/hooks/useOnboardingQuestions.ts`)
 
@@ -193,6 +196,17 @@ export default function RootLayout() {
       getStepsParams={{
         onboardingId: "your-onboarding-id",
       }}
+      // Optional: Customize theme
+      theme={{
+        colors: {
+          primary: "#FF5733",
+        },
+        typography: {
+          fontFamily: {
+            title: "CustomFont-Bold",
+          },
+        },
+      }}
     >
       <ProgressBar />
       <Stack screenOptions={{ headerShown: false }} />
@@ -275,6 +289,140 @@ return (
 - Individual renderers should NEVER include their own `ProgressBar`
 - The `useOnboardingQuestions` hook uses `useSuspenseQuery`, so wrap routes with proper Suspense boundaries if needed
 
+## Theme Customization
+
+The SDK provides a flexible theming system that allows you to customize colors, typography, and other design tokens. You can customize themes at three levels:
+
+### 1. Global Theme Override (Both Light & Dark)
+
+Apply the same customizations to both light and dark modes:
+
+```typescript
+<OnboardingProvider
+  client={client}
+  theme={{
+    colors: {
+      primary: "#FF5733",
+      secondary: "#C70039",
+    },
+    typography: {
+      fontFamily: {
+        title: "Poppins-Bold",
+        text: "Roboto-Regular",
+      },
+      fontSize: {
+        xl: 28,
+      },
+    },
+  }}
+>
+```
+
+### 2. Mode-Specific Customization
+
+Customize light and dark modes separately:
+
+```typescript
+<OnboardingProvider
+  client={client}
+  lightTheme={{
+    colors: {
+      primary: "#007AFF",
+      surface: {
+        lowest: "#FFFFFF",
+      },
+    },
+  }}
+  darkTheme={{
+    colors: {
+      primary: "#0A84FF",
+      surface: {
+        lowest: "#000000",
+      },
+    },
+  }}
+>
+```
+
+### 3. Partial Overrides
+
+You only need to specify the tokens you want to customize. The SDK will deep-merge your custom values with the defaults:
+
+```typescript
+<OnboardingProvider
+  client={client}
+  theme={{
+    colors: {
+      primary: "#FF5733", // Only override primary color
+    },
+  }}
+>
+```
+
+### Available Theme Tokens
+
+**ColorTokens:**
+
+- `primary`, `secondary`, `disable`
+- `tertiary`: `{ tertiary1, tertiary2, tertiary3 }`
+- `neutral`: `{ high, higher, highest, low, lower, lowest, medium }`
+- `surface`: `{ high, higher, highest, low, lower, lowest, medium, opposite }`
+- `text`: `{ disable, opposite, primary, secondary, tertiary }`
+
+**TypographyTokens:**
+
+- `fontFamily`: `{ tagline, text, title }`
+- `fontSize`: `{ xs, sm, md, lg, xl, 2xl, 3xl, 4xl }`
+- `fontWeight`: `{ regular, medium, semibold, bold, extrabold }`
+- `lineHeight`: `{ tight, normal, relaxed }`
+
+### Accessing Default Tokens
+
+You can import and reference the default tokens:
+
+```typescript
+import {
+  lightTokens,
+  darkTokens,
+  typography,
+} from "@rocapine/react-native-onboarding-studio";
+
+// Use as reference or extend
+const myTheme = {
+  colors: {
+    ...lightTokens.colors,
+    primary: "#FF5733",
+  },
+  typography,
+};
+```
+
+### Using Theme in Custom Components
+
+Access theme values via `useTheme()` hook:
+
+```typescript
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
+
+function MyComponent() {
+  const { theme, colorScheme, toggleTheme } = useTheme();
+
+  return (
+    <View style={{ backgroundColor: theme.colors.surface.lowest }}>
+      <Text
+        style={{
+          color: theme.colors.text.primary,
+          fontFamily: theme.typography.fontFamily.title,
+          fontSize: theme.typography.fontSize.xl,
+        }}
+      >
+        Hello
+      </Text>
+    </View>
+  );
+}
+```
+
 ## File Organization
 
 ```
@@ -287,7 +435,15 @@ src/
 │   └── hooks/                    # useOnboardingQuestions hook
 └── UI/
     ├── OnboardingPage.tsx        # Main router component
-    ├── Provider/                 # UI-only providers (Theme)
+    ├── Theme/                    # Theme system
+    │   ├── ThemeProvider.tsx     # Theme context provider
+    │   ├── useTheme.ts          # Theme hook
+    │   ├── types.ts             # Theme type definitions
+    │   ├── utils.ts             # Deep merge utilities
+    │   └── tokens/              # Default theme tokens
+    │       ├── lightTokens.ts
+    │       ├── darkTokens.ts
+    │       └── typography.ts
     ├── Templates/                # Reusable layouts
     ├── Components/               # Shared UI components (e.g., ProgressBar)
     └── Pages/                    # Step type implementations

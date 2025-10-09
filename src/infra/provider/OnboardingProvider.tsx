@@ -2,7 +2,7 @@ import { createContext, useState, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
-import { ColorScheme } from "../../UI/Theme/types";
+import { ColorScheme, DeepPartial, Theme } from "../../UI/Theme/types";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
 
 interface OnboardingProviderProps {
@@ -13,6 +13,21 @@ interface OnboardingProviderProps {
   locale?: string;
   getStepsParams?: Record<string, any>;
   cacheKey?: string;
+  /**
+   * Custom theme to override default theme tokens for both light and dark modes.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  theme?: DeepPartial<Theme>;
+  /**
+   * Custom theme tokens for light mode only.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  lightTheme?: DeepPartial<Theme>;
+  /**
+   * Custom theme tokens for dark mode only.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  darkTheme?: DeepPartial<Theme>;
 }
 
 export const OnboardingProvider = ({
@@ -23,6 +38,9 @@ export const OnboardingProvider = ({
   locale = "en",
   getStepsParams = {},
   cacheKey = "rocapine-onboarding-studio",
+  theme,
+  lightTheme,
+  darkTheme,
 }: OnboardingProviderProps) => {
   const [activeStep, setActiveStep] = useState({
     number: 0,
@@ -46,7 +64,12 @@ export const OnboardingProvider = ({
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <ThemeProvider initialColorScheme={initialColorScheme}>
+        <ThemeProvider
+          initialColorScheme={initialColorScheme}
+          customTheme={theme}
+          customLightTheme={lightTheme}
+          customDarkTheme={darkTheme}
+        >
           <OnboardingProgressContext.Provider
             value={{
               activeStep,

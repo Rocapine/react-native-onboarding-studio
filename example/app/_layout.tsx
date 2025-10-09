@@ -23,6 +23,26 @@ export default function RootLayout() {
         myconfig: "myconfig",
         onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
       }}
+      // Optional: Customize theme for both light and dark modes
+      theme={{
+        typography: {
+          fontFamily: {
+            title: "Futura",
+          },
+        },
+      }}
+      // Optional: Customize light mode only
+      lightTheme={{
+        colors: {
+          primary: "red",
+        },
+      }}
+      // Optional: Customize dark mode only
+      // darkTheme={{
+      //   colors: {
+      //     primary: "#0A84FF",
+      //   },
+      // }}
     >
       <ProgressBar />
       <Stack screenOptions={{ headerShown: false }} />

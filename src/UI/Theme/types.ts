@@ -71,3 +71,13 @@ export type Theme = {
 };
 
 export type ColorScheme = "light" | "dark";
+
+/**
+ * Deep partial utility type for nested objects.
+ * Makes all properties optional recursively.
+ */
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
