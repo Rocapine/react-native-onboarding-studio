@@ -4,6 +4,7 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { RatingsStepType, RatingsStepTypeSchema } from "./types";
 import { useState } from "react";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 // Lazy load StoreReview - only needed for ratings screens
 let StoreReview: any;
@@ -99,7 +100,7 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
               />
               <View style={styles.awardTextContainer}>
                 {renderStars(5, 32)}
-                <Text style={[styles.awardTitle, { color: theme.colors.text.secondary }]}>Users Choice</Text>
+                <Text style={[getTextStyle(theme, "heading2"), styles.awardTitle, { color: theme.colors.text.secondary }]}>Users Choice</Text>
               </View>
               <Image
                 source={require("../../../assets/laurel-right.png")}
@@ -118,10 +119,10 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
                     {mainReview.authorName.charAt(0).toUpperCase()}
                   </Text>
                 </View>
-                <Text style={[styles.authorName, { color: theme.colors.text.secondary }]}>{mainReview.authorName}</Text>
+                <Text style={[getTextStyle(theme, "label"), styles.authorName, { color: theme.colors.text.secondary }]}>{mainReview.authorName}</Text>
               </View>
 
-              <Text style={[styles.reviewContent, { color: theme.colors.text.primary }]}>{mainReview.content}</Text>
+              <Text style={[getTextStyle(theme, "bodyMedium"), styles.reviewContent, { color: theme.colors.text.primary }]}>{mainReview.content}</Text>
 
               {renderStars(mainReview.numberOfStar)}
             </View>
@@ -149,7 +150,7 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
                     </View>
                   ))}
                 </View>
-                <Text style={[styles.usersCountText, { color: theme.colors.text.secondary }]}>
+                <Text style={[getTextStyle(theme, "bodyMedium"), styles.usersCountText, { color: theme.colors.text.secondary }]}>
                   +{otherUsersCount.toLocaleString()} others
                 </Text>
               </View>
@@ -158,8 +159,8 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
 
           {/* Title and Subtitle */}
           <View style={styles.textSection}>
-            <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
-            <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>{subtitle}</Text>
+            <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+            <Text style={[getTextStyle(theme, "heading3"), styles.subtitle, { color: theme.colors.text.secondary }]}>{subtitle}</Text>
           </View>
         </ScrollView>
       </View>
@@ -195,8 +196,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   awardTitle: {
-    fontSize: 24,
-    fontWeight: "600",
     textAlign: "center",
   },
   starsContainer: {
@@ -234,12 +233,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
-  authorName: {
-    fontSize: 15,
-  },
+  authorName: {},
   reviewContent: {
-    fontSize: 16,
-    lineHeight: 20.8,
     textAlign: "center",
   },
   usersCount: {
@@ -262,10 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
   },
-  usersCountText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
+  usersCountText: {},
   textSection: {
     paddingHorizontal: 32,
     gap: 16,
@@ -273,14 +265,9 @@ const styles = StyleSheet.create({
     marginTop: "auto",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "600",
-    lineHeight: 40,
     textAlign: "center",
   },
   subtitle: {
-    fontSize: 17,
-    lineHeight: 22.1,
     textAlign: "center",
   },
 });

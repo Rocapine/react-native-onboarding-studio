@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { OnboardingStepType } from "../types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../Theme/useTheme";
+import { getTextStyle } from "../Theme/helpers";
 
 type OnboardingTemplateProps = {
   children: React.ReactNode;
@@ -47,6 +48,7 @@ export const OnboardingTemplate = ({
           >
             <Text
               style={[
+                getTextStyle(theme, "button"),
                 styles.ctaButtonText,
                 { color: theme.colors.text.opposite },
                 button.disabled && { color: theme.colors.text.disable },
@@ -78,9 +80,5 @@ const styles = StyleSheet.create({
     minWidth: 234,
     alignItems: "center",
   },
-  ctaButtonText: {
-    fontSize: 16,
-    fontWeight: "500",
-    lineHeight: 24,
-  },
+  ctaButtonText: {},
 });

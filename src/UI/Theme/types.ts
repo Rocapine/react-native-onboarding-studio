@@ -35,6 +35,24 @@ export type ColorTokens = {
   };
 };
 
+export type TextStyle = {
+  fontSize: number;
+  fontWeight: "400" | "500" | "600" | "700" | "800";
+  lineHeight: number;
+  fontFamily: "tagline" | "text" | "title";
+};
+
+export type TextStyles = {
+  heading1: TextStyle;
+  heading2: TextStyle;
+  heading3: TextStyle;
+  body: TextStyle;
+  bodyMedium: TextStyle;
+  label: TextStyle;
+  caption: TextStyle;
+  button: TextStyle;
+};
+
 export type TypographyTokens = {
   fontFamily: {
     tagline: string;
@@ -63,6 +81,7 @@ export type TypographyTokens = {
     normal: number;
     relaxed: number;
   };
+  textStyles: TextStyles;
 };
 
 export type Theme = {

@@ -184,9 +184,180 @@ const step = {
 <MediaContentRenderer step={step} onContinue={handleContinue} />
 ```
 
-### Custom Styling
+### Theme Customization
 
-The SDK uses a theming system. You can customize colors by passing `initialColorScheme` to the provider or by using the `useTheme` hook in your custom components.
+The SDK provides a comprehensive theming system with colors, typography, and semantic text styles that match Figma design specifications.
+
+#### Quick Theme Example
+
+```typescript
+<OnboardingProvider
+  client={client}
+  theme={{
+    colors: { primary: "#FF5733" },
+    typography: {
+      fontFamily: { title: "Poppins-Bold" }
+    }
+  }}
+/>
+```
+
+#### Available Customizations
+
+**Colors:**
+- `primary`, `secondary`, `disable` - Main brand colors
+- `neutral.*` - Neutral grays (highest → lowest)
+- `surface.*` - Background surfaces (lowest → highest, opposite)
+- `text.*` - Text colors (primary, secondary, tertiary, opposite, disable)
+- `tertiary.*` - Accent colors (tertiary1, tertiary2, tertiary3)
+
+**Typography:**
+- `fontFamily` - Custom fonts (title, text, tagline)
+- `fontSize` - Font sizes (xs, sm, md, lg, xl, 2xl, 3xl, 4xl)
+- `fontWeight` - Font weights (regular, medium, semibold, bold, extrabold)
+- `textStyles` - Semantic styles (heading1, heading2, heading3, body, bodyMedium, label, caption, button)
+
+**Semantic Text Styles:**
+```typescript
+// Built-in semantic text styles that match Figma
+heading1: { fontSize: 32, fontWeight: "600", lineHeight: 1.25 }  // Figma Heading 1
+heading2: { fontSize: 24, fontWeight: "600", lineHeight: 1.3 }   // Figma Heading 2
+heading3: { fontSize: 18, fontWeight: "500", lineHeight: 1.3 }   // Figma Heading 3
+body: { fontSize: 16, fontWeight: "400", lineHeight: 1.3 }
+bodyMedium: { fontSize: 16, fontWeight: "500", lineHeight: 1.3 }
+label: { fontSize: 14, fontWeight: "500", lineHeight: 1.3 }
+caption: { fontSize: 12, fontWeight: "400", lineHeight: 1.3 }
+button: { fontSize: 16, fontWeight: "500", lineHeight: 1.5 }
+```
+
+#### Custom Font Loading
+
+**IMPORTANT:** The SDK accepts font names but does not load fonts. You must load custom fonts using `expo-font`.
+
+```typescript
+import { useFonts } from 'expo-font';
+
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
+
+  return (
+    <OnboardingProvider
+      client={client}
+      theme={{
+        typography: {
+          fontFamily: {
+            title: "Poppins-Bold",      // Used by heading1, heading2
+            text: "Roboto-Regular",     // Used by body, button, etc.
+          }
+        }
+      }}
+    >
+      {/* Your app */}
+    </OnboardingProvider>
+  );
+}
+```
+
+#### Mode-Specific Customization
+
+Customize light and dark modes separately:
+
+```typescript
+<OnboardingProvider
+  lightTheme={{ colors: { primary: "#007AFF" } }}
+  darkTheme={{ colors: { primary: "#0A84FF" } }}
+/>
+```
+
+#### Using Theme in Custom Components
+
+**With colors and tokens:**
+```typescript
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
+
+function MyComponent() {
+  const { theme } = useTheme();
+
+  return (
+    <Text style={{
+      color: theme.colors.text.primary,
+      fontSize: theme.typography.fontSize.xl,
+    }}>
+      Hello
+    </Text>
+  );
+}
+```
+
+**With semantic text styles:**
+```typescript
+import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-studio";
+
+function MyComponent() {
+  const { theme } = useTheme();
+
+  return (
+    <Text style={[
+      getTextStyle(theme, "heading1"),
+      { color: theme.colors.text.primary }
+    ]}>
+      Title
+    </Text>
+  );
+}
+```
+
+#### Complete Customization Example
+
+```typescript
+import { useFonts } from 'expo-font';
+import { OnboardingProvider } from "@rocapine/react-native-onboarding-studio";
+
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    'CustomFont-Bold': require('./assets/fonts/CustomFont-Bold.ttf'),
+    'CustomFont-Regular': require('./assets/fonts/CustomFont-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
+
+  return (
+    <OnboardingProvider
+      client={client}
+      theme={{
+        colors: {
+          primary: "#FF5733",
+          text: { primary: "#1A1A1A" },
+          surface: { lowest: "#FFFFFF" }
+        },
+        typography: {
+          fontFamily: {
+            title: "CustomFont-Bold",
+            text: "CustomFont-Regular",
+          },
+          textStyles: {
+            heading1: {
+              fontSize: 36,
+              fontWeight: "700",
+              lineHeight: 1.2,
+              fontFamily: "title"
+            }
+          }
+        }
+      }}
+    >
+      <YourApp />
+    </OnboardingProvider>
+  );
+}
+```
+
+For complete theme customization documentation, see [CLAUDE.md](./CLAUDE.md#theme-customization).
 
 ## Local Development
 

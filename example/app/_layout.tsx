@@ -4,6 +4,12 @@ import {
   ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
 import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+
+// Keep splash screen visible while fonts load
+SplashScreen.preventAutoHideAsync();
 
 const client = new OnboardingStudioClient(
   "438d5493-1b72-4e12-9523-d9835ee98a52",
@@ -14,6 +20,21 @@ const client = new OnboardingStudioClient(
 );
 
 export default function RootLayout() {
+  // Load custom fonts - Futura Bold for demonstration
+  const [fontsLoaded, fontError] = useFonts({
+    "Futura-Bold": require("../assets/fonts/FuturaBold.otf"),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded || fontError) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
     <OnboardingProvider
       client={client}
@@ -23,26 +44,18 @@ export default function RootLayout() {
         myconfig: "myconfig",
         onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
       }}
-      // Optional: Customize theme for both light and dark modes
+      // Demonstrate theme customization with custom font
       theme={{
+        colors: {
+          primary: "red", // Custom primary color
+        },
         typography: {
           fontFamily: {
-            title: "Futura",
+            // title: "Futura-Bold",  // Used by heading1, heading2 (titles)
+            // text: "System", // Use system font for body text
           },
         },
       }}
-      // Optional: Customize light mode only
-      lightTheme={{
-        colors: {
-          primary: "red",
-        },
-      }}
-      // Optional: Customize dark mode only
-      // darkTheme={{
-      //   colors: {
-      //     primary: "#0A84FF",
-      //   },
-      // }}
     >
       <ProgressBar />
       <Stack screenOptions={{ headerShown: false }} />
