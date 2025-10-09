@@ -30,3 +30,4 @@ export const PickerStepTypeSchema = z.object({
 export type PickerStepType = z.infer<typeof PickerStepTypeSchema>;
 
 export type WeightUnit = "kg" | "lb";
+export type HeightUnit = "cm" | "ft";
