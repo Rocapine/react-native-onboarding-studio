@@ -1,6 +1,6 @@
 {
   "name": "@rocapine/react-native-onboarding-studio",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "React Native client for Rocapine Onboarding Studio - Fetch and display onboarding steps from your CMS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
