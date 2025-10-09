@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { OnboardingProgressContext } from "../Provider";
+import { OnboardingProgressContext } from "../../infra/provider/OnboardingProvider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../Theme/useTheme";
 

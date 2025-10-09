@@ -7,7 +7,7 @@ import { View, Text, Button } from 'react-native';
 interface OnboardingPageProps {
   step: OnboardingStepType;
   onContinue: (args?: any) => void;
-  client: OnboardingStudioClient;
+  client?: OnboardingStudioClient;
 }
 
 export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps) => {
@@ -27,7 +27,7 @@ export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps
     case 'Question':
       return <QuestionRenderer step={step} onContinue={onContinue} />;
     default:
-      if (client.options.isSanbdox) {
+      if (client?.options?.isSanbdox) {
         // @ts-ignore
         const stepType = step.type;
         return <View>
