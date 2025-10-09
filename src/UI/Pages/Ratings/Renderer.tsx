@@ -3,8 +3,16 @@ import Svg, { Path } from "react-native-svg";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { RatingsStepType, RatingsStepTypeSchema } from "./types";
 import { useState } from "react";
-import * as StoreReview from "expo-store-review";
 import { useTheme } from "../../Theme/useTheme";
+
+// Lazy load StoreReview - only needed for ratings screens
+let StoreReview: any;
+try {
+  StoreReview = require("expo-store-review");
+} catch (e) {
+  // StoreReview not installed - will show error when ratings screen is used
+  StoreReview = null;
+}
 
 interface RatingsRendererProps {
   step: RatingsStepType;
@@ -27,6 +35,13 @@ const StarIcon = ({ size, filled }: { size: number; filled: boolean }) => (
 const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
   const [hasOpenedRequestReview, setHasOpenedRequestReview] = useState(false);
   const { theme } = useTheme();
+
+  // Check if StoreReview is available
+  if (!StoreReview) {
+    throw new Error(
+      "Ratings screens require expo-store-review. Install it with: npx expo install expo-store-review"
+    );
+  }
 
   const handlePress = async () => {
     if (!hasOpenedRequestReview) {

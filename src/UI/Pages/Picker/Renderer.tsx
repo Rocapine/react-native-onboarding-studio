@@ -2,8 +2,17 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { PickerStepType, PickerStepTypeSchema, WeightUnit, HeightUnit } from "./types";
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "../../Theme/useTheme";
+
+// Lazy load Picker - only needed for picker screens
+let PickerComponent: any;
+try {
+  const PickerModule = require("@react-native-picker/picker");
+  PickerComponent = PickerModule.Picker;
+} catch (e) {
+  // Picker not installed - will show error when picker screen is used
+  PickerComponent = null;
+}
 
 type ContentProps = {
   step: PickerStepType;
@@ -14,6 +23,13 @@ const PickerRendererBase = ({ step, onContinue }: ContentProps) => {
   const { theme } = useTheme();
   const validatedData = PickerStepTypeSchema.parse(step);
   const { title, description, pickerType } = validatedData.payload;
+
+  // Check if Picker is available
+  if (!PickerComponent) {
+    throw new Error(
+      "Picker screens require @react-native-picker/picker. Install it with: npm install @react-native-picker/picker"
+    );
+  }
 
   // Route to specific picker implementation based on type
   if (pickerType === "weight") {
@@ -107,7 +123,7 @@ const WeightPicker = ({
     const options: React.ReactNode[] = [];
 
     for (let i = max; i >= step; i -= step) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
 
     return options;
@@ -134,15 +150,15 @@ const WeightPicker = ({
 
         <View style={styles.pickerContainer}>
           <View style={styles.pickerRow}>
-            <Picker
+            <PickerComponent
               selectedValue={selectedWeight}
               onValueChange={(itemValue: number) => setSelectedWeight(Number(itemValue))}
               style={styles.weightPicker}
               itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
             >
               {generateWeightOptions(unit)}
-            </Picker>
-            <Picker
+            </PickerComponent>
+            <PickerComponent
               selectedValue={unit}
               onValueChange={(itemValue: WeightUnit) => {
                 if (itemValue === "kg") {
@@ -155,9 +171,9 @@ const WeightPicker = ({
               style={styles.unitPicker}
               itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
             >
-              <Picker.Item label="lb" value="lb" />
-              <Picker.Item label="kg" value="kg" />
-            </Picker>
+              <PickerComponent.Item label="lb" value="lb" />
+              <PickerComponent.Item label="kg" value="kg" />
+            </PickerComponent>
           </View>
         </View>
       </View>
@@ -191,7 +207,7 @@ const HeightPicker = ({
   const generateCmOptions = () => {
     const options: React.ReactNode[] = [];
     for (let i = 250; i >= 100; i--) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
     return options;
   };
@@ -199,7 +215,7 @@ const HeightPicker = ({
   const generateFeetOptions = () => {
     const options: React.ReactNode[] = [];
     for (let i = 8; i >= 3; i--) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
     return options;
   };
@@ -207,7 +223,7 @@ const HeightPicker = ({
   const generateInchesOptions = () => {
     const options: React.ReactNode[] = [];
     for (let i = 11; i >= 0; i--) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
     return options;
   };
@@ -249,52 +265,52 @@ const HeightPicker = ({
         <View style={styles.pickerContainer}>
           {unit === "cm" ? (
             <View style={styles.pickerRow}>
-              <Picker
+              <PickerComponent
                 selectedValue={selectedCm}
                 onValueChange={(itemValue: number) => setSelectedCm(Number(itemValue))}
                 style={styles.weightPicker}
                 itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
               >
                 {generateCmOptions()}
-              </Picker>
-              <Picker
+              </PickerComponent>
+              <PickerComponent
                 selectedValue={unit}
                 onValueChange={(itemValue: HeightUnit) => handleUnitChange(itemValue)}
                 style={styles.unitPicker}
                 itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
               >
-                <Picker.Item label="cm" value="cm" />
-                <Picker.Item label="ft" value="ft" />
-              </Picker>
+                <PickerComponent.Item label="cm" value="cm" />
+                <PickerComponent.Item label="ft" value="ft" />
+              </PickerComponent>
             </View>
           ) : (
             <View style={styles.heightImperialContainer}>
               <View style={styles.pickerRow}>
-                <Picker
+                <PickerComponent
                   selectedValue={selectedFeet}
                   onValueChange={(itemValue: number) => setSelectedFeet(Number(itemValue))}
                   style={styles.heightFeetPicker}
                   itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
                 >
                   {generateFeetOptions()}
-                </Picker>
-                <Picker
+                </PickerComponent>
+                <PickerComponent
                   selectedValue={selectedInches}
                   onValueChange={(itemValue: number) => setSelectedInches(Number(itemValue))}
                   style={styles.heightInchesPicker}
                   itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
                 >
                   {generateInchesOptions()}
-                </Picker>
-                <Picker
+                </PickerComponent>
+                <PickerComponent
                   selectedValue={unit}
                   onValueChange={(itemValue: HeightUnit) => handleUnitChange(itemValue)}
                   style={styles.heightUnitPicker}
                   itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
                 >
-                  <Picker.Item label="cm" value="cm" />
-                  <Picker.Item label="ft" value="ft" />
-                </Picker>
+                  <PickerComponent.Item label="cm" value="cm" />
+                  <PickerComponent.Item label="ft" value="ft" />
+                </PickerComponent>
               </View>
             </View>
           )}
@@ -413,7 +429,7 @@ const DatePicker = ({
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const options: React.ReactNode[] = [];
     for (let i = 1; i <= daysInMonth; i++) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
     return options;
   };
@@ -422,7 +438,7 @@ const DatePicker = ({
     const currentYear = new Date().getFullYear();
     const options: React.ReactNode[] = [];
     for (let i = currentYear; i >= currentYear - 100; i--) {
-      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+      options.push(<PickerComponent.Item key={i} label={i.toString()} value={i} />);
     }
     return options;
   };
@@ -463,36 +479,36 @@ const DatePicker = ({
         <View style={styles.pickerContainer}>
           <View style={styles.datePickerRow}>
             {/* Month Picker */}
-            <Picker
+            <PickerComponent
               selectedValue={selectedMonth}
               onValueChange={(itemValue: number) => handleMonthChange(itemValue)}
               style={styles.monthPicker}
               itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
             >
               {months.map((month, index) => (
-                <Picker.Item key={index} label={month} value={index} />
+                <PickerComponent.Item key={index} label={month} value={index} />
               ))}
-            </Picker>
+            </PickerComponent>
 
             {/* Day Picker */}
-            <Picker
+            <PickerComponent
               selectedValue={selectedDay}
               onValueChange={(itemValue: number) => setSelectedDay(itemValue)}
               style={styles.dayPicker}
               itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
             >
               {generateDayOptions(selectedMonth, selectedYear)}
-            </Picker>
+            </PickerComponent>
 
             {/* Year Picker */}
-            <Picker
+            <PickerComponent
               selectedValue={selectedYear}
               onValueChange={(itemValue: number) => setSelectedYear(itemValue)}
               style={styles.yearPicker}
               itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
             >
               {generateYearOptions()}
-            </Picker>
+            </PickerComponent>
           </View>
         </View>
       </View>

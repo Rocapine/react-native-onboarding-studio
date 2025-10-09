@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { CommitmentStepType, CommitmentStepTypeSchema } from "./types";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
-import { Canvas, Path, Skia, SkPath } from "@shopify/react-native-skia";
 import {
   Gesture,
   GestureDetector,
@@ -16,6 +15,15 @@ import {
 } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { useTheme } from "../../Theme/useTheme";
+
+// Lazy load Skia - only needed for signature variant
+let SkiaModule: any;
+try {
+  SkiaModule = require("@shopify/react-native-skia");
+} catch (e) {
+  // Skia not installed - will show error if signature variant is used
+  SkiaModule = null;
+}
 
 type ContentProps = {
   step: CommitmentStepType;
@@ -27,21 +35,32 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
   const { payload } = validatedData;
   const { theme } = useTheme();
 
-  const currentPath = useRef<SkPath | null>(null);
-  const [paths, setPaths] = useState<SkPath[]>([]);
+  // Check if Skia is needed and available
+  const needsSkia = payload.variant === "signature";
+  if (needsSkia && !SkiaModule) {
+    throw new Error(
+      "Commitment screens with signature variant require @shopify/react-native-skia. Install it with: npm install @shopify/react-native-skia"
+    );
+  }
+
+  const Skia = SkiaModule?.Skia;
+  const currentPath = useRef<any>(null);
+  const [paths, setPaths] = useState<any[]>([]);
   const [hasSignature, setHasSignature] = useState(false);
 
-  const updatePaths = useCallback((newPath: SkPath) => {
+  const updatePaths = useCallback((newPath: any) => {
     setPaths((prevState) => [...prevState, newPath]);
   }, []);
 
   const panGesture = Gesture.Pan()
     .runOnJS(true)
     .onBegin(({ x, y }: { x: number; y: number }) => {
-      currentPath.current = Skia.Path.Make();
-      currentPath.current.moveTo(x, y);
-      runOnJS(updatePaths)(currentPath.current);
-      runOnJS(setHasSignature)(true);
+      if (Skia) {
+        currentPath.current = Skia.Path.Make();
+        currentPath.current.moveTo(x, y);
+        runOnJS(updatePaths)(currentPath.current);
+        runOnJS(setHasSignature)(true);
+      }
     })
     .onUpdate(({ x, y }: { x: number; y: number }) => {
       if (currentPath.current) {
@@ -159,19 +178,21 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
 
                   {/* Canvas */}
                   <GestureDetector gesture={panGesture}>
-                    <Canvas style={styles.canvas}>
-                      {paths.map((path, index) => (
-                        <Path
-                          key={index}
-                          path={path}
-                          color={theme.colors.text.primary}
-                          style="stroke"
-                          strokeWidth={2}
-                          strokeCap="round"
-                          strokeJoin="round"
-                        />
-                      ))}
-                    </Canvas>
+                    {SkiaModule && (
+                      <SkiaModule.Canvas style={styles.canvas}>
+                        {paths.map((path: any, index: number) => (
+                          <SkiaModule.Path
+                            key={index}
+                            path={path}
+                            color={theme.colors.text.primary}
+                            style="stroke"
+                            strokeWidth={2}
+                            strokeCap="round"
+                            strokeJoin="round"
+                          />
+                        ))}
+                      </SkiaModule.Canvas>
+                    )}
                   </GestureDetector>
                 </View>
               </GestureHandlerRootView>

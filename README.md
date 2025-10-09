@@ -31,28 +31,15 @@ npx expo install expo-router
 
 ### Optional Dependencies by Screen Type
 
-Only install these if you're using the specific screen types:
+Install these only if you're using the specific screen types:
 
-#### Picker Screens (Weight, Height, Age, etc.)
-```bash
-npm install @react-native-picker/picker
-# or with Expo
-npx expo install @react-native-picker/picker
-```
+| Screen Type | Required Package | Install Command |
+|-------------|------------------|-----------------|
+| **Picker** (weight, height, age, name, date) | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
+| **Ratings** (app store reviews) | `expo-store-review` | `npx expo install expo-store-review` |
+| **Commitment** (signature variant only) | `@shopify/react-native-skia` | `npx expo install @shopify/react-native-skia` |
 
-#### Ratings Screens
-```bash
-npm install expo-store-review
-# or with Expo
-npx expo install expo-store-review
-```
-
-#### Advanced Graphics (Skia-based components)
-```bash
-npm install @shopify/react-native-skia
-# or with Expo
-npx expo install @shopify/react-native-skia
-```
+> **Note:** If you try to use a screen type without its required dependency, you'll see a clear error message telling you exactly what to install.
 
 ## Quick Start
 
