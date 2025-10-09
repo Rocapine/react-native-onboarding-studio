@@ -8,7 +8,11 @@
     "build": "tsc && cp -r src/assets dist/",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "patch": "npm version patch && npm run build && npm publish"
+    "patch": "npm version patch && npm run build && npm publish",
+    "docs:start": "cd website && npm start",
+    "docs:build": "cd website && npm run build",
+    "docs:serve": "cd website && npm run serve",
+    "docs:deploy": "cd website && npm run deploy"
   },
   "keywords": [
     "react-native",
