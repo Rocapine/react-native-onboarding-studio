@@ -1,7 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
 import { ColorScheme } from "../../UI/Theme/types";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
@@ -15,14 +14,6 @@ interface OnboardingProviderProps {
   getStepsParams?: Record<string, any>;
   cacheKey?: string;
 }
-
-const defaultQueryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-    },
-  },
-});
 
 export const OnboardingProvider = ({
   children,
@@ -39,51 +30,35 @@ export const OnboardingProvider = ({
   });
   const [totalSteps, setTotalSteps] = useState(0);
 
-  // Configure query function
-  const getOnboardingQuery = async () => {
-    // Try to get data from AsyncStorage first for production
-    if (!isSandbox) {
-      try {
-        const cachedData = await AsyncStorage.getItem(cacheKey);
-        if (cachedData) {
-          return JSON.parse(cachedData);
-        }
-      } catch (error) {
-        console.warn("Failed to load cached onboarding questions:", error);
-      }
-    }
-
-    const { data, headers } = await client.getSteps(
-      { locale },
-      getStepsParams
-    );
-
-    console.info("onbs-onboarding-name", headers["ONBS-Onboarding-Name"]);
-    console.info("onbs-onboarding-id", headers["ONBS-Onboarding-Id"]);
-
-    const steps = data.steps || [];
-
-    // Cache the steps
-    try {
-      await AsyncStorage.setItem(cacheKey, JSON.stringify(steps));
-    } catch (error) {
-      console.warn("Failed to cache onboarding questions:", error);
-    }
-
-    return steps;
-  };
-
-  // Set up query client with our query function
-  defaultQueryClient.setQueryDefaults(["onboardingQuestions"], {
-    queryFn: getOnboardingQuery,
-  });
+  // Create query client instance (one per provider)
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: Infinity,
+          },
+        },
+      }),
+    []
+  );
 
   return (
-    <QueryClientProvider client={defaultQueryClient}>
+    <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <ThemeProvider initialColorScheme={initialColorScheme}>
           <OnboardingProgressContext.Provider
-            value={{ activeStep, setActiveStep, totalSteps, setTotalSteps }}
+            value={{
+              activeStep,
+              setActiveStep,
+              totalSteps,
+              setTotalSteps,
+              client,
+              isSandbox,
+              locale,
+              getStepsParams,
+              cacheKey,
+            }}
           >
             {children}
           </OnboardingProgressContext.Provider>
@@ -93,12 +68,24 @@ export const OnboardingProvider = ({
   );
 };
 
-export const OnboardingProgressContext = createContext({
+export const OnboardingProgressContext = createContext<{
+  activeStep: { number: number; displayProgressHeader: boolean };
+  setActiveStep: (step: { number: number; displayProgressHeader: boolean }) => void;
+  totalSteps: number;
+  setTotalSteps: (steps: number) => void;
+  client: OnboardingStudioClient | null;
+  isSandbox: boolean;
+  locale: string;
+  getStepsParams: Record<string, any>;
+  cacheKey: string;
+}>({
   activeStep: { number: 0, displayProgressHeader: false },
-  setActiveStep: (step: {
-    number: number;
-    displayProgressHeader: boolean;
-  }) => {},
+  setActiveStep: () => {},
   totalSteps: 0,
-  setTotalSteps: (steps: number) => {},
+  setTotalSteps: () => {},
+  client: null,
+  isSandbox: false,
+  locale: "en",
+  getStepsParams: {},
+  cacheKey: "rocapine-onboarding-studio",
 });
