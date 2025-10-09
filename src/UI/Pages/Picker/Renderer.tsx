@@ -3,6 +3,7 @@ import { PickerStepType, PickerStepTypeSchema, WeightUnit, HeightUnit } from "./
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useState } from "react";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 // Lazy load Picker - only needed for picker screens
 let PickerComponent: any;
@@ -84,10 +85,10 @@ const PickerRendererBase = ({ step, onContinue }: ContentProps) => {
       button={{ text: validatedData.continueButtonLabel }}
     >
       <View style={styles.container}>
-        <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
-        {description && <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>{description}</Text>}
+        <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+        {description && <Text style={[getTextStyle(theme, "body"), styles.description, { color: theme.colors.text.secondary }]}>{description}</Text>}
         <View style={[styles.placeholderContainer, { backgroundColor: theme.colors.neutral.lowest }]}>
-          <Text style={[styles.placeholderText, { color: theme.colors.text.tertiary }]}>
+          <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.secondary }]}>
             Picker type "{pickerType}" not yet implemented
           </Text>
         </View>
@@ -142,9 +143,9 @@ const WeightPicker = ({
     >
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+          <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
           {description && (
-            <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>{description}</Text>
+            <Text style={[getTextStyle(theme, "body"), styles.description, { color: theme.colors.text.secondary }]}>{description}</Text>
           )}
         </View>
 
@@ -256,9 +257,9 @@ const HeightPicker = ({
     >
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+          <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
           {description && (
-            <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>{description}</Text>
+            <Text style={[getTextStyle(theme, "body"), styles.description, { color: theme.colors.text.secondary }]}>{description}</Text>
           )}
         </View>
 
@@ -363,11 +364,11 @@ const NamePicker = ({
           >
             <View style={styles.container}>
               <View style={styles.textContainer}>
-                <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+                <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>
                   {title}
                 </Text>
                 {description && (
-                  <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>
+                  <Text style={[getTextStyle(theme, "body"), styles.description, { color: theme.colors.text.secondary }]}>
                     {description}
                   </Text>
                 )}
@@ -466,11 +467,11 @@ const DatePicker = ({
     >
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+          <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>
             {title}
           </Text>
           {description && (
-            <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>
+            <Text style={[getTextStyle(theme, "body"), styles.description, { color: theme.colors.text.secondary }]}>
               {description}
             </Text>
           )}
@@ -527,17 +528,10 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   title: {
-    fontFamily: "System",
-    fontSize: 38,
-    fontWeight: "500",
-    lineHeight: 49.4,
     textAlign: "center",
     letterSpacing: -0.76,
   },
   description: {
-    fontFamily: "System",
-    fontSize: 17,
-    lineHeight: 22.1,
     textAlign: "center",
   },
   placeholderContainer: {
@@ -548,8 +542,6 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   placeholderText: {
-    fontFamily: "System",
-    fontSize: 16,
     textAlign: "center",
   },
   pickerContainer: {
@@ -592,7 +584,6 @@ const styles = StyleSheet.create({
     height: 70,
     fontSize: 17,
     borderRadius: 16,
-    fontFamily: "System",
   },
   datePickerRow: {
     flexDirection: "row",

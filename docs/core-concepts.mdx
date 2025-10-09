@@ -1,0 +1,284 @@
+---
+sidebar_position: 3
+---
+
+# Core Concepts
+
+Understand how the Rocapine Onboarding Studio SDK works under the hood.
+
+## Architecture Overview
+
+The SDK is built with three main layers:
+
+```
+┌─────────────────────────────────────┐
+│     Your React Native App          │
+│  (Navigation, Routing, Business)   │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│      SDK Layer                      │
+│  • OnboardingProvider               │
+│  • useOnboardingQuestions           │
+│  • OnboardingPage (Router)          │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│      CMS Backend                    │
+│  (Supabase - Rocapine Studio)       │
+└─────────────────────────────────────┘
+```
+
+## How It Works
+
+### 1. Initialization
+
+When you wrap your app with `OnboardingProvider`:
+
+```typescript
+<OnboardingProvider
+  client={client}
+  getStepsParams={{ onboardingId: "abc-123" }}
+>
+```
+
+The SDK:
+1. Initializes React Query for data fetching
+2. Sets up AsyncStorage caching
+3. Prepares theme context
+4. Establishes progress tracking
+
+### 2. Data Fetching
+
+When you call `useOnboardingQuestions({ stepNumber: 1 })`:
+
+```typescript
+const { step, isLastStep, totalSteps } = useOnboardingQuestions({ stepNumber: 1 });
+```
+
+The SDK:
+1. Checks AsyncStorage cache first (offline support)
+2. Fetches from CMS if cache is stale or missing
+3. Uses React Query's `useSuspenseQuery` for automatic loading states
+4. Validates data with Zod schemas
+5. Updates progress context
+
+### 3. Rendering
+
+When you use `<OnboardingPage step={step} />`:
+
+```typescript
+<OnboardingPage step={step} onContinue={handleContinue} />
+```
+
+The SDK:
+1. Inspects the `step.type` field
+2. Routes to the appropriate renderer (`QuestionRenderer`, `MediaContentRenderer`, etc.)
+3. Passes step data and callbacks
+4. Handles fallback for unimplemented types (sandbox mode)
+
+## Caching Strategy
+
+### AsyncStorage Cache
+
+The SDK uses AsyncStorage to cache onboarding steps for offline access:
+
+```typescript
+<OnboardingProvider
+  cacheKey="my-app-onboarding" // Custom cache key
+>
+```
+
+**Cache Behavior:**
+- Steps are cached after successful fetch
+- Cache is checked before network requests
+- Stale data triggers background refresh
+- Cache persists across app restarts
+
+**Cache Invalidation:**
+You can manually invalidate the cache:
+
+```typescript
+import { useQueryClient } from "@tanstack/react-query";
+
+const queryClient = useQueryClient();
+queryClient.invalidateQueries({ queryKey: ["onboardingSteps"] });
+```
+
+## Progress Tracking
+
+The SDK automatically tracks progress through your onboarding flow:
+
+### Progress Context
+
+```typescript
+const { activeStep, totalSteps, progress } = useContext(OnboardingProgressContext);
+```
+
+- `activeStep`: Current step number (updated by `useOnboardingQuestions`)
+- `totalSteps`: Total number of steps in the flow
+- `progress`: Percentage (0-1) of completion
+
+### ProgressBar Component
+
+Add `<ProgressBar />` once in your `OnboardingProvider`:
+
+```typescript
+<OnboardingProvider {...props}>
+  <ProgressBar />  {/* Global progress indicator */}
+  <YourApp />
+</OnboardingProvider>
+```
+
+The ProgressBar:
+- Reads from progress context automatically
+- Shows/hides based on `step.displayProgressHeader`
+- Animates smoothly with Reanimated
+- Positions itself at the top of safe area
+
+## Step Types
+
+Each step returned by the CMS has this structure:
+
+```typescript
+{
+  id: string;                    // Unique identifier
+  type: string;                  // "Question" | "MediaContent" | "Carousel" | ...
+  name: string;                  // Display name (for debugging)
+  displayProgressHeader: boolean; // Show/hide progress bar
+  payload: object;               // Type-specific data
+  customPayload: object | null;  // Your custom fields
+  continueButtonLabel?: string;  // Optional CTA text
+  figmaUrl?: string | null;      // Design reference
+}
+```
+
+### Type Discrimination
+
+The SDK uses the `type` field for routing:
+
+```typescript
+switch (step.type) {
+  case "Question":
+    return <QuestionRenderer step={step} onContinue={onContinue} />;
+  case "MediaContent":
+    return <MediaContentRenderer step={step} onContinue={onContinue} />;
+  // ... more types
+}
+```
+
+### Runtime Validation
+
+All step data is validated at runtime using Zod schemas:
+
+```typescript
+const QuestionStepSchema = z.object({
+  id: z.string(),
+  type: z.literal("Question"),
+  payload: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    answers: z.array(/* ... */),
+    // ...
+  }),
+  // ...
+});
+```
+
+If data doesn't match the schema, you'll get a clear error message.
+
+## Sandbox Mode
+
+Enable sandbox mode during development:
+
+```typescript
+<OnboardingProvider isSandbox={true} />
+```
+
+**Sandbox Features:**
+- Shows dev messages for unimplemented screen types
+- More verbose error messages
+- Allows testing without production CMS data
+- Auto-continues on unimplemented screens
+
+**Production Mode:**
+- Silently auto-continues on unimplemented screens
+- Minimal error messages
+- Optimized for end-user experience
+
+## Locale Support
+
+Fetch onboarding content in different languages:
+
+```typescript
+<OnboardingProvider locale="fr" />
+```
+
+The locale is passed to the CMS API, which returns localized content based on your Rocapine Studio configuration.
+
+## Custom Headers
+
+The CMS API returns custom headers with metadata:
+
+- `ONBS-Onboarding-Id`: The active onboarding ID
+- `ONBS-Audience-Id`: The targeted audience
+- `ONBS-Onboarding-Name`: Display name of the onboarding
+
+These headers are available in the client but typically not needed in your app logic.
+
+## Suspense Boundaries
+
+The SDK uses React Query's `useSuspenseQuery`, which requires Suspense boundaries:
+
+```typescript
+import { Suspense } from "react";
+
+<Suspense fallback={<LoadingScreen />}>
+  <OnboardingScreen />
+</Suspense>
+```
+
+:::tip
+Expo Router handles Suspense automatically, so you usually don't need to add boundaries manually.
+:::
+
+## Error Handling
+
+The SDK provides multiple layers of error handling:
+
+1. **Network Errors**: Automatic retry with exponential backoff
+2. **Validation Errors**: Clear messages about schema mismatches
+3. **Missing Dependencies**: Explicit instructions for required packages
+4. **Sandbox Mode**: Development-friendly error messages
+
+## Theme System
+
+The SDK provides a theme system with:
+- **Color Tokens**: Semantic color names (primary, neutral, text, etc.)
+- **Typography Tokens**: Font families, sizes, weights, line heights
+- **Semantic Text Styles**: Pre-configured styles (heading1, body, button, etc.)
+- **Mode Support**: Light and dark mode with separate token sets
+
+Learn more in [Customization → Theming](./customization/theming.mdx).
+
+## Performance Considerations
+
+### Optimizations
+
+- **Lazy Loading**: Renderers are lazy-loaded per screen type
+- **Native Driver**: Animations use native driver when possible
+- **Memoization**: Components are memoized where appropriate
+- **Query Deduplication**: React Query prevents duplicate requests
+
+### Best Practices
+
+- Use pagination for long onboarding flows
+- Preload media assets when possible
+- Keep payload sizes reasonable
+- Cache static assets locally
+
+## Next Steps
+
+- 📘 Explore the [API Reference](./api-reference.mdx) for detailed prop documentation
+- 🎨 Learn about [Customization Options](./customization/intro.mdx)
+- 🎭 Review available [Page Types](./page-types.mdx)

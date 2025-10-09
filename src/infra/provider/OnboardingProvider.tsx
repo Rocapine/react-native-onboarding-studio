@@ -2,8 +2,12 @@ import { createContext, useState, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
-import { ColorScheme } from "../../UI/Theme/types";
+import { ColorScheme, DeepPartial, Theme } from "../../UI/Theme/types";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
+import {
+  CustomComponentsProvider,
+  CustomComponents,
+} from "./CustomComponentsContext";
 
 interface OnboardingProviderProps {
   children: React.ReactNode;
@@ -13,6 +17,35 @@ interface OnboardingProviderProps {
   locale?: string;
   getStepsParams?: Record<string, any>;
   cacheKey?: string;
+  /**
+   * Custom theme to override default theme tokens for both light and dark modes.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  theme?: DeepPartial<Theme>;
+  /**
+   * Custom theme tokens for light mode only.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  lightTheme?: DeepPartial<Theme>;
+  /**
+   * Custom theme tokens for dark mode only.
+   * Partial overrides are supported - only provide the tokens you want to customize.
+   */
+  darkTheme?: DeepPartial<Theme>;
+  /**
+   * Custom components to replace default implementations.
+   * Allows full UI customization for specific parts of the onboarding flow.
+   * @example
+   * ```tsx
+   * <OnboardingProvider
+   *   customComponents={{
+   *     QuestionAnswerButton: MyCustomButton,
+   *     QuestionAnswersList: MyCustomList
+   *   }}
+   * />
+   * ```
+   */
+  customComponents?: CustomComponents;
 }
 
 export const OnboardingProvider = ({
@@ -23,6 +56,10 @@ export const OnboardingProvider = ({
   locale = "en",
   getStepsParams = {},
   cacheKey = "rocapine-onboarding-studio",
+  theme,
+  lightTheme,
+  darkTheme,
+  customComponents,
 }: OnboardingProviderProps) => {
   const [activeStep, setActiveStep] = useState({
     number: 0,
@@ -46,22 +83,29 @@ export const OnboardingProvider = ({
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <ThemeProvider initialColorScheme={initialColorScheme}>
-          <OnboardingProgressContext.Provider
-            value={{
-              activeStep,
-              setActiveStep,
-              totalSteps,
-              setTotalSteps,
-              client,
-              isSandbox,
-              locale,
-              getStepsParams,
-              cacheKey,
-            }}
-          >
-            {children}
-          </OnboardingProgressContext.Provider>
+        <ThemeProvider
+          initialColorScheme={initialColorScheme}
+          customTheme={theme}
+          customLightTheme={lightTheme}
+          customDarkTheme={darkTheme}
+        >
+          <CustomComponentsProvider components={customComponents}>
+            <OnboardingProgressContext.Provider
+              value={{
+                activeStep,
+                setActiveStep,
+                totalSteps,
+                setTotalSteps,
+                client,
+                isSandbox,
+                locale,
+                getStepsParams,
+                cacheKey,
+              }}
+            >
+              {children}
+            </OnboardingProgressContext.Provider>
+          </CustomComponentsProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </QueryClientProvider>

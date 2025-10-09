@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { OnboardingStepType } from "../types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../Theme/useTheme";
+import { getTextStyle } from "../Theme/helpers";
 
 type OnboardingTemplateProps = {
   children: React.ReactNode;
@@ -38,8 +39,8 @@ export const OnboardingTemplate = ({
           <TouchableOpacity
             style={[
               styles.ctaButton,
-              { backgroundColor: theme.colors.surface.opposite },
-              button.disabled && styles.ctaButtonDisabled,
+              { backgroundColor: theme.colors.primary },
+              button.disabled && { backgroundColor: theme.colors.disable },
             ]}
             onPress={onContinue}
             activeOpacity={0.8}
@@ -47,9 +48,10 @@ export const OnboardingTemplate = ({
           >
             <Text
               style={[
+                getTextStyle(theme, "button"),
                 styles.ctaButtonText,
                 { color: theme.colors.text.opposite },
-                button.disabled && styles.ctaButtonTextDisabled,
+                button.disabled && { color: theme.colors.text.disable },
               ]}
             >
               {button.text}
@@ -78,17 +80,5 @@ const styles = StyleSheet.create({
     minWidth: 234,
     alignItems: "center",
   },
-  ctaButtonText: {
-    fontFamily: "System",
-    fontSize: 16,
-    fontWeight: "600",
-    lineHeight: 24,
-  },
-  ctaButtonDisabled: {
-    backgroundColor: "#E0E0E0",
-    opacity: 0.6,
-  },
-  ctaButtonTextDisabled: {
-    color: "#9E9E9E",
-  },
+  ctaButtonText: {},
 });

@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { useRef, useState } from "react";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 type ContentProps = {
   step: CarouselStepType;
@@ -110,13 +111,13 @@ const CarouselScreen = ({ width, screen }: CarouselScreenProps) => {
 
     if (mediaUrl.includes(".riv")) {
       return (
-        <View style={styles.mediaPlaceholder}>
-          <Text style={styles.placeholderText}>Rive Animation</Text>
+        <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+          <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>Rive Animation</Text>
         </View>
       );
     } else if (mediaUrl.includes(".json")) {
-      return <View style={styles.mediaPlaceholder}>
-        <Text style={styles.placeholderText}>Lottie Animation</Text>
+      return <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+        <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>Lottie Animation</Text>
       </View>
     } else {
       return (
@@ -136,9 +137,9 @@ const CarouselScreen = ({ width, screen }: CarouselScreenProps) => {
 
       {/* Text Content */}
       <View style={styles.textContainer}>
-        <Text style={[styles.title, { color: theme.colors.text.primary }]}>{screen.title}</Text>
+        <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{screen.title}</Text>
         {screen.subtitle && (
-          <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>{screen.subtitle}</Text>
+          <Text style={[getTextStyle(theme, "heading3"), styles.subtitle, { color: theme.colors.text.secondary }]}>{screen.subtitle}</Text>
         )}
       </View>
     </View>
@@ -170,33 +171,20 @@ const styles = StyleSheet.create({
   mediaPlaceholder: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#f6f6f6",
     borderRadius: 32,
     justifyContent: "center",
     alignItems: "center",
   },
-  placeholderText: {
-    fontFamily: "System",
-    fontSize: 16,
-    color: "#8e8e93",
-  },
+  placeholderText: {},
   textContainer: {
     gap: 16,
     paddingBottom: 24,
   },
   title: {
-    fontFamily: "System",
-    fontSize: 38,
-    fontWeight: "500",
-    lineHeight: 49.4,
     textAlign: "center",
     letterSpacing: -0.76,
   },
   subtitle: {
-    fontFamily: "System",
-    fontSize: 24,
-    fontWeight: "400",
-    lineHeight: 31.2,
     textAlign: "center",
   },
   indicatorContainer: {

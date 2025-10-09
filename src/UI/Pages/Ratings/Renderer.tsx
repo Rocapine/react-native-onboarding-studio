@@ -4,6 +4,7 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { RatingsStepType, RatingsStepTypeSchema } from "./types";
 import { useState } from "react";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 // Lazy load StoreReview - only needed for ratings screens
 let StoreReview: any;
@@ -99,7 +100,7 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
               />
               <View style={styles.awardTextContainer}>
                 {renderStars(5, 32)}
-                <Text style={[styles.awardTitle, { color: theme.colors.text.secondary }]}>Users Choice</Text>
+                <Text style={[getTextStyle(theme, "heading2"), styles.awardTitle, { color: theme.colors.text.secondary }]}>Users Choice</Text>
               </View>
               <Image
                 source={require("../../../assets/laurel-right.png")}
@@ -113,15 +114,15 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
           <View style={styles.reviewSection}>
             <View style={[styles.reviewCard, { backgroundColor: theme.colors.neutral.lowest }]}>
               <View style={styles.reviewAuthor}>
-                <View style={styles.avatar}>
-                  <Text style={styles.avatarText}>
+                <View style={[styles.avatar, { backgroundColor: theme.colors.neutral.low }]}>
+                  <Text style={[styles.avatarText, { color: theme.colors.text.opposite }]}>
                     {mainReview.authorName.charAt(0).toUpperCase()}
                   </Text>
                 </View>
-                <Text style={[styles.authorName, { color: theme.colors.neutral.higher }]}>{mainReview.authorName}</Text>
+                <Text style={[getTextStyle(theme, "label"), styles.authorName, { color: theme.colors.text.secondary }]}>{mainReview.authorName}</Text>
               </View>
 
-              <Text style={[styles.reviewContent, { color: theme.colors.text.primary }]}>{mainReview.content}</Text>
+              <Text style={[getTextStyle(theme, "bodyMedium"), styles.reviewContent, { color: theme.colors.text.primary }]}>{mainReview.content}</Text>
 
               {renderStars(mainReview.numberOfStar)}
             </View>
@@ -138,17 +139,18 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
                         {
                           zIndex: 3 - index,
                           marginLeft: index > 0 ? -10 : 0,
-                          borderColor: theme.colors.surface.lowest
+                          borderColor: theme.colors.surface.lowest,
+                          backgroundColor: theme.colors.neutral.low,
                         },
                       ]}
                     >
-                      <Text style={styles.smallAvatarText}>
+                      <Text style={[styles.smallAvatarText, { color: theme.colors.text.opposite }]}>
                         {proof.authorName.charAt(0).toUpperCase()}
                       </Text>
                     </View>
                   ))}
                 </View>
-                <Text style={[styles.usersCountText, { color: theme.colors.neutral.higher }]}>
+                <Text style={[getTextStyle(theme, "bodyMedium"), styles.usersCountText, { color: theme.colors.text.secondary }]}>
                   +{otherUsersCount.toLocaleString()} others
                 </Text>
               </View>
@@ -157,8 +159,8 @@ const RatingsRendererBase = ({ step, onContinue }: RatingsRendererProps) => {
 
           {/* Title and Subtitle */}
           <View style={styles.textSection}>
-            <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
-            <Text style={[styles.subtitle, { color: theme.colors.text.tertiary }]}>{subtitle}</Text>
+            <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+            <Text style={[getTextStyle(theme, "heading3"), styles.subtitle, { color: theme.colors.text.secondary }]}>{subtitle}</Text>
           </View>
         </ScrollView>
       </View>
@@ -194,9 +196,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   awardTitle: {
-    fontFamily: "System",
-    fontSize: 24,
-    fontWeight: "600",
     textAlign: "center",
   },
   starsContainer: {
@@ -227,23 +226,15 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#d1d1d6",
     alignItems: "center",
     justifyContent: "center",
   },
   avatarText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#ffffff",
   },
-  authorName: {
-    fontFamily: "System",
-    fontSize: 15,
-  },
+  authorName: {},
   reviewContent: {
-    fontFamily: "System",
-    fontSize: 16,
-    lineHeight: 20.8,
     textAlign: "center",
   },
   usersCount: {
@@ -258,7 +249,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#d1d1d6",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -266,13 +256,8 @@ const styles = StyleSheet.create({
   smallAvatarText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#ffffff",
   },
-  usersCountText: {
-    fontFamily: "System",
-    fontSize: 16,
-    fontWeight: "500",
-  },
+  usersCountText: {},
   textSection: {
     paddingHorizontal: 32,
     gap: 16,
@@ -280,45 +265,10 @@ const styles = StyleSheet.create({
     marginTop: "auto",
   },
   title: {
-    fontFamily: "System",
-    fontSize: 32,
-    fontWeight: "600",
-    lineHeight: 40,
     textAlign: "center",
   },
   subtitle: {
-    fontFamily: "System",
-    fontSize: 17,
-    lineHeight: 22.1,
     textAlign: "center",
-  },
-  bottomSection: {
-    paddingHorizontal: 32,
-    paddingBottom: 8,
-    gap: 24,
-    alignItems: "center",
-  },
-  ctaButton: {
-    backgroundColor: "#262626",
-    borderRadius: 90,
-    paddingVertical: 18,
-    paddingHorizontal: 24,
-    minWidth: 234,
-    alignItems: "center",
-  },
-  ctaButtonText: {
-    fontFamily: "System",
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#ffffff",
-    textAlign: "center",
-  },
-  homeIndicator: {
-    width: 148,
-    height: 5,
-    backgroundColor: "#000000",
-    borderRadius: 100,
-    opacity: 0.3,
   },
 });
 

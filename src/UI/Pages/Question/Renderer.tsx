@@ -8,16 +8,23 @@ import {
   StyleSheet,
 } from "react-native";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
+import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
+import { useCustomComponents } from "../../../infra/provider/CustomComponentsContext";
+import {
+  DefaultQuestionAnswerButton,
+  DefaultQuestionAnswersList,
+} from "./components";
 
 interface QuestionRendererProps {
   step: QuestionStepType;
   onContinue?: (...args: any[]) => void;
 }
 
-const QuestionRendererBase = ({
-  step,
-  onContinue,
-}: QuestionRendererProps) => {
+const QuestionRendererBase = ({ step, onContinue }: QuestionRendererProps) => {
+  const { theme } = useTheme();
+  const customComponents = useCustomComponents();
+
   // Validate the schema
   const validatedData = QuestionStepTypeSchema.parse(step);
   const { title, subtitle, answers, multipleAnswer } = validatedData.payload;
@@ -67,22 +74,43 @@ const QuestionRendererBase = ({
 
   const isAnySelected = Object.values(selected).some((value) => value);
 
+  // Priority: Custom full list > Custom button (via DefaultList) > Default implementation
+  const AnswersList =
+    customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+  const AnswerButton =
+    customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+
   return (
     <OnboardingTemplate
       step={step}
-      onContinue={onContinue || (() => { })}
+      onContinue={onContinue || (() => {})}
       button={multipleAnswer ? { text: "Continue" } : undefined}
     >
       <View style={styles.container}>
-        {/* Status Bar Spacer */}
-        <View style={styles.statusBarSpacer} />
-
         {/* Main Content */}
         <View style={styles.contentContainer}>
           {/* Header */}
           <View style={styles.headerSection}>
-            <Text style={styles.title}>{title}</Text>
-            {Boolean(subtitle?.length) ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+            <Text
+              style={[
+                getTextStyle(theme, "heading1"),
+                styles.title,
+                { color: theme.colors.text.primary },
+              ]}
+            >
+              {title}
+            </Text>
+            {Boolean(subtitle?.length) ? (
+              <Text
+                style={[
+                  getTextStyle(theme, "body"),
+                  styles.subtitle,
+                  { color: theme.colors.text.secondary },
+                ]}
+              >
+                {subtitle}
+              </Text>
+            ) : null}
           </View>
 
           {/* Answers */}
@@ -91,28 +119,31 @@ const QuestionRendererBase = ({
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            <View style={styles.answersContainer}>
-              {answers.map((answer) => (
-                <TouchableOpacity
-                  key={answer.value}
-                  style={[
-                    styles.answerButton,
-                    selected[answer.value] && styles.answerButtonSelected,
-                  ]}
-                  onPress={() => onAnswerSelected(answer.value)}
-                  activeOpacity={0.7}
-                >
-                  <Text
-                    style={[
-                      styles.answerText,
-                      selected[answer.value] && styles.answerTextSelected,
-                    ]}
-                  >
-                    {answer.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+            {/* Use custom list if provided, otherwise use default list which respects custom button */}
+            {customComponents.QuestionAnswersList ? (
+              <AnswersList
+                answers={answers}
+                selected={selected}
+                onAnswerPress={onAnswerSelected}
+                multipleAnswer={multipleAnswer}
+                theme={theme}
+              />
+            ) : (
+              <View style={styles.answersContainer}>
+                {answers.map((answer, index) => (
+                  <AnswerButton
+                    key={answer.value}
+                    answer={answer}
+                    selected={selected[answer.value]}
+                    onPress={() => onAnswerSelected(answer.value)}
+                    theme={theme}
+                    index={index}
+                    isFirst={index === 0}
+                    isLast={index === answers.length - 1}
+                  />
+                ))}
+              </View>
+            )}
           </ScrollView>
         </View>
       </View>
@@ -124,9 +155,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  statusBarSpacer: {
-    height: 48,
-  },
   contentContainer: {
     flex: 1,
     paddingHorizontal: 24,
@@ -137,20 +165,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontFamily: "System",
-    fontSize: 32,
-    fontWeight: "600",
-    color: "#262626",
     textAlign: "center",
-    lineHeight: 40,
   },
   subtitle: {
-    fontFamily: "System",
-    fontSize: 17,
-    fontWeight: "400",
-    color: "#8e8e93",
     textAlign: "center",
-    lineHeight: 22.1,
   },
   scrollView: {
     flex: 1,
@@ -160,29 +178,6 @@ const styles = StyleSheet.create({
   },
   answersContainer: {
     gap: 10,
-  },
-  answerButton: {
-    backgroundColor: "#f6f6f6",
-    borderRadius: 16,
-    paddingVertical: 20,
-    paddingHorizontal: 24,
-    borderWidth: 2,
-    borderColor: "transparent",
-  },
-  answerButtonSelected: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
-  },
-  answerText: {
-    fontFamily: "System",
-    fontSize: 17,
-    fontWeight: "500",
-    color: "#262626",
-    textAlign: "center",
-  },
-  answerTextSelected: {
-    color: "#ffffff",
-    fontWeight: "600",
   },
   bottomSection: {
     paddingHorizontal: 32,
@@ -219,4 +214,7 @@ const styles = StyleSheet.create({
 
 import { withErrorBoundary } from "../../ErrorBoundary";
 
-export const QuestionRenderer = withErrorBoundary(QuestionRendererBase, 'Question');
+export const QuestionRenderer = withErrorBoundary(
+  QuestionRendererBase,
+  "Question"
+);
