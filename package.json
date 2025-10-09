@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc && cp -r src/assets dist/",
     "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "publish": "npm version patch && npm run build && npm publish"
   },
   "keywords": [
     "react-native",
