@@ -5,6 +5,7 @@ export const PickerTypeEnum = z.enum([
   "height",
   "weight",
   "age",
+  "date",
   "gender",
   "coach",
   "name",

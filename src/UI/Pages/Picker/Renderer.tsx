@@ -49,6 +49,17 @@ const PickerRendererBase = ({ step, onContinue }: ContentProps) => {
     );
   }
 
+  if (pickerType === "date") {
+    return (
+      <DatePicker
+        step={validatedData}
+        onContinue={onContinue}
+        title={title}
+        description={description}
+      />
+    );
+  }
+
   // Fallback for other picker types (to be implemented)
   return (
     <OnboardingTemplate
@@ -372,6 +383,123 @@ const NamePicker = ({
   );
 };
 
+type DatePickerProps = {
+  step: PickerStepType;
+  onContinue: (value?: string | number) => void;
+  title: string;
+  description: string | null;
+};
+
+const DatePicker = ({
+  step,
+  onContinue,
+  title,
+  description,
+}: DatePickerProps) => {
+  const { theme } = useTheme();
+
+  // Get current date as default
+  const now = new Date();
+  const [selectedMonth, setSelectedMonth] = useState<number>(now.getMonth());
+  const [selectedDay, setSelectedDay] = useState<number>(now.getDate());
+  const [selectedYear, setSelectedYear] = useState<number>(now.getFullYear());
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const generateDayOptions = (month: number, year: number) => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const options: React.ReactNode[] = [];
+    for (let i = 1; i <= daysInMonth; i++) {
+      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+    }
+    return options;
+  };
+
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const options: React.ReactNode[] = [];
+    for (let i = currentYear; i >= currentYear - 100; i--) {
+      options.push(<Picker.Item key={i} label={i.toString()} value={i} />);
+    }
+    return options;
+  };
+
+  const handleMonthChange = (month: number) => {
+    setSelectedMonth(month);
+    // Adjust day if it exceeds the new month's days
+    const daysInNewMonth = new Date(selectedYear, month + 1, 0).getDate();
+    if (selectedDay > daysInNewMonth) {
+      setSelectedDay(daysInNewMonth);
+    }
+  };
+
+  const handleContinue = () => {
+    // Return date as ISO string "YYYY-MM-DD"
+    const date = new Date(selectedYear, selectedMonth, selectedDay);
+    onContinue(date.toISOString().split('T')[0]);
+  };
+
+  return (
+    <OnboardingTemplate
+      step={step}
+      onContinue={handleContinue}
+      button={{ text: step.continueButtonLabel }}
+    >
+      <View style={styles.container}>
+        <View style={styles.textContainer}>
+          <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+            {title}
+          </Text>
+          {description && (
+            <Text style={[styles.description, { color: theme.colors.text.tertiary }]}>
+              {description}
+            </Text>
+          )}
+        </View>
+
+        <View style={styles.pickerContainer}>
+          <View style={styles.datePickerRow}>
+            {/* Month Picker */}
+            <Picker
+              selectedValue={selectedMonth}
+              onValueChange={(itemValue: number) => handleMonthChange(itemValue)}
+              style={styles.monthPicker}
+              itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
+            >
+              {months.map((month, index) => (
+                <Picker.Item key={index} label={month} value={index} />
+              ))}
+            </Picker>
+
+            {/* Day Picker */}
+            <Picker
+              selectedValue={selectedDay}
+              onValueChange={(itemValue: number) => setSelectedDay(itemValue)}
+              style={styles.dayPicker}
+              itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
+            >
+              {generateDayOptions(selectedMonth, selectedYear)}
+            </Picker>
+
+            {/* Year Picker */}
+            <Picker
+              selectedValue={selectedYear}
+              onValueChange={(itemValue: number) => setSelectedYear(itemValue)}
+              style={styles.yearPicker}
+              itemStyle={[styles.pickerItem, { color: theme.colors.text.primary }]}
+            >
+              {generateYearOptions()}
+            </Picker>
+          </View>
+        </View>
+      </View>
+    </OnboardingTemplate>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -422,7 +550,7 @@ const styles = StyleSheet.create({
     width: "35%",
   },
   pickerItem: {
-    fontSize: 32,
+    fontSize: 20,
   },
   heightImperialContainer: {
     flex: 1,
@@ -449,6 +577,18 @@ const styles = StyleSheet.create({
     fontSize: 17,
     borderRadius: 16,
     fontFamily: "System",
+  },
+  datePickerRow: {
+    flexDirection: "row",
+  },
+  monthPicker: {
+    width: "50%",
+  },
+  dayPicker: {
+    width: "25%",
+  },
+  yearPicker: {
+    width: "25%",
   },
 });
 

@@ -36,6 +36,7 @@ const examples: Example[] = [
       { name: "Weight", route: "/example/picker" },
       { name: "Height", route: "/example/picker-height" },
       { name: "Name", route: "/example/picker-name" },
+      { name: "Date", route: "/example/picker-date" },
     ],
   },
   { name: "Question", route: "/example/question" },
