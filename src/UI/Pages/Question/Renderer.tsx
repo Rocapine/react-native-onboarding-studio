@@ -8,6 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
+import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 interface QuestionRendererProps {
   step: QuestionStepType;
@@ -18,6 +20,7 @@ const QuestionRendererBase = ({
   step,
   onContinue,
 }: QuestionRendererProps) => {
+  const { theme } = useTheme();
   // Validate the schema
   const validatedData = QuestionStepTypeSchema.parse(step);
   const { title, subtitle, answers, multipleAnswer } = validatedData.payload;
@@ -81,8 +84,8 @@ const QuestionRendererBase = ({
         <View style={styles.contentContainer}>
           {/* Header */}
           <View style={styles.headerSection}>
-            <Text style={styles.title}>{title}</Text>
-            {Boolean(subtitle?.length) ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+            <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+            {Boolean(subtitle?.length) ? <Text style={[getTextStyle(theme, "body"), styles.subtitle, { color: theme.colors.text.secondary }]}>{subtitle}</Text> : null}
           </View>
 
           {/* Answers */}
@@ -97,15 +100,18 @@ const QuestionRendererBase = ({
                   key={answer.value}
                   style={[
                     styles.answerButton,
-                    selected[answer.value] && styles.answerButtonSelected,
+                    { backgroundColor: theme.colors.neutral.lowest },
+                    selected[answer.value] && [styles.answerButtonSelected, { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary }],
                   ]}
                   onPress={() => onAnswerSelected(answer.value)}
                   activeOpacity={0.7}
                 >
                   <Text
                     style={[
+                      getTextStyle(theme, "body"),
                       styles.answerText,
-                      selected[answer.value] && styles.answerTextSelected,
+                      { color: theme.colors.text.primary },
+                      selected[answer.value] && [styles.answerTextSelected, { color: theme.colors.text.opposite }],
                     ]}
                   >
                     {answer.label}
@@ -137,20 +143,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontFamily: "System",
-    fontSize: 32,
-    fontWeight: "600",
-    color: "#262626",
     textAlign: "center",
-    lineHeight: 40,
   },
   subtitle: {
-    fontFamily: "System",
-    fontSize: 17,
-    fontWeight: "400",
-    color: "#8e8e93",
     textAlign: "center",
-    lineHeight: 22.1,
   },
   scrollView: {
     flex: 1,
@@ -162,28 +158,17 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   answerButton: {
-    backgroundColor: "#f6f6f6",
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
     borderWidth: 2,
     borderColor: "transparent",
   },
-  answerButtonSelected: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
-  },
+  answerButtonSelected: {},
   answerText: {
-    fontFamily: "System",
-    fontSize: 17,
-    fontWeight: "500",
-    color: "#262626",
     textAlign: "center",
   },
-  answerTextSelected: {
-    color: "#ffffff",
-    fontWeight: "600",
-  },
+  answerTextSelected: {},
   bottomSection: {
     paddingHorizontal: 32,
     paddingBottom: 8,

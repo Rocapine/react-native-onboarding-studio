@@ -2,6 +2,7 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { MediaContentStepType, MediaContentStepTypeSchema } from "./types";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 type ContentProps = {
   step: MediaContentStepType;
@@ -20,8 +21,8 @@ const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
       if ("localPathId" in mediaSource) {
         // TODO: Map localPathId to actual local image path
         return (
-          <View style={styles.mediaPlaceholder}>
-            <Text style={styles.placeholderText}>
+          <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+            <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>
               Image: {mediaSource.localPathId}
             </Text>
           </View>
@@ -38,22 +39,22 @@ const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
     } else if (mediaSource.type === "lottie") {
       // TODO: Implement Lottie animation support
       return (
-        <View style={styles.mediaPlaceholder}>
-          <Text style={styles.placeholderText}>Lottie Animation</Text>
+        <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+          <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>Lottie Animation</Text>
         </View>
       );
     } else if (mediaSource.type === "rive") {
       // Rive animation placeholder
       return (
-        <View style={styles.mediaPlaceholder}>
-          <Text style={styles.placeholderText}>Rive Animation</Text>
+        <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+          <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>Rive Animation</Text>
         </View>
       );
     }
 
     return (
-      <View style={styles.mediaPlaceholder}>
-        <Text style={styles.placeholderText}>Media</Text>
+      <View style={[styles.mediaPlaceholder, { backgroundColor: theme.colors.neutral.lowest }]}>
+        <Text style={[getTextStyle(theme, "body"), styles.placeholderText, { color: theme.colors.text.disable }]}>Media</Text>
       </View>
     );
   };
@@ -71,13 +72,13 @@ const MediaContentRendererBase = ({ step, onContinue }: ContentProps) => {
       >
         <View style={styles.container}>
           {/* Title */}
-          <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+          <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
 
           {/* Media Content */}
           <View style={styles.mediaContainer}>{renderMedia()}</View>
 
           {/* Description/Subtitle */}
-          {description && <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>{description}</Text>}
+          {description && <Text style={[getTextStyle(theme, "heading3"), styles.subtitle, { color: theme.colors.text.secondary }]}>{description}</Text>}
         </View>
       </ScrollView>
     </OnboardingTemplate>
@@ -97,10 +98,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily: "System",
-    fontSize: 38,
-    fontWeight: "500",
-    lineHeight: 49.4,
     textAlign: "center",
     letterSpacing: -0.76,
   },
@@ -117,20 +114,11 @@ const styles = StyleSheet.create({
   mediaPlaceholder: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#f6f6f6",
     justifyContent: "center",
     alignItems: "center",
   },
-  placeholderText: {
-    fontFamily: "System",
-    fontSize: 16,
-    color: "#8e8e93",
-  },
+  placeholderText: {},
   subtitle: {
-    fontFamily: "System",
-    fontSize: 24,
-    fontWeight: "400",
-    lineHeight: 31.2,
     textAlign: "center",
   },
 });

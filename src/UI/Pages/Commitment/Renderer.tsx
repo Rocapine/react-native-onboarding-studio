@@ -15,6 +15,7 @@ import {
 } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { useTheme } from "../../Theme/useTheme";
+import { getTextStyle } from "../../Theme/helpers";
 
 // Lazy load Skia - only needed for signature variant
 let SkiaModule: any;
@@ -94,7 +95,7 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
       >
         <View style={styles.container}>
           {/* Title */}
-          <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+          <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>
             {payload.title}
           </Text>
 
@@ -104,6 +105,7 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
             {payload.subtitle && (
               <Text
                 style={[
+                  getTextStyle(theme, "heading3"),
                   styles.subtitle,
                   { color: theme.colors.text.secondary },
                 ]}
@@ -116,6 +118,7 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
             {payload.description ? (
               <Text
                 style={[
+                  getTextStyle(theme, "body"),
                   styles.description,
                   { color: theme.colors.text.secondary },
                 ]}
@@ -134,12 +137,13 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
                             { backgroundColor: theme.colors.primary },
                           ]}
                         >
-                          <Text style={styles.checkmarkText}>✓</Text>
+                          <Text style={[styles.checkmarkText, { color: theme.colors.text.opposite }]}>✓</Text>
                         </View>
                         <Text
                           style={[
+                            getTextStyle(theme, "body"),
                             styles.commitmentText,
-                            { color: theme.colors.text.tertiary },
+                            { color: theme.colors.text.secondary },
                           ]}
                         >
                           {commitment.text}
@@ -172,7 +176,7 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
                       onPress={handleClearSignature}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.clearButtonText}>✕</Text>
+                      <Text style={[styles.clearButtonText, { color: theme.colors.text.opposite }]}>✕</Text>
                     </TouchableOpacity>
                   )}
 
@@ -200,8 +204,9 @@ const CommitmentRendererBase = ({ step, onContinue }: ContentProps) => {
               {/* Caption */}
               <Text
                 style={[
+                  getTextStyle(theme, "caption"),
                   styles.signatureCaption,
-                  { color: theme.colors.text.tertiary },
+                  { color: theme.colors.text.secondary },
                 ]}
               >
                 {payload.signatureCaption}
@@ -228,26 +233,13 @@ const styles = StyleSheet.create({
     gap: 48,
   },
   title: {
-    fontFamily: "System",
-    fontSize: 38,
-    fontWeight: "500",
-    lineHeight: 49,
     letterSpacing: -0.76,
   },
   contentSection: {
     gap: 24,
   },
-  subtitle: {
-    fontFamily: "System",
-    fontSize: 24,
-    fontWeight: "400",
-    lineHeight: 31,
-  },
+  subtitle: {},
   description: {
-    fontFamily: "System",
-    fontSize: 18,
-    fontWeight: "400",
-    lineHeight: 23,
     paddingVertical: 8,
   },
   commitmentsContainer: {
@@ -267,16 +259,11 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   checkmarkText: {
-    color: "#FFFFFF",
     fontSize: 12,
     fontWeight: "600",
   },
   commitmentText: {
     flex: 1,
-    fontFamily: "System",
-    fontSize: 18,
-    fontWeight: "600",
-    lineHeight: 23,
   },
   signatureSection: {
     gap: 8,
@@ -303,7 +290,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   clearButtonText: {
-    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "400",
   },
@@ -312,10 +298,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   signatureCaption: {
-    fontFamily: "System",
-    fontSize: 13,
-    fontWeight: "400",
-    lineHeight: 17,
     marginBottom: 32,
   },
 });
