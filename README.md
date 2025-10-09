@@ -17,18 +17,41 @@ React Native SDK for Rocapine Onboarding Studio - A CMS-driven onboarding system
 npm install @rocapine/react-native-onboarding-studio
 ```
 
-### Required Dependencies
+### Required Peer Dependency
 
-Install the required peer dependencies:
+The SDK requires `expo-router` for navigation:
 
 ```bash
-npm install expo-router react-native-reanimated react-native-gesture-handler react-native-svg @react-native-picker/picker @shopify/react-native-skia
+npm install expo-router
+# or with Expo
+npx expo install expo-router
 ```
 
-If you're using Expo (recommended):
+> **Note:** The SDK automatically includes `react-native-reanimated`, `react-native-gesture-handler`, and `react-native-svg` as dependencies, so you don't need to install them separately.
 
+### Optional Dependencies by Screen Type
+
+Only install these if you're using the specific screen types:
+
+#### Picker Screens (Weight, Height, Age, etc.)
 ```bash
-npx expo install expo-router react-native-reanimated react-native-gesture-handler react-native-svg @react-native-picker/picker @shopify/react-native-skia
+npm install @react-native-picker/picker
+# or with Expo
+npx expo install @react-native-picker/picker
+```
+
+#### Ratings Screens
+```bash
+npm install expo-store-review
+# or with Expo
+npx expo install expo-store-review
+```
+
+#### Advanced Graphics (Skia-based components)
+```bash
+npm install @shopify/react-native-skia
+# or with Expo
+npx expo install @shopify/react-native-skia
 ```
 
 ## Quick Start
