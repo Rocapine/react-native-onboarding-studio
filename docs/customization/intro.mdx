@@ -1,0 +1,179 @@
+---
+sidebar_position: 5
+---
+
+# Customization Overview
+
+The SDK provides three levels of customization, from simple theme changes to complete screen replacement. Choose the level that matches your needs.
+
+## The Three Levels
+
+### Level 1: Theming 🎨
+**Customize colors, typography, and semantic text styles**
+
+- Easiest to implement
+- Works across all screens automatically
+- No custom components needed
+- Deep merge with default tokens
+
+**Best for:**
+- Brand color matching
+- Custom fonts
+- Typography adjustments
+- Semantic style overrides
+
+```typescript
+<OnboardingProvider
+  theme={{
+    colors: { primary: "#FF5733" },
+    typography: {
+      fontFamily: { title: "MyCustomFont-Bold" }
+    }
+  }}
+/>
+```
+
+[Learn more about Theming →](./theming.mdx)
+
+---
+
+### Level 2: Custom Components 🔧
+**Replace specific UI components with your own**
+
+- Moderate complexity
+- Full control over specific components
+- Compose with default components
+- Support for animations and custom behavior
+
+**Best for:**
+- Custom button styles
+- Animated lists
+- Adding analytics tracking
+- Unique interaction patterns
+
+```typescript
+<OnboardingProvider
+  customComponents={{
+    QuestionAnswerButton: MyCustomButton,
+    QuestionAnswersList: MyAnimatedList,
+  }}
+/>
+```
+
+[Learn more about Custom Components →](./custom-components.mdx)
+
+---
+
+### Level 3: Custom Renderers 🎭
+**Complete control over entire screens**
+
+- Most complex
+- Full control over screen logic and layout
+- Custom state management
+- Integration with external libraries
+
+**Best for:**
+- Completely custom screen designs
+- Complex interactions
+- External library integration
+- Special business logic requirements
+
+```typescript
+// In your routing file
+export default function OnboardingScreen() {
+  const { step } = useOnboardingQuestions({ stepNumber: 1 });
+
+  if (step.type === "Question" && step.id === "custom-question") {
+    return <MyCompletelyCustomScreen step={step} />;
+  }
+
+  return <OnboardingPage step={step} onContinue={handleContinue} />;
+}
+```
+
+[Learn more about Custom Renderers →](./custom-renderers.mdx)
+
+---
+
+## Comparison Matrix
+
+| Feature | Level 1: Theming | Level 2: Components | Level 3: Renderers |
+|---------|------------------|---------------------|-------------------|
+| **Complexity** | ⭐ Easy | ⭐⭐ Moderate | ⭐⭐⭐ Advanced |
+| **Setup Time** | < 5 min | 15-30 min | 1-2 hours |
+| **Code Changes** | Provider props | Component creation | Full screen logic |
+| **Scope** | All screens | Specific components | Individual screens |
+| **Theme Integration** | ✅ Automatic | ✅ Via props | ⚠️ Manual |
+| **Update Impact** | ✅ Low | ⚠️ Medium | ⚠️ High |
+| **Flexibility** | Limited | High | Complete |
+
+---
+
+## Combining Levels
+
+You can combine multiple customization levels:
+
+```typescript
+<OnboardingProvider
+  // Level 1: Theme tokens
+  theme={{
+    colors: { primary: "#007AFF" },
+    typography: { fontFamily: { title: "CustomFont" } }
+  }}
+  // Level 2: Custom components
+  customComponents={{
+    QuestionAnswerButton: AnimatedButton,
+  }}
+>
+  <YourApp />
+</OnboardingProvider>
+
+// Level 3: Custom renderer in routing
+export default function OnboardingScreen() {
+  const { step } = useOnboardingQuestions({ stepNumber });
+
+  // Override specific screen
+  if (step.id === "special-screen") {
+    return <MyCustomRenderer step={step} />;
+  }
+
+  // Use SDK rendering with theme + custom components
+  return <OnboardingPage step={step} onContinue={handleContinue} />;
+}
+```
+
+---
+
+## Decision Guide
+
+### Choose Level 1 (Theming) if:
+- ✅ You want to match brand colors
+- ✅ You need custom fonts
+- ✅ Default component styles work for you
+- ✅ You want minimal maintenance
+
+### Choose Level 2 (Custom Components) if:
+- ✅ You need custom animations
+- ✅ You want to wrap components for analytics
+- ✅ Default layouts work, but specific elements need changes
+- ✅ You want to reuse the SDK's state management
+
+### Choose Level 3 (Custom Renderers) if:
+- ✅ You need completely custom screen layouts
+- ✅ You're integrating third-party libraries
+- ✅ You have complex business logic requirements
+- ✅ Default renderers don't meet your needs
+
+---
+
+## Next Steps
+
+Start with the customization level that matches your needs:
+
+1. 🎨 [**Theming**](./theming.mdx) - Colors, typography, and semantic styles
+2. 🔧 [**Custom Components**](./custom-components.mdx) - Replace specific UI components
+3. 🎭 [**Custom Renderers**](./custom-renderers.mdx) - Complete screen control
+
+:::tip Start Simple
+We recommend starting with Level 1 (Theming) and only moving to higher levels when needed. Most customization needs can be met with theming alone.
+:::

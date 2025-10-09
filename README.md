@@ -1,51 +1,33 @@
 # @rocapine/react-native-onboarding-studio
 
-React Native SDK for Rocapine Onboarding Studio - A CMS-driven onboarding system for mobile apps. Build beautiful, customizable onboarding flows that update instantly without app releases.
+**A CMS-driven onboarding system for React Native mobile apps.**
 
-## Features
+Build beautiful, customizable onboarding flows that update instantly without app releases.
 
-- 🎨 **Pre-built Components**: Ready-to-use screens (ratings, pickers, carousels, media content, and more)
-- 🔄 **CMS-Driven**: Update onboarding flows remotely without app releases
-- 📱 **React Native**: Works with Expo and bare React Native projects
-- 🎯 **Type-Safe**: Full TypeScript support with runtime validation
-- 💾 **Offline Support**: Built-in caching with AsyncStorage
-- 🎭 **Themeable**: Customizable colors and styling
+---
 
-## Installation
+## ✨ Features
+
+- 🎨 **Pre-built Components** - Ready-to-use screens (ratings, pickers, carousels, media content, and more)
+- 🔄 **CMS-Driven** - Update onboarding flows remotely without app releases
+- 📱 **React Native** - Works with Expo and bare React Native projects
+- 🎯 **Type-Safe** - Full TypeScript support with runtime validation
+- 💾 **Offline Support** - Built-in caching with AsyncStorage
+- 🎭 **Themeable** - Customizable colors, typography, and styling
+- 🔧 **Extensible** - Three levels of customization from theme tokens to complete renderer overrides
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 npm install @rocapine/react-native-onboarding-studio
-```
-
-### Required Peer Dependency
-
-The SDK requires `expo-router` for navigation:
-
-```bash
-npm install expo-router
-# or with Expo
 npx expo install expo-router
 ```
 
-> **Note:** The SDK automatically includes `react-native-reanimated`, `react-native-gesture-handler`, and `react-native-svg` as dependencies, so you don't need to install them separately.
-
-### Optional Dependencies by Screen Type
-
-Install these only if you're using the specific screen types:
-
-| Screen Type | Required Package | Install Command |
-|-------------|------------------|-----------------|
-| **Picker** (weight, height, age, name, date) | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
-| **Ratings** (app store reviews) | `expo-store-review` | `npx expo install expo-store-review` |
-| **Commitment** (signature variant only) | `@shopify/react-native-skia` | `npx expo install @shopify/react-native-skia` |
-
-> **Note:** If you try to use a screen type without its required dependency, you'll see a clear error message telling you exactly what to install.
-
-## Quick Start
-
-### 1. Set Up the Provider
-
-Wrap your app with `OnboardingProvider` in your root layout (e.g., `app/_layout.tsx`):
+### Setup
 
 ```typescript
 import {
@@ -53,12 +35,9 @@ import {
   OnboardingStudioClient,
   ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
-import { Stack } from "expo-router";
 
-// Initialize the client with your project ID
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
-  isSanbdox: false, // Set to true for development
 });
 
 export default function RootLayout() {
@@ -66,44 +45,31 @@ export default function RootLayout() {
     <OnboardingProvider
       client={client}
       locale="en"
-      getStepsParams={{
-        onboardingId: "your-onboarding-id", // From Rocapine dashboard
-      }}
+      getStepsParams={{ onboardingId: "your-onboarding-id" }}
     >
       <ProgressBar />
-      <Stack screenOptions={{ headerShown: false }} />
+      <YourApp />
     </OnboardingProvider>
   );
 }
 ```
 
-### 2. Create an Onboarding Screen
-
-Create your onboarding screen using the `useOnboardingQuestions` hook:
+### Use in Your Screens
 
 ```typescript
 import {
   useOnboardingQuestions,
   OnboardingPage,
 } from "@rocapine/react-native-onboarding-studio";
-import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function OnboardingScreen() {
-  const { stepNumber } = useLocalSearchParams();
-  const router = useRouter();
-
-  // Fetch the current step
-  const { step, isLastStep } = useOnboardingQuestions({
-    stepNumber: parseInt(stepNumber as string, 10),
-  });
+  const { step, isLastStep } = useOnboardingQuestions({ stepNumber: 1 });
 
   const handleContinue = () => {
     if (isLastStep) {
-      // Navigate to your main app
       router.push("/home");
     } else {
-      // Go to next step
-      router.push(`/onboarding/${parseInt(stepNumber as string, 10) + 1}`);
+      router.push(`/onboarding/${stepNumber + 1}`);
     }
   };
 
@@ -111,539 +77,140 @@ export default function OnboardingScreen() {
 }
 ```
 
-### 3. Start Your Onboarding Flow
+That's it! 🎉
 
-Navigate to the first step:
+---
 
-```typescript
-router.push("/onboarding/1");
-```
+## 📚 Documentation
 
-That's it! Your onboarding flow is now ready to use.
+### For SDK Users
 
-## Configuration
+Complete documentation for using the SDK in your app:
 
-### OnboardingProvider Props
+- **[Getting Started](./docs/getting-started.mdx)** - Installation, setup, and your first onboarding flow
+- **[Core Concepts](./docs/core-concepts.mdx)** - How the SDK works, caching, progress tracking
+- **[API Reference](./docs/api-reference.mdx)** - Complete API documentation
+- **[Page Types](./docs/page-types.mdx)** - Available page types and their features
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `client` | `OnboardingStudioClient` | Required | Client instance |
-| `isSandbox` | `boolean` | `false` | Enable sandbox mode (shows dev messages for unimplemented screens) |
-| `locale` | `string` | `"en"` | Locale for fetching steps |
-| `getStepsParams` | `object` | `{}` | Additional parameters for the API (e.g., `onboardingId`) |
-| `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage key for caching |
-| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme |
+### Customization
 
-### OnboardingStudioClient Options
+Learn how to customize your onboarding experience:
 
-```typescript
-const client = new OnboardingStudioClient(projectId, {
-  appVersion: "1.0.0",    // Your app version
-  isSanbdox: false,       // Enable sandbox mode
-  platform: "ios",        // Platform (ios/android)
-});
-```
+- **[Customization Overview](./docs/customization/intro.mdx)** - Choose your customization level
+- **[Level 1: Theming](./docs/customization/theming.mdx)** - Colors, typography, and semantic styles
+- **[Level 2: Custom Components](./docs/customization/custom-components.mdx)** - Replace specific UI components
+- **[Level 3: Custom Renderers](./docs/customization/custom-renderers.mdx)** - Complete screen control
 
-## Available Page Types
+### Support
 
-The SDK includes pre-built renderers for:
+- **[Troubleshooting](./docs/troubleshooting.mdx)** - Common issues and solutions
 
-- **Ratings**: App store rating prompts with social proof
-- **MediaContent**: Image/video content with title and description
-- **Picker**: Interactive pickers (weight, height, age, gender, etc.)
-- **Commitment**: User commitment/agreement screens
-- **Carousel**: Multi-slide horizontal pagination
-- **Loader**: Loading screens with sequential progress animations
-- **Question**: Question/answer interactions
+### For Contributors
 
-## Advanced Usage
+Want to contribute to the SDK?
 
-### Using Individual Renderers
+- **[Contributing Guide](./CONTRIBUTING.md)** - Development setup, architecture, and contribution guidelines
 
-You can use individual renderers directly for custom implementations:
+---
 
-```typescript
-import { MediaContentRenderer } from "@rocapine/react-native-onboarding-studio";
+## 🎭 Customization Levels
 
-const step = {
-  id: "welcome",
-  type: "MediaContent",
-  name: "Welcome",
-  displayProgressHeader: true,
-  payload: {
-    title: "Welcome!",
-    description: "Let's get started",
-    media: { type: "image", url: "https://..." },
-    ctaLabel: "Continue",
-  },
-  customPayload: null,
-  continueButtonLabel: "Get Started",
-  figmaUrl: null,
-};
+### Level 1: Theming
 
-<MediaContentRenderer step={step} onContinue={handleContinue} />
-```
-
-### Theme Customization
-
-The SDK provides a comprehensive theming system with colors, typography, and semantic text styles that match Figma design specifications.
-
-#### Quick Theme Example
+Customize colors, typography, and semantic styles:
 
 ```typescript
 <OnboardingProvider
-  client={client}
   theme={{
     colors: { primary: "#FF5733" },
-    typography: {
-      fontFamily: { title: "Poppins-Bold" }
-    }
+    typography: { fontFamily: { title: "CustomFont-Bold" } }
   }}
 />
 ```
 
-#### Available Customizations
+### Level 2: Custom Components
 
-**Colors:**
-- `primary`, `secondary`, `disable` - Main brand colors
-- `neutral.*` - Neutral grays (highest → lowest)
-- `surface.*` - Background surfaces (lowest → highest, opposite)
-- `text.*` - Text colors (primary, secondary, tertiary, opposite, disable)
-- `tertiary.*` - Accent colors (tertiary1, tertiary2, tertiary3)
-
-**Typography:**
-- `fontFamily` - Custom fonts (title, text, tagline)
-- `fontSize` - Font sizes (xs, sm, md, lg, xl, 2xl, 3xl, 4xl)
-- `fontWeight` - Font weights (regular, medium, semibold, bold, extrabold)
-- `textStyles` - Semantic styles (heading1, heading2, heading3, body, bodyMedium, label, caption, button)
-
-**Semantic Text Styles:**
-```typescript
-// Built-in semantic text styles that match Figma
-heading1: { fontSize: 32, fontWeight: "600", lineHeight: 1.25 }  // Figma Heading 1
-heading2: { fontSize: 24, fontWeight: "600", lineHeight: 1.3 }   // Figma Heading 2
-heading3: { fontSize: 18, fontWeight: "500", lineHeight: 1.3 }   // Figma Heading 3
-body: { fontSize: 16, fontWeight: "400", lineHeight: 1.3 }
-bodyMedium: { fontSize: 16, fontWeight: "500", lineHeight: 1.3 }
-label: { fontSize: 14, fontWeight: "500", lineHeight: 1.3 }
-caption: { fontSize: 12, fontWeight: "400", lineHeight: 1.3 }
-button: { fontSize: 16, fontWeight: "500", lineHeight: 1.5 }
-```
-
-#### Custom Font Loading
-
-**IMPORTANT:** The SDK accepts font names but does not load fonts. You must load custom fonts using `expo-font`.
-
-```typescript
-import { useFonts } from 'expo-font';
-
-export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
-    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) return null;
-
-  return (
-    <OnboardingProvider
-      client={client}
-      theme={{
-        typography: {
-          fontFamily: {
-            title: "Poppins-Bold",      // Used by heading1, heading2
-            text: "Roboto-Regular",     // Used by body, button, etc.
-          }
-        }
-      }}
-    >
-      {/* Your app */}
-    </OnboardingProvider>
-  );
-}
-```
-
-#### Mode-Specific Customization
-
-Customize light and dark modes separately:
+Replace specific UI components:
 
 ```typescript
 <OnboardingProvider
-  lightTheme={{ colors: { primary: "#007AFF" } }}
-  darkTheme={{ colors: { primary: "#0A84FF" } }}
-/>
-```
-
-#### Using Theme in Custom Components
-
-**With colors and tokens:**
-```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
-
-function MyComponent() {
-  const { theme } = useTheme();
-
-  return (
-    <Text style={{
-      color: theme.colors.text.primary,
-      fontSize: theme.typography.fontSize.xl,
-    }}>
-      Hello
-    </Text>
-  );
-}
-```
-
-**With semantic text styles:**
-```typescript
-import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-studio";
-
-function MyComponent() {
-  const { theme } = useTheme();
-
-  return (
-    <Text style={[
-      getTextStyle(theme, "heading1"),
-      { color: theme.colors.text.primary }
-    ]}>
-      Title
-    </Text>
-  );
-}
-```
-
-#### Complete Customization Example
-
-```typescript
-import { useFonts } from 'expo-font';
-import { OnboardingProvider } from "@rocapine/react-native-onboarding-studio";
-
-export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    'CustomFont-Bold': require('./assets/fonts/CustomFont-Bold.ttf'),
-    'CustomFont-Regular': require('./assets/fonts/CustomFont-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) return null;
-
-  return (
-    <OnboardingProvider
-      client={client}
-      theme={{
-        colors: {
-          primary: "#FF5733",
-          text: { primary: "#1A1A1A" },
-          surface: { lowest: "#FFFFFF" }
-        },
-        typography: {
-          fontFamily: {
-            title: "CustomFont-Bold",
-            text: "CustomFont-Regular",
-          },
-          textStyles: {
-            heading1: {
-              fontSize: 36,
-              fontWeight: "700",
-              lineHeight: 1.2,
-              fontFamily: "title"
-            }
-          }
-        }
-      }}
-    >
-      <YourApp />
-    </OnboardingProvider>
-  );
-}
-```
-
-For complete theme customization documentation, see [CLAUDE.md](./CLAUDE.md#theme-customization).
-
-## Custom Components
-
-For advanced customization beyond theme tokens, you can replace specific UI components with your own implementations. This allows complete control over styling, animations, and behavior.
-
-### Question Answer Button Customization
-
-Replace individual answer buttons while keeping the default list logic:
-
-```typescript
-import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
-
-const MinimalAnswerButton = ({ answer, selected, onPress, theme }: QuestionAnswerButtonProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={{
-      height: 96,
-      borderTopWidth: 1,
-      borderBottomWidth: 1,
-      borderColor: "#e5e5e5",
-      backgroundColor: selected ? theme.colors.primary : "transparent",
-    }}
-  >
-    <Text style={{ fontSize: 24, color: selected ? "#fff" : theme.colors.text.primary }}>
-      {answer.label}
-    </Text>
-  </TouchableOpacity>
-);
-
-<OnboardingProvider
-  client={client}
   customComponents={{
-    QuestionAnswerButton: MinimalAnswerButton
+    QuestionAnswerButton: CustomButton,
+    QuestionAnswersList: AnimatedList,
   }}
 />
 ```
 
-### Question Answers List Customization
+### Level 3: Custom Renderers
 
-For full control over the entire list (animations, layout, complex behavior):
+Complete control over entire screens:
 
 ```typescript
-import {
-  QuestionAnswersListProps,
-  DefaultQuestionAnswerButton,
-} from "@rocapine/react-native-onboarding-studio";
+export default function OnboardingScreen() {
+  const { step } = useOnboardingQuestions({ stepNumber });
 
-const AnimatedAnswersList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswersListProps) => {
-  const animations = useRef(answers.map(() => new Animated.Value(0))).current;
+  if (step.id === "custom-screen") {
+    return <CustomRenderer step={step} onContinue={handleContinue} />;
+  }
 
-  useEffect(() => {
-    // Staggered entrance animation
-    Animated.stagger(150,
-      animations.map(anim =>
-        Animated.spring(anim, { toValue: 1, useNativeDriver: true })
-      )
-    ).start();
-  }, []);
-
-  return (
-    <View style={{ gap: 10 }}>
-      {answers.map((answer, index) => (
-        <Animated.View
-          key={answer.value}
-          style={{
-            opacity: animations[index],
-            transform: [{
-              translateY: animations[index].interpolate({
-                inputRange: [0, 1],
-                outputRange: [20, 0]
-              })
-            }]
-          }}
-        >
-          <DefaultQuestionAnswerButton
-            answer={answer}
-            selected={selected[answer.value]}
-            onPress={() => onAnswerPress(answer.value)}
-            theme={theme}
-            index={index}
-            isFirst={index === 0}
-            isLast={index === answers.length - 1}
-          />
-        </Animated.View>
-      ))}
-    </View>
-  );
-};
-
-<OnboardingProvider
-  client={client}
-  customComponents={{
-    QuestionAnswersList: AnimatedAnswersList
-  }}
-/>
+  return <OnboardingPage step={step} onContinue={handleContinue} />;
+}
 ```
 
-### Component Priority
+---
 
-Components are resolved in this order:
-1. **QuestionAnswersList** (if provided) - full control over entire list
-2. **QuestionAnswerButton** (if provided) - individual button styling
-3. **Default implementation** - built-in styling
+## 🎨 Available Page Types
 
-### Available Custom Components
+- **Question** - Interactive questions with single or multiple choice answers
+- **MediaContent** - Display images or videos with title and description
+- **Carousel** - Multi-slide horizontal pagination with page indicators
+- **Picker** - Type-specific input pickers for structured data
+- **Loader** - Sequential progress animation with optional carousel
+- **Ratings** - App store rating prompts with social proof
+- **Commitment** - User commitment and agreement screens
 
-- `QuestionAnswerButton` - Individual answer button in Question screens
-- `QuestionAnswersList` - Complete answers list in Question screens
+[Learn more about page types →](./docs/page-types.mdx)
 
-More customizable components coming soon!
+---
 
-## Local Development
+## 📦 Optional Dependencies
 
-### Setup
+Install these only if you're using the specific screen types:
 
-1. Clone the repository:
+| Screen Type | Package | Install Command |
+|-------------|---------|-----------------|
+| **Picker** | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
+| **Ratings** | `expo-store-review` | `npx expo install expo-store-review` |
+| **Commitment** (signature) | `@shopify/react-native-skia` | `npx expo install @shopify/react-native-skia` |
+
+---
+
+## 💡 Example Project
+
+Check out the `example/` directory for a complete working example:
 
 ```bash
-git clone https://github.com/rocapine/react-native-onboarding-studio.git
-cd react-native-onboarding-studio
-```
-
-2. Install dependencies:
-
-```bash
+cd example/
 npm install
+npm start
 ```
 
-3. Build the package:
+---
 
-```bash
-npm run build
-```
+## 🤝 Contributing
 
-4. Watch the changes
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
 
-```bash
-npm run watch
-```
+---
 
-### Using in the example App
+## 📧 Support
 
-1. Go to example App : `cd example/`
-2. Install dependencies : `npm install`
-3. Start the app : `npm start`
-4. Make changes to the source code of the package in `src/`
-5. Repeat
+- **Email:** support@rocapine.com
+- **Issues:** [GitHub Issues](https://github.com/rocapine/react-native-onboarding-studio/issues)
+- **Documentation:** [Rocapine Docs](https://docs.rocapine.com)
 
-#### Assets management
+---
 
-1. Add the asset in `./src/assets``
-2. rerun the `npm run build` command to copy the asset in the dist folder
+## 📄 License
 
-## Publishing to npm
-
-### First-time Setup
-
-1. Create an npm account at https://www.npmjs.com/signup
-
-2. Login to npm:
-
-```bash
-npm login
-```
-
-3. If publishing a scoped package (@rocapine/...), ensure you have access to the organization or use public access flag.
-
-### Publishing Steps
-
-1. Update the version in `package.json`:
-
-```bash
-# Patch release (0.1.0 -> 0.1.1)
-npm version patch
-
-# Minor release (0.1.0 -> 0.2.0)
-npm version minor
-
-# Major release (0.1.0 -> 1.0.0)
-npm version major
-```
-
-2. Build the package:
-
-```bash
-npm run build
-```
-
-3. Publish to npm:
-
-```bash
-# For scoped packages
-npm publish --access public
-
-# For regular packages
-npm publish
-```
-
-### Pre-publish Checklist
-
-- [ ] All tests pass
-- [ ] Code is built (`npm run build`)
-- [ ] Version number is updated
-- [ ] README is up to date
-- [ ] CHANGELOG is updated (if applicable)
-- [ ] Git changes are committed
-
-## API Reference
-
-### `useOnboardingQuestions(options)`
-
-Hook for accessing onboarding steps.
-
-**Parameters:**
-- `stepNumber` (number): The current step number (1-indexed)
-
-**Returns:**
-```typescript
-{
-  step: OnboardingStepType;      // Current step data
-  isLastStep: boolean;            // True if this is the last step
-  totalSteps: number;             // Total number of steps
-}
-```
-
-### `OnboardingPage`
-
-Component that renders the appropriate page based on step type.
-
-**Props:**
-```typescript
-{
-  step: OnboardingStepType;       // Step data
-  onContinue: (args?) => void;    // Callback when user continues
-  client?: OnboardingStudioClient; // Optional client for sandbox mode
-}
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**"Cannot find module 'expo-router'"**
-- Make sure you've installed all peer dependencies
-- For Expo projects, use `npx expo install expo-router`
-
-**"useSuspenseQuery requires a Suspense boundary"**
-- The SDK uses React Query's `useSuspenseQuery`
-- Expo Router handles this automatically, but if you see errors, wrap your routes with a Suspense boundary
-
-**Steps not loading**
-- Verify your `projectId` and `onboardingId` are correct
-- Check network connectivity
-- In sandbox mode, check console logs for API responses
-
-## Project Structure
-
-```
-src/
-├── OnboardingStudioClient.ts    # API client
-├── types.ts                      # Core types
-├── index.ts                      # Public exports
-├── infra/                        # Infrastructure layer
-│   ├── provider/                 # OnboardingProvider
-│   └── hooks/                    # useOnboardingQuestions
-└── UI/
-    ├── OnboardingPage.tsx        # Router component
-    ├── Components/               # ProgressBar, etc.
-    ├── Templates/                # OnboardingTemplate
-    ├── Theme/                    # Theming system
-    └── Pages/                    # Page type renderers
-        ├── Ratings/
-        ├── MediaContent/
-        ├── Picker/
-        ├── Commitment/
-        ├── Carousel/
-        ├── Loader/
-        └── Question/
-```
-
-## Support
-
-- 📧 Email: support@rocapine.com
-- 🐛 Issues: [GitHub Issues](https://github.com/rocapine/react-native-onboarding-studio/issues)
-- 📚 Documentation: [Rocapine Docs](https://docs.rocapine.com)
-
-## License
-
-MIT
+MIT © [Rocapine](https://rocapine.com)

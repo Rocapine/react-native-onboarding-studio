@@ -21,10 +21,7 @@ interface QuestionRendererProps {
   onContinue?: (...args: any[]) => void;
 }
 
-const QuestionRendererBase = ({
-  step,
-  onContinue,
-}: QuestionRendererProps) => {
+const QuestionRendererBase = ({ step, onContinue }: QuestionRendererProps) => {
   const { theme } = useTheme();
   const customComponents = useCustomComponents();
 
@@ -78,25 +75,42 @@ const QuestionRendererBase = ({
   const isAnySelected = Object.values(selected).some((value) => value);
 
   // Priority: Custom full list > Custom button (via DefaultList) > Default implementation
-  const AnswersList = customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
-  const AnswerButton = customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+  const AnswersList =
+    customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+  const AnswerButton =
+    customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
 
   return (
     <OnboardingTemplate
       step={step}
-      onContinue={onContinue || (() => { })}
+      onContinue={onContinue || (() => {})}
       button={multipleAnswer ? { text: "Continue" } : undefined}
     >
       <View style={styles.container}>
-        {/* Status Bar Spacer */}
-        <View style={styles.statusBarSpacer} />
-
         {/* Main Content */}
         <View style={styles.contentContainer}>
           {/* Header */}
           <View style={styles.headerSection}>
-            <Text style={[getTextStyle(theme, "heading1"), styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
-            {Boolean(subtitle?.length) ? <Text style={[getTextStyle(theme, "body"), styles.subtitle, { color: theme.colors.text.secondary }]}>{subtitle}</Text> : null}
+            <Text
+              style={[
+                getTextStyle(theme, "heading1"),
+                styles.title,
+                { color: theme.colors.text.primary },
+              ]}
+            >
+              {title}
+            </Text>
+            {Boolean(subtitle?.length) ? (
+              <Text
+                style={[
+                  getTextStyle(theme, "body"),
+                  styles.subtitle,
+                  { color: theme.colors.text.secondary },
+                ]}
+              >
+                {subtitle}
+              </Text>
+            ) : null}
           </View>
 
           {/* Answers */}
@@ -140,9 +154,6 @@ const QuestionRendererBase = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  statusBarSpacer: {
-    height: 48,
   },
   contentContainer: {
     flex: 1,
@@ -203,4 +214,7 @@ const styles = StyleSheet.create({
 
 import { withErrorBoundary } from "../../ErrorBoundary";
 
-export const QuestionRenderer = withErrorBoundary(QuestionRendererBase, 'Question');
+export const QuestionRenderer = withErrorBoundary(
+  QuestionRendererBase,
+  "Question"
+);

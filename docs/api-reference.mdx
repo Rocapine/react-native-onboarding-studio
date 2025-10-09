@@ -1,0 +1,466 @@
+---
+sidebar_position: 4
+---
+
+# API Reference
+
+Complete API documentation for all exported components, hooks, and types.
+
+## Components
+
+### OnboardingProvider
+
+The root provider component that wraps your app and provides onboarding context.
+
+```typescript
+<OnboardingProvider
+  client={client}
+  isSandbox={false}
+  locale="en"
+  getStepsParams={{ onboardingId: "abc-123" }}
+  cacheKey="rocapine-onboarding-studio"
+  initialColorScheme="light"
+  theme={{ colors: { primary: "#007AFF" } }}
+  customComponents={{ QuestionAnswerButton: CustomButton }}
+>
+  <YourApp />
+</OnboardingProvider>
+```
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `client` | `OnboardingStudioClient` | **Required** | Client instance for API communication |
+| `children` | `ReactNode` | **Required** | Your app content |
+| `isSandbox` | `boolean` | `false` | Enable sandbox mode for development |
+| `locale` | `string` | `"en"` | Locale for fetching steps |
+| `getStepsParams` | `Record<string, any>` | `{}` | Additional parameters for API |
+| `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage cache key |
+| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme mode |
+| `theme` | `ThemeTokens` | - | Custom theme for both light and dark modes |
+| `lightTheme` | `ThemeTokens` | - | Custom theme tokens for light mode only |
+| `darkTheme` | `ThemeTokens` | - | Custom theme tokens for dark mode only |
+| `customComponents` | `CustomComponents` | - | Custom UI component overrides |
+
+---
+
+### OnboardingPage
+
+Central routing component that renders the appropriate page based on step type.
+
+```typescript
+<OnboardingPage
+  step={step}
+  onContinue={handleContinue}
+  client={client}
+/>
+```
+
+#### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `step` | `OnboardingStepType` | Step data to render |
+| `onContinue` | `(args?: any) => void` | Callback when user continues |
+| `client` | `OnboardingStudioClient` | Optional client for sandbox detection |
+
+---
+
+### ProgressBar
+
+Global progress indicator component. Add once in your `OnboardingProvider`.
+
+```typescript
+<OnboardingProvider {...props}>
+  <ProgressBar />
+  <YourApp />
+</OnboardingProvider>
+```
+
+#### Props
+
+None. Reads from progress context automatically.
+
+---
+
+### Page Renderers
+
+Individual renderer components for each page type.
+
+```typescript
+import {
+  QuestionRenderer,
+  MediaContentRenderer,
+  CarouselRenderer,
+  PickerRenderer,
+  LoaderRenderer,
+  RatingsRenderer,
+  CommitmentRenderer,
+} from "@rocapine/react-native-onboarding-studio";
+```
+
+**Common Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `step` | `StepType` | Type-specific step data |
+| `onContinue` | `(args?: any) => void` | Callback when user continues |
+
+Example:
+
+```typescript
+<MediaContentRenderer
+  step={mediaContentStep}
+  onContinue={(args) => console.log(args)}
+/>
+```
+
+---
+
+## Hooks
+
+### useOnboardingQuestions
+
+Hook for accessing onboarding steps in your pages.
+
+```typescript
+import { useOnboardingQuestions } from "@rocapine/react-native-onboarding-studio";
+
+const { step, isLastStep, totalSteps } = useOnboardingQuestions({
+  stepNumber: 1,
+});
+```
+
+#### Parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `stepNumber` | `number` | The current step number (1-indexed) |
+
+#### Returns
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `step` | `OnboardingStepType` | Current step data |
+| `isLastStep` | `boolean` | True if this is the last step |
+| `totalSteps` | `number` | Total number of steps |
+
+---
+
+### useTheme
+
+Hook for accessing theme tokens and utilities.
+
+```typescript
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
+
+const { theme, colorScheme, setColorScheme } = useTheme();
+```
+
+#### Returns
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `theme` | `Theme` | Current theme tokens (colors + typography) |
+| `colorScheme` | `"light" \| "dark"` | Current color scheme |
+| `setColorScheme` | `(scheme) => void` | Function to change color scheme |
+
+---
+
+### useCustomComponents
+
+Hook for accessing custom component overrides.
+
+```typescript
+import { useCustomComponents } from "@rocapine/react-native-onboarding-studio";
+
+const customComponents = useCustomComponents();
+const Button = customComponents.QuestionAnswerButton || DefaultButton;
+```
+
+#### Returns
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `customComponents` | `CustomComponents` | Custom component overrides |
+
+---
+
+## Classes
+
+### OnboardingStudioClient
+
+Client for communicating with the Rocapine CMS backend.
+
+```typescript
+import { OnboardingStudioClient } from "@rocapine/react-native-onboarding-studio";
+
+const client = new OnboardingStudioClient(projectId, options);
+```
+
+#### Constructor
+
+```typescript
+new OnboardingStudioClient(
+  projectId: string,
+  options?: {
+    appVersion?: string;
+    isSanbdox?: boolean;
+    platform?: "ios" | "android";
+  }
+)
+```
+
+#### Parameters
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `projectId` | `string` | **Required** | Your Rocapine project ID |
+| `options.appVersion` | `string` | - | Your app version |
+| `options.isSanbdox` | `boolean` | `false` | Enable sandbox mode |
+| `options.platform` | `"ios" \| "android"` | Auto-detected | Platform identifier |
+
+#### Methods
+
+**getSteps(params)**
+
+Fetches onboarding steps from the CMS.
+
+```typescript
+const { steps, headers } = await client.getSteps({
+  locale: "en",
+  onboardingId: "abc-123",
+});
+```
+
+---
+
+## Utilities
+
+### getTextStyle
+
+Utility function to get semantic text styles from theme.
+
+```typescript
+import { getTextStyle } from "@rocapine/react-native-onboarding-studio";
+
+const textStyle = getTextStyle(theme, "heading1");
+```
+
+#### Parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `theme` | `Theme` | Theme object from `useTheme()` |
+| `styleName` | `TextStyleName` | Name of the semantic style |
+
+#### TextStyleName Options
+
+- `heading1` - Large headings (32px, semibold)
+- `heading2` - Medium headings (24px, semibold)
+- `heading3` - Small headings (18px, medium)
+- `body` - Body text (16px, regular)
+- `bodyMedium` - Medium body text (16px, medium)
+- `label` - Labels (14px, medium)
+- `caption` - Captions (12px, regular)
+- `button` - Button text (16px, medium)
+
+#### Returns
+
+```typescript
+{
+  fontSize: number;
+  fontWeight: string;
+  lineHeight: number;
+  fontFamily?: string;
+}
+```
+
+---
+
+## Types
+
+### OnboardingStepType
+
+Union type of all step types:
+
+```typescript
+type OnboardingStepType =
+  | QuestionStepType
+  | MediaContentStepType
+  | CarouselStepType
+  | PickerStepType
+  | LoaderStepType
+  | RatingsStepType
+  | CommitmentStepType;
+```
+
+---
+
+### ThemeTokens
+
+Partial theme override type:
+
+```typescript
+interface ThemeTokens {
+  colors?: {
+    primary?: string;
+    secondary?: string;
+    disable?: string;
+    tertiary?: {
+      tertiary1?: string;
+      tertiary2?: string;
+      tertiary3?: string;
+    };
+    neutral?: {
+      highest?: string;
+      higher?: string;
+      high?: string;
+      medium?: string;
+      low?: string;
+      lower?: string;
+      lowest?: string;
+    };
+    surface?: {
+      lowest?: string;
+      lower?: string;
+      low?: string;
+      medium?: string;
+      high?: string;
+      higher?: string;
+      highest?: string;
+      opposite?: string;
+    };
+    text?: {
+      primary?: string;
+      secondary?: string;
+      tertiary?: string;
+      opposite?: string;
+      disable?: string;
+    };
+  };
+  typography?: {
+    fontFamily?: {
+      title?: string;
+      text?: string;
+      tagline?: string;
+    };
+    fontSize?: {
+      xs?: number;
+      sm?: number;
+      md?: number;
+      lg?: number;
+      xl?: number;
+      "2xl"?: number;
+      "3xl"?: number;
+      "4xl"?: number;
+    };
+    fontWeight?: {
+      regular?: string;
+      medium?: string;
+      semibold?: string;
+      bold?: string;
+      extrabold?: string;
+    };
+    lineHeight?: {
+      tight?: number;
+      normal?: number;
+      relaxed?: number;
+    };
+    textStyles?: {
+      heading1?: TextStyle;
+      heading2?: TextStyle;
+      heading3?: TextStyle;
+      body?: TextStyle;
+      bodyMedium?: TextStyle;
+      label?: TextStyle;
+      caption?: TextStyle;
+      button?: TextStyle;
+    };
+  };
+}
+```
+
+---
+
+### CustomComponents
+
+Custom component overrides interface:
+
+```typescript
+interface CustomComponents {
+  QuestionAnswerButton?: React.ComponentType<QuestionAnswerButtonProps>;
+  QuestionAnswersList?: React.ComponentType<QuestionAnswersListProps>;
+}
+```
+
+---
+
+### Component Props Interfaces
+
+**QuestionAnswerButtonProps**
+
+```typescript
+interface QuestionAnswerButtonProps {
+  answer: { label: string; value: string };
+  selected: boolean;
+  onPress: () => void;
+  theme: Theme;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+}
+```
+
+**QuestionAnswersListProps**
+
+```typescript
+interface QuestionAnswersListProps {
+  answers: Array<{ label: string; value: string }>;
+  selected: Record<string, boolean>;
+  onAnswerPress: (value: string) => void;
+  multipleAnswer: boolean;
+  theme: Theme;
+}
+```
+
+---
+
+## Default Exports
+
+Export default components for composition:
+
+```typescript
+import {
+  DefaultQuestionAnswerButton,
+  DefaultQuestionAnswersList,
+} from "@rocapine/react-native-onboarding-studio";
+```
+
+These allow you to wrap or extend the default implementations while maintaining the base styling.
+
+---
+
+## Type Guards
+
+### isQuestionStep
+
+```typescript
+import { isQuestionStep } from "@rocapine/react-native-onboarding-studio";
+
+if (isQuestionStep(step)) {
+  // TypeScript knows this is QuestionStepType
+  console.log(step.payload.answers);
+}
+```
+
+Similar type guards exist for all step types.
+
+---
+
+## Next Steps
+
+- 🎨 Learn about [Theming](./customization/theming.mdx)
+- 🔧 Explore [Custom Components](./customization/custom-components.mdx)
+- 🎭 Review [Page Types](./page-types.mdx)

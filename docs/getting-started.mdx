@@ -1,0 +1,186 @@
+---
+sidebar_position: 2
+---
+
+# Getting Started
+
+Get up and running with Rocapine Onboarding Studio SDK in minutes.
+
+## Installation
+
+```bash
+npm install @rocapine/react-native-onboarding-studio
+```
+
+### Required Peer Dependency
+
+The SDK requires `expo-router` for navigation:
+
+```bash
+npm install expo-router
+# or with Expo
+npx expo install expo-router
+```
+
+:::info Automatic Dependencies
+The SDK automatically includes `react-native-reanimated`, `react-native-gesture-handler`, and `react-native-svg` as dependencies, so you don't need to install them separately.
+:::
+
+### Optional Dependencies by Screen Type
+
+Install these only if you're using the specific screen types:
+
+| Screen Type | Required Package | Install Command |
+|-------------|------------------|-----------------|
+| **Picker** (weight, height, age, name, date) | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
+| **Ratings** (app store reviews) | `expo-store-review` | `npx expo install expo-store-review` |
+| **Commitment** (signature variant only) | `@shopify/react-native-skia` | `npx expo install @shopify/react-native-skia` |
+
+:::tip
+If you try to use a screen type without its required dependency, you'll see a clear error message telling you exactly what to install.
+:::
+
+## Quick Start
+
+### Step 1: Set Up the Provider
+
+Wrap your app with `OnboardingProvider` in your root layout (e.g., `app/_layout.tsx`):
+
+```typescript
+import {
+  OnboardingProvider,
+  OnboardingStudioClient,
+  ProgressBar,
+} from "@rocapine/react-native-onboarding-studio";
+import { Stack } from "expo-router";
+
+// Initialize the client with your project ID
+const client = new OnboardingStudioClient("your-project-id", {
+  appVersion: "1.0.0",
+  isSanbdox: false, // Set to true for development
+});
+
+export default function RootLayout() {
+  return (
+    <OnboardingProvider
+      client={client}
+      locale="en"
+      getStepsParams={{
+        onboardingId: "your-onboarding-id", // From Rocapine dashboard
+      }}
+    >
+      {/* Global progress bar - add once here */}
+      <ProgressBar />
+
+      <Stack screenOptions={{ headerShown: false }} />
+    </OnboardingProvider>
+  );
+}
+```
+
+### Step 2: Create an Onboarding Screen
+
+Create your onboarding screen using the `useOnboardingQuestions` hook:
+
+```typescript
+// app/onboarding/[questionId].tsx
+import {
+  useOnboardingQuestions,
+  OnboardingPage,
+} from "@rocapine/react-native-onboarding-studio";
+import { useLocalSearchParams, useRouter } from "expo-router";
+
+export default function OnboardingScreen() {
+  const { questionId } = useLocalSearchParams();
+  const router = useRouter();
+
+  // Fetch the current step
+  const { step, isLastStep } = useOnboardingQuestions({
+    stepNumber: parseInt(questionId as string, 10),
+  });
+
+  const handleContinue = () => {
+    if (isLastStep) {
+      // Navigate to your main app
+      router.push("/home");
+    } else {
+      // Go to next step
+      router.push(`/onboarding/${parseInt(questionId as string, 10) + 1}`);
+    }
+  };
+
+  return <OnboardingPage step={step} onContinue={handleContinue} />;
+}
+```
+
+### Step 3: Start Your Onboarding Flow
+
+Navigate to the first step from anywhere in your app:
+
+```typescript
+import { useRouter } from "expo-router";
+
+export default function WelcomeScreen() {
+  const router = useRouter();
+
+  const startOnboarding = () => {
+    router.push("/onboarding/1");
+  };
+
+  return (
+    <Button title="Start Onboarding" onPress={startOnboarding} />
+  );
+}
+```
+
+## That's It! 🎉
+
+Your onboarding flow is now ready to use. The SDK will:
+- Fetch steps from your CMS
+- Cache them for offline access
+- Track progress automatically
+- Render the appropriate screen for each step type
+
+## Next Steps
+
+- 📖 Learn about [Core Concepts](./core-concepts.mdx) like caching and progress tracking
+- 🎨 Explore [Customization Options](./customization/intro.mdx) to match your brand
+- 📘 Check the [API Reference](./api-reference.mdx) for advanced configuration
+- 🎭 Review available [Page Types](./page-types.mdx) for your onboarding flow
+
+## Configuration Options
+
+### OnboardingStudioClient
+
+```typescript
+const client = new OnboardingStudioClient(projectId, {
+  appVersion: "1.0.0",    // Your app version
+  isSanbdox: false,       // Enable sandbox mode
+  platform: "ios",        // Platform (ios/android)
+});
+```
+
+### OnboardingProvider
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `client` | `OnboardingStudioClient` | Required | Client instance |
+| `isSandbox` | `boolean` | `false` | Enable sandbox mode |
+| `locale` | `string` | `"en"` | Locale for fetching steps |
+| `getStepsParams` | `object` | `{}` | Additional API parameters |
+| `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage key |
+| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme |
+| `theme` | `ThemeTokens` | - | Custom theme for both modes |
+| `lightTheme` | `ThemeTokens` | - | Custom theme for light mode |
+| `darkTheme` | `ThemeTokens` | - | Custom theme for dark mode |
+| `customComponents` | `CustomComponents` | - | Custom UI components |
+
+## Example Project
+
+Check out the `example/` directory in the repository for a complete working example with all screen types and customization options.
+
+```bash
+cd example/
+npm install
+npm start
+```

@@ -1,0 +1,561 @@
+---
+sidebar_position: 1
+---
+
+# Theming (Level 1)
+
+Customize colors, typography, and semantic text styles to match your brand.
+
+## Quick Start
+
+```typescript
+<OnboardingProvider
+  client={client}
+  theme={{
+    colors: { primary: "#FF5733" },
+    typography: {
+      fontFamily: { title: "Poppins-Bold" }
+    }
+  }}
+/>
+```
+
+That's it! Your theme tokens are now applied across all onboarding screens.
+
+---
+
+## Color Customization
+
+### Available Color Tokens
+
+```typescript
+colors: {
+  // Main brand colors
+  primary: string,           // Buttons, accents
+  secondary: string,          // Secondary actions
+  disable: string,            // Disabled states
+
+  // Tertiary/accent colors
+  tertiary: {
+    tertiary1: string,
+    tertiary2: string,
+    tertiary3: string,
+  },
+
+  // Neutral grays (highest = darkest, lowest = lightest)
+  neutral: {
+    highest: string,
+    higher: string,
+    high: string,
+    medium: string,
+    low: string,
+    lower: string,
+    lowest: string,
+  },
+
+  // Surface/background colors
+  surface: {
+    lowest: string,           // Main background
+    lower: string,
+    low: string,
+    medium: string,
+    high: string,
+    higher: string,
+    highest: string,
+    opposite: string,         // Opposite of main background
+  },
+
+  // Text colors
+  text: {
+    primary: string,          // Main text
+    secondary: string,        // Secondary text
+    tertiary: string,         // Tertiary text
+    opposite: string,         // Opposite of primary
+    disable: string,          // Disabled text
+  }
+}
+```
+
+### Color Customization Examples
+
+**Override primary color:**
+
+```typescript
+<OnboardingProvider
+  theme={{
+    colors: { primary: "#007AFF" }
+  }}
+/>
+```
+
+**Override multiple colors:**
+
+```typescript
+<OnboardingProvider
+  theme={{
+    colors: {
+      primary: "#007AFF",
+      secondary: "#5856D6",
+      text: {
+        primary: "#1A1A1A",
+        secondary: "#666666"
+      }
+    }
+  }}
+/>
+```
+
+**Nested overrides:**
+
+```typescript
+<OnboardingProvider
+  theme={{
+    colors: {
+      neutral: {
+        lowest: "#F5F5F5",
+        highest: "#1A1A1A"
+      },
+      surface: {
+        lowest: "#FFFFFF",
+        opposite: "#000000"
+      }
+    }
+  }}
+/>
+```
+
+---
+
+## Light & Dark Mode
+
+Customize themes for each mode separately:
+
+```typescript
+<OnboardingProvider
+  lightTheme={{
+    colors: {
+      primary: "#007AFF",
+      surface: { lowest: "#FFFFFF" },
+      text: { primary: "#000000" }
+    }
+  }}
+  darkTheme={{
+    colors: {
+      primary: "#0A84FF",
+      surface: { lowest: "#000000" },
+      text: { primary: "#FFFFFF" }
+    }
+  }}
+/>
+```
+
+**Or use a single theme for both:**
+
+```typescript
+<OnboardingProvider
+  theme={{
+    colors: { primary: "#FF5733" }
+  }}
+/>
+```
+
+**Switch modes programmatically:**
+
+```typescript
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
+
+function ThemeSwitcher() {
+  const { colorScheme, setColorScheme } = useTheme();
+
+  return (
+    <Button
+      title={`Switch to ${colorScheme === "light" ? "dark" : "light"}`}
+      onPress={() => setColorScheme(colorScheme === "light" ? "dark" : "light")}
+    />
+  );
+}
+```
+
+---
+
+## Typography Customization
+
+### Font Families
+
+The SDK uses three font categories:
+
+- **title**: Used for headings (heading1, heading2)
+- **text**: Used for body text, buttons, labels
+- **tagline**: Used for special emphasis text
+
+**IMPORTANT:** The SDK accepts font names but **does not load fonts**. You must load custom fonts using `expo-font`.
+
+#### Step 1: Load Fonts
+
+```typescript
+import { useFonts } from 'expo-font';
+
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
+
+  return (
+    <OnboardingProvider
+      theme={{
+        typography: {
+          fontFamily: {
+            title: "Poppins-Bold",
+            text: "Roboto-Regular",
+          }
+        }
+      }}
+    >
+      <YourApp />
+    </OnboardingProvider>
+  );
+}
+```
+
+### Font Sizes
+
+Override font size tokens:
+
+```typescript
+<OnboardingProvider
+  theme={{
+    typography: {
+      fontSize: {
+        xs: 10,
+        sm: 12,
+        md: 14,
+        lg: 18,
+        xl: 28,        // heading2
+        "2xl": 36,     // heading1
+        "3xl": 48,
+        "4xl": 72,
+      }
+    }
+  }}
+/>
+```
+
+**Default sizes:**
+- `xs`: 12px
+- `sm`: 14px
+- `md`: 16px
+- `lg`: 20px
+- `xl`: 24px
+- `2xl`: 32px
+- `3xl`: 40px
+- `4xl`: 72px
+
+### Font Weights
+
+Override font weight tokens:
+
+```typescript
+<OnboardingProvider
+  theme={{
+    typography: {
+      fontWeight: {
+        regular: "400",
+        medium: "500",
+        semibold: "700",  // Make semibold bolder
+        bold: "700",
+        extrabold: "800",
+      }
+    }
+  }}
+/>
+```
+
+### Line Heights
+
+Override line height tokens:
+
+```typescript
+<OnboardingProvider
+  theme={{
+    typography: {
+      lineHeight: {
+        tight: 1.2,
+        normal: 1.4,
+        relaxed: 1.6,
+      }
+    }
+  }}
+/>
+```
+
+---
+
+## Semantic Text Styles
+
+The SDK provides semantic text styles that match Figma specifications:
+
+### Default Semantic Styles
+
+```typescript
+heading1: {
+  fontSize: 32,          // 2xl token
+  fontWeight: "600",     // semibold token
+  lineHeight: 1.25,      // tight token
+  fontFamily: "title"    // title font
+}
+
+heading2: {
+  fontSize: 24,          // xl token
+  fontWeight: "600",     // semibold token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "title"    // title font
+}
+
+heading3: {
+  fontSize: 18,          // lg token
+  fontWeight: "500",     // medium token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "text"     // text font
+}
+
+body: {
+  fontSize: 16,          // md token
+  fontWeight: "400",     // regular token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "text"     // text font
+}
+
+bodyMedium: {
+  fontSize: 16,          // md token
+  fontWeight: "500",     // medium token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "text"     // text font
+}
+
+label: {
+  fontSize: 14,          // sm token
+  fontWeight: "500",     // medium token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "text"     // text font
+}
+
+caption: {
+  fontSize: 12,          // xs token
+  fontWeight: "400",     // regular token
+  lineHeight: 1.3,       // normal token
+  fontFamily: "text"     // text font
+}
+
+button: {
+  fontSize: 16,          // md token
+  fontWeight: "500",     // medium token
+  lineHeight: 1.5,       // relaxed token
+  fontFamily: "text"     // text font
+}
+```
+
+### Override Semantic Styles
+
+```typescript
+<OnboardingProvider
+  theme={{
+    typography: {
+      textStyles: {
+        heading1: {
+          fontSize: 40,
+          fontWeight: "700",
+          lineHeight: 1.2,
+          fontFamily: "title"
+        },
+        body: {
+          fontSize: 18,
+          fontWeight: "400",
+          lineHeight: 1.4,
+          fontFamily: "text"
+        }
+      }
+    }
+  }}
+/>
+```
+
+---
+
+## Using Theme in Custom Code
+
+### Access Theme Tokens
+
+```typescript
+import { useTheme } from "@rocapine/react-native-onboarding-studio";
+
+function MyComponent() {
+  const { theme } = useTheme();
+
+  return (
+    <View style={{ backgroundColor: theme.colors.surface.lowest }}>
+      <Text style={{
+        color: theme.colors.text.primary,
+        fontSize: theme.typography.fontSize.xl,
+      }}>
+        Hello
+      </Text>
+    </View>
+  );
+}
+```
+
+### Use Semantic Text Styles
+
+```typescript
+import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-studio";
+
+function MyComponent() {
+  const { theme } = useTheme();
+
+  return (
+    <View>
+      <Text style={[
+        getTextStyle(theme, "heading1"),
+        { color: theme.colors.text.primary }
+      ]}>
+        Title
+      </Text>
+      <Text style={[
+        getTextStyle(theme, "body"),
+        { color: theme.colors.text.secondary }
+      ]}>
+        Body text
+      </Text>
+    </View>
+  );
+}
+```
+
+---
+
+## Complete Example
+
+```typescript
+import { useFonts } from 'expo-font';
+import {
+  OnboardingProvider,
+  OnboardingStudioClient,
+  ProgressBar,
+} from "@rocapine/react-native-onboarding-studio";
+
+const client = new OnboardingStudioClient("your-project-id", {
+  appVersion: "1.0.0",
+});
+
+export default function RootLayout() {
+  // Load custom fonts
+  const [fontsLoaded] = useFonts({
+    'CustomFont-Bold': require('./assets/fonts/CustomFont-Bold.ttf'),
+    'CustomFont-Regular': require('./assets/fonts/CustomFont-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
+
+  return (
+    <OnboardingProvider
+      client={client}
+      locale="en"
+      getStepsParams={{ onboardingId: "your-onboarding-id" }}
+      theme={{
+        colors: {
+          primary: "#FF5733",
+          secondary: "#5856D6",
+          text: {
+            primary: "#1A1A1A",
+            secondary: "#666666"
+          },
+          surface: {
+            lowest: "#FFFFFF"
+          }
+        },
+        typography: {
+          fontFamily: {
+            title: "CustomFont-Bold",
+            text: "CustomFont-Regular",
+          },
+          fontSize: {
+            "2xl": 36,
+            xl: 26,
+          },
+          textStyles: {
+            heading1: {
+              fontSize: 36,
+              fontWeight: "700",
+              lineHeight: 1.2,
+              fontFamily: "title"
+            }
+          }
+        }
+      }}
+    >
+      <ProgressBar />
+      <YourApp />
+    </OnboardingProvider>
+  );
+}
+```
+
+---
+
+## Default Theme Reference
+
+Want to extend the default theme instead of overriding? Import default tokens:
+
+```typescript
+import {
+  lightTokens,
+  darkTokens,
+  typography,
+} from "@rocapine/react-native-onboarding-studio";
+
+const myTheme = {
+  colors: {
+    ...lightTokens.colors,
+    primary: "#FF5733",
+  },
+  typography: {
+    ...typography,
+    fontFamily: {
+      ...typography.fontFamily,
+      title: "CustomFont-Bold"
+    }
+  },
+};
+
+<OnboardingProvider theme={myTheme} />
+```
+
+---
+
+## Deep Merge Behavior
+
+The SDK uses deep merging for theme tokens, so you only need to specify what changes:
+
+```typescript
+// This merges with default tokens
+<OnboardingProvider
+  theme={{
+    colors: { primary: "#FF5733" }  // Other colors remain default
+  }}
+/>
+```
+
+:::tip
+You don't need to provide all tokens. Only specify the ones you want to override.
+:::
+
+---
+
+## Next Steps
+
+- 🔧 [**Custom Components**](./custom-components.mdx) - Replace specific UI components
+- 🎭 [**Custom Renderers**](./custom-renderers.mdx) - Complete screen control
+- 📘 [**API Reference**](../api-reference.mdx) - Full theme token reference
