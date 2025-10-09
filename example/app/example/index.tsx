@@ -1,25 +1,64 @@
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 
 export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-const examples = [
+type Example = {
+  name: string;
+  route?: string;
+  variants?: Array<{ name: string; route: string }>;
+  style?: any;
+};
+
+const examples: Example[] = [
   { name: "Carousel", route: "/example/carousel" },
-  { name: "Commitment (List)", route: "/example/commitment" },
-  { name: "Commitment (Description)", route: "/example/commitment-description" },
-  { name: "Loader (Bars)", route: "/example/loader" },
-  { name: "Loader (Circle)", route: "/example/loader-circle" },
+  {
+    name: "Commitment",
+    variants: [
+      { name: "List", route: "/example/commitment" },
+      { name: "Description", route: "/example/commitment-description" },
+    ],
+  },
+  {
+    name: "Loader",
+    variants: [
+      { name: "Bars", route: "/example/loader" },
+      { name: "Circle", route: "/example/loader-circle" },
+    ],
+  },
   { name: "Media Content", route: "/example/media-content" },
-  { name: "Picker", route: "/example/picker" },
-  { name: "Ratings", route: "/example/ratings" },
+  {
+    name: "Picker",
+    variants: [
+      { name: "Weight", route: "/example/picker" },
+      { name: "Height", route: "/example/picker-height" },
+      { name: "Name", route: "/example/picker-name" },
+      { name: "Date", route: "/example/picker-date" },
+    ],
+  },
   { name: "Question", route: "/example/question" },
+  { name: "Ratings", route: "/example/ratings" },
   { name: "Error Test", route: "/example/error-test", style: { backgroundColor: "#dc2626" } },
 ];
 
 export default function ExampleIndex() {
   const router = useRouter();
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (name: string) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(name)) {
+        newSet.delete(name);
+      } else {
+        newSet.add(name);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -29,15 +68,43 @@ export default function ExampleIndex() {
 
         <View style={styles.grid}>
           {examples.map((example) => (
-            <Pressable
-              key={example.route}
-              style={[styles.card, example.style]}
-              onPress={() => router.push(example.route as any)}
-            >
-              <Text style={[styles.cardText, example.style && { color: '#fff' }]}>
-                {example.name}
-              </Text>
-            </Pressable>
+            <View key={example.name}>
+              <Pressable
+                style={[styles.card, example.style]}
+                onPress={() => {
+                  if (example.route) {
+                    router.push(example.route as any);
+                  } else if (example.variants) {
+                    toggleExpand(example.name);
+                  }
+                }}
+              >
+                <View style={styles.cardContent}>
+                  <Text style={[styles.cardText, example.style && { color: '#fff' }]}>
+                    {example.name}
+                  </Text>
+                  {example.variants && (
+                    <Text style={[styles.chevron, example.style && { color: '#fff' }]}>
+                      {expandedItems.has(example.name) ? '▼' : '▶'}
+                    </Text>
+                  )}
+                </View>
+              </Pressable>
+
+              {example.variants && expandedItems.has(example.name) && (
+                <View style={styles.variantsContainer}>
+                  {example.variants.map((variant) => (
+                    <Pressable
+                      key={variant.route}
+                      style={styles.variantCard}
+                      onPress={() => router.push(variant.route as any)}
+                    >
+                      <Text style={styles.variantText}>{variant.name}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -85,11 +152,39 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   cardText: {
     fontSize: 18,
     fontWeight: "600",
     color: "#007AFF",
     textAlign: "center",
+  },
+  chevron: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#007AFF",
+    marginLeft: 8,
+  },
+  variantsContainer: {
+    marginTop: 8,
+    marginLeft: 16,
+    gap: 8,
+  },
+  variantCard: {
+    backgroundColor: "#f0f7ff",
+    padding: 16,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: "#007AFF",
+  },
+  variantText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#007AFF",
   },
   backButton: {
     position: "absolute",

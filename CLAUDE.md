@@ -223,6 +223,7 @@ src/
 6. Add type to union in `src/UI/types.ts`
 7. Add case to switch in `src/UI/OnboardingPage.tsx`
 8. Always use values from useTheme() like in Loader/Renderer.tsx
+9. When creating variant of the same screens make sure to add it in the example app and add it to the list of examples in example/app/example/index.tsx
 
 ### Screen Implementation Guidelines
 
