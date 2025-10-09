@@ -45,11 +45,34 @@ npm start
 - Handles URL parameters: `projectId`, `platform`, `appVersion`, `locale`, `draft` mode
 - Returns step data along with custom headers (`ONBS-Onboarding-Id`, `ONBS-Audience-Id`, `ONBS-Onboarding-Name`)
 
+**OnboardingProvider** (`src/infra/provider/OnboardingProvider.tsx`)
+
+- Main provider component that wraps your app
+- Accepts `OnboardingStudioClient` instance and configuration
+- Manages query state, caching with AsyncStorage, and progress context
+- Internally wraps with `QueryClientProvider`, `SafeAreaProvider`, and `ThemeProvider`
+- Configuration props:
+  - `client`: OnboardingStudioClient instance (required)
+  - `isSandbox`: Enable sandbox mode (default: false)
+  - `locale`: Locale for fetching steps (default: "en")
+  - `getStepsParams`: Additional params for getSteps API call
+  - `cacheKey`: AsyncStorage key for caching (default: "rocapine-onboarding-studio")
+  - `initialColorScheme`: Theme color scheme (default: "light")
+
+**useOnboardingQuestions** (`src/infra/hooks/useOnboardingQuestions.ts`)
+
+- Hook to access onboarding steps in your pages
+- Accepts `stepNumber` parameter
+- Returns `{ step, isLastStep, totalSteps }`
+- Automatically manages progress context (activeStep, totalSteps)
+- Uses React Query's `useSuspenseQuery` for data fetching
+
 **OnboardingPage** (`src/UI/OnboardingPage.tsx`)
 
 - Central routing component that renders the appropriate page based on step type
 - Uses switch statement to delegate to specific Renderers
 - Handles fallback for unimplemented step types (sandbox mode shows dev message, production auto-continues)
+- Props: `step`, `onContinue`, optional `client` (for sandbox detection)
 
 **Page Types** (`src/UI/Pages/`)
 Each page type follows a consistent pattern:
@@ -77,11 +100,12 @@ Available page types:
 - Manages progress header display based on `step.displayProgressHeader`
 - Provides standardized CTA button at bottom
 
-**OnboardingProgressProvider** (`src/UI/Provider/OnboardingProgressProvider.tsx`)
+**ProgressBar** (`src/UI/Components/ProgressBar.tsx`)
 
-- React Context for tracking onboarding progress
-- Manages `activeStep` (number + displayProgressHeader flag) and `totalSteps`
-- Wraps content in `SafeAreaProvider`
+- Global progress indicator component
+- Should be placed once in the root `OnboardingProvider`
+- Automatically shows/hides based on `step.displayProgressHeader`
+- Uses Reanimated for smooth animations
 
 **Common Types** (`src/UI/Pages/types.ts`)
 
@@ -141,11 +165,76 @@ npm run ios          # Run on iOS
   - `commitment.tsx` - Commitment page example
   - `loader.tsx` - Loader page example
 - `app/onboarding/` - Full onboarding flow examples
-- `onboarding/OnboardingProvider.tsx` - Shows proper setup with `OnboardingProgressProvider` and `ProgressBar`
+- `app/_layout.tsx` - Root layout with `OnboardingProvider` setup
 
-### Example Pattern
+### Setup Pattern
 
-All examples follow this pattern:
+In your root `_layout.tsx`, set up the provider:
+
+```typescript
+import {
+  OnboardingProvider,
+  OnboardingStudioClient,
+  ProgressBar,
+} from "@rocapine/react-native-onboarding-studio";
+import { Stack } from "expo-router";
+
+const client = new OnboardingStudioClient("your-project-id", {
+  appVersion: "1.0.0",
+  isSanbdox: true,
+});
+
+export default function RootLayout() {
+  return (
+    <OnboardingProvider
+      client={client}
+      isSandbox={true}
+      locale="en"
+      getStepsParams={{
+        onboardingId: "your-onboarding-id",
+      }}
+    >
+      <ProgressBar />
+      <Stack screenOptions={{ headerShown: false }} />
+    </OnboardingProvider>
+  );
+}
+```
+
+### Page Pattern
+
+In your onboarding pages, use the hook and component:
+
+```typescript
+import {
+  useOnboardingQuestions,
+  OnboardingPage,
+} from "@rocapine/react-native-onboarding-studio";
+import { useLocalSearchParams, useRouter } from "expo-router";
+
+export default function QuestionPage() {
+  const { questionId } = useLocalSearchParams();
+  const { step, isLastStep } = useOnboardingQuestions({
+    stepNumber: parseInt(questionId as string, 10),
+  });
+
+  const router = useRouter();
+
+  const onContinue = (args?: any) => {
+    if (isLastStep) {
+      router.push("/");
+    } else {
+      router.push(`/onboarding/${parseInt(questionId as string, 10) + 1}`);
+    }
+  };
+
+  return <OnboardingPage step={step} onContinue={onContinue} />;
+}
+```
+
+### Individual Renderer Pattern
+
+For standalone page examples, you can use individual renderers:
 
 ```typescript
 import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
@@ -182,8 +271,9 @@ return (
 
 - The example app uses `@rocapine/react-native-onboarding-studio` as a local dependency via `"file:.."`
 - After making changes to the library, run `npm run build` in the root, then reload the example app
-- `OnboardingProgressProvider` wraps the app and includes the global `ProgressBar` component
+- `OnboardingProvider` wraps the app and includes the global `ProgressBar` component
 - Individual renderers should NEVER include their own `ProgressBar`
+- The `useOnboardingQuestions` hook uses `useSuspenseQuery`, so wrap routes with proper Suspense boundaries if needed
 
 ## File Organization
 
@@ -192,9 +282,12 @@ src/
 ├── OnboardingStudioClient.ts    # API client
 ├── types.ts                      # Core types
 ├── index.ts                      # Public exports
+├── infra/                        # Infrastructure layer
+│   ├── provider/                 # OnboardingProvider with query management
+│   └── hooks/                    # useOnboardingQuestions hook
 └── UI/
     ├── OnboardingPage.tsx        # Main router component
-    ├── Provider/                 # Context providers
+    ├── Provider/                 # UI-only providers (Theme)
     ├── Templates/                # Reusable layouts
     ├── Components/               # Shared UI components (e.g., ProgressBar)
     └── Pages/                    # Step type implementations
