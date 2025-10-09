@@ -582,13 +582,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   monthPicker: {
-    width: "50%",
+    flex: 2,
   },
   dayPicker: {
-    width: "25%",
+    flex: 1,
   },
   yearPicker: {
-    width: "25%",
+    flex: 1,
   },
 });
 
