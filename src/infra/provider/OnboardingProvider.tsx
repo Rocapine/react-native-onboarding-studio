@@ -8,6 +8,7 @@ import {
   CustomComponentsProvider,
   CustomComponents,
 } from "./CustomComponentsContext";
+import { ProgressBar } from "../../UI/Components/ProgressBar";
 
 interface OnboardingProviderProps {
   children: React.ReactNode;
@@ -103,6 +104,7 @@ export const OnboardingProvider = ({
                 cacheKey,
               }}
             >
+              <ProgressBar />
               {children}
             </OnboardingProgressContext.Provider>
           </CustomComponentsProvider>

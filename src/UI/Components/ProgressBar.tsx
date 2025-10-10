@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { View, Dimensions, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, TouchableOpacity, LayoutChangeEvent } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -9,54 +9,53 @@ import { OnboardingProgressContext } from "../../infra/provider/OnboardingProvid
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../Theme/useTheme";
 import { ChevronLeft } from "lucide-react-native";
+import { useRouter } from "expo-router";
 
 interface ProgressBarProps {
   value?: number;
   height?: number;
   backgroundColor?: string;
   progressColor?: string;
-  width?: string | number;
   animated?: boolean;
-  onBack?: () => void;
-  canGoBack?: boolean;
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
-  height = 6,
+  height = 12,
   backgroundColor,
   progressColor,
-  width = "70%",
   animated = true,
-  onBack,
-  canGoBack = false,
 }) => {
+  const router = useRouter();
   const { theme } = useTheme();
   const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
   const { top } = useSafeAreaInsets();
-  const value = (activeStep.number / totalSteps) * 100;
-  const screenWidth = Dimensions.get("window").width;
-  const progressWidth =
-    typeof width === "string" ? (parseFloat(width) / 100) * screenWidth : width;
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  const progressPercentage = totalSteps > 0 ? (activeStep.number / totalSteps) : 0;
 
   // Use Reanimated shared value for smooth animations
   const progress = useSharedValue(0);
 
   useEffect(() => {
     if (animated) {
-      progress.value = withTiming(value / 100, {
+      progress.value = withTiming(progressPercentage, {
         duration: 300,
       });
     } else {
-      progress.value = value / 100;
+      progress.value = progressPercentage;
     }
-  }, [value, animated]);
+  }, [progressPercentage, animated]);
 
   // Animated style for the progress bar
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      width: progress.value * progressWidth,
+      width: `${progress.value * 100}%`,
     };
   });
+
+  const onLayoutContainer = (event: LayoutChangeEvent) => {
+    setContainerWidth(event.nativeEvent.layout.width);
+  };
 
   // Use theme colors with fallback to props
   const trackBgColor = backgroundColor || theme.colors.neutral.lower;
@@ -65,30 +64,45 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   return (
     activeStep.displayProgressHeader && (
       <View style={[styles.container, { paddingTop: top }]}>
-        {canGoBack && onBack && (
-          <TouchableOpacity
-            onPress={onBack}
-            style={styles.backButton}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <ChevronLeft
-              size={24}
-              color={theme.colors.text.primary}
-              strokeWidth={2}
-            />
-          </TouchableOpacity>
-        )}
-        <View style={[styles.track, { height, backgroundColor: trackBgColor }]}>
-          <Animated.View
-            style={[
-              styles.progress,
-              {
-                height,
-                backgroundColor: barColor,
-              },
-              animatedStyle,
-            ]}
-          />
+        <View style={styles.progressBarContainer}>
+          {/* Left section: Back button */}
+          <View style={styles.backButtonSection}>
+            {router.canGoBack() && (
+              <TouchableOpacity
+                onPress={() => router.back()}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                style={styles.backButton}
+              >
+                <ChevronLeft
+                  size={24}
+                  color={theme.colors.text.primary}
+                  strokeWidth={2}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Center section: Progress bar */}
+          <View style={styles.progressSection}>
+            <View
+              style={[styles.track, { height, backgroundColor: trackBgColor }]}
+              onLayout={onLayoutContainer}
+            >
+              <Animated.View
+                style={[
+                  styles.progress,
+                  {
+                    height,
+                    backgroundColor: barColor,
+                  },
+                  animatedStyle,
+                ]}
+              />
+            </View>
+          </View>
+
+          {/* Right section: Spacer */}
+          <View style={styles.spacerSection} />
         </View>
       </View>
     )
@@ -97,20 +111,34 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 70,
     position: "absolute",
-    top: 20,
+    top: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
-    backgroundColor: "transparent",
+    zIndex: 10,
+    justifyContent: "center",
+    paddingBottom: 24,
+  },
+  progressBarContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+    paddingHorizontal: 16,
+  },
+  backButtonSection: {
+    flex: 1,
+    alignItems: "flex-start",
   },
   backButton: {
-    position: "absolute",
-    left: 20,
-    top: 0,
-    zIndex: 2,
     padding: 4,
+  },
+  progressSection: {
+    flex: 5,
+    alignItems: "flex-end",
+  },
+  spacerSection: {
+    flex: 1,
   },
   track: {
     width: "100%",

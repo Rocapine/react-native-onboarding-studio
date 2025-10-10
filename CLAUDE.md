@@ -50,6 +50,7 @@ npm start
 - Main provider component that wraps your app
 - Accepts `OnboardingStudioClient` instance and configuration
 - Manages query state, caching with AsyncStorage, and progress context
+- **Automatically includes ProgressBar** - no need to add it separately
 - Internally wraps with `QueryClientProvider`, `SafeAreaProvider`, and `ThemeProvider`
 - Configuration props:
   - `client`: OnboardingStudioClient instance (required)
@@ -61,6 +62,7 @@ npm start
   - `theme`: Custom theme to override both light and dark modes (optional)
   - `lightTheme`: Custom theme tokens for light mode only (optional)
   - `darkTheme`: Custom theme tokens for dark mode only (optional)
+  - `customComponents`: Custom UI component overrides (optional)
 
 **useOnboardingQuestions** (`src/infra/hooks/useOnboardingQuestions.ts`)
 
@@ -105,55 +107,38 @@ Available page types:
 
 **ProgressBar** (`src/UI/Components/ProgressBar.tsx`)
 
+- **Automatically included in `OnboardingProvider`** - no need to add it manually
 - Global progress indicator component
-- Should be placed once in the root `OnboardingProvider`
 - Automatically shows/hides based on `step.displayProgressHeader`
-- Uses Reanimated for smooth animations
-- Supports optional back navigation with chevron-left icon
+- Uses Reanimated for smooth width animations (300ms duration)
+- Integrates directly with expo-router for automatic back navigation
+- Three-column responsive layout: back button (flex: 1) | progress bar (flex: 5) | spacer (flex: 1)
 
-**Back Navigation**
-
-The `ProgressBar` component supports optional back navigation functionality:
-
-```typescript
-<ProgressBar
-  canGoBack={router.canGoBack()}
-  onBack={() => router.back()}
-/>
-```
-
-Props:
-- `canGoBack?: boolean` - Controls visibility of the back button (default: false)
-- `onBack?: () => void` - Callback function when back button is pressed
-
-The back button:
+**Back Navigation:**
+- Uses `useRouter()` from expo-router internally
+- Back button appears automatically when `router.canGoBack()` returns `true`
 - Renders a chevron-left icon using `lucide-react-native`
 - Automatically uses theme colors (`theme.colors.text.primary`)
-- Positioned on the left side of the progress bar
-- Only appears when `canGoBack` is true
-- Routing logic is the responsibility of the SDK user
+- Positioned on the left side (flex: 1 section)
 
-Example with expo-router:
+**Control Back Navigation:**
+
+Use `router.push()` vs `router.replace()` in your step handlers to control when users can navigate back:
 
 ```typescript
-import { useRouter } from "expo-router";
-
-function RootLayoutNav() {
-  const router = useRouter();
-
-  return (
-    <>
-      <ProgressBar
-        canGoBack={router.canGoBack()}
-        onBack={() => router.back()}
-      />
-      <Stack screenOptions={{ headerShown: false }} />
-    </>
-  );
-}
+// app/onboarding/[questionId].tsx
+const onContinue = () => {
+  if (isLastStep) {
+    // Exit onboarding - prevent going back
+    router.replace("/");
+  } else {
+    // Normal progression - allow back navigation
+    router.push(`/onboarding/${nextStep}`);
+  }
+};
 ```
 
-**Note**: The ProgressBar must be inside a component that has access to the router. Extract navigation logic into a separate component if needed (see example app).
+See the example app's `app/onboarding/[questionId].tsx` for full implementation.
 
 **Common Types** (`src/UI/Pages/types.ts`)
 
@@ -223,7 +208,6 @@ In your root `_layout.tsx`, set up the provider:
 import {
   OnboardingProvider,
   OnboardingStudioClient,
-  ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
 import { Stack } from "expo-router";
 
@@ -253,12 +237,13 @@ export default function RootLayout() {
         },
       }}
     >
-      <ProgressBar />
       <Stack screenOptions={{ headerShown: false }} />
     </OnboardingProvider>
   );
 }
 ```
+
+**Note:** The ProgressBar is automatically included in the provider - no manual setup needed!
 
 ### Page Pattern
 
@@ -330,7 +315,8 @@ return (
 
 - The example app uses `@rocapine/react-native-onboarding-studio` as a local dependency via `"file:.."`
 - After making changes to the library, run `npm run build` in the root, then reload the example app
-- `OnboardingProvider` wraps the app and includes the global `ProgressBar` component
+- `OnboardingProvider` automatically includes the `ProgressBar` component - **do not add it manually**
+- Control back navigation using `router.push()` vs `router.replace()` in your `onContinue` handlers
 - Individual renderers should NEVER include their own `ProgressBar`
 - The `useOnboardingQuestions` hook uses `useSuspenseQuery`, so wrap routes with proper Suspense boundaries if needed
 
@@ -773,7 +759,7 @@ src/
 2. Add `types.ts` with Zod schema and inferred TypeScript type
    - Include `continueButtonLabel: z.string().optional().default("Continue")`
 3. Add `Renderer.tsx` component following these guidelines:
-   - **DO NOT** include `ProgressBar` component - it's managed globally by `OnboardingProgressProvider`
+   - **DO NOT** include `ProgressBar` component - it's automatically added by `OnboardingProvider`
    - Use `OnboardingTemplate` for consistent layout and CTA button
    - Use `ScrollView` for content that may exceed screen height
    - Validate step data with Zod: `const validatedData = StepTypeSchema.parse(step)`
@@ -787,7 +773,7 @@ src/
 
 ### Screen Implementation Guidelines
 
-- **ProgressBar**: NEVER include in individual screens - it's added once in the app's `OnboardingProvider`
+- **ProgressBar**: NEVER include in individual screens - it's automatically added by `OnboardingProvider`
 - **Validation**: Always validate step data using the Zod schema
 - **Layout**: Use `OnboardingTemplate` for consistent structure, safe areas, and button positioning
 - **Scrolling**: Wrap content in `ScrollView` to handle overflow gracefully

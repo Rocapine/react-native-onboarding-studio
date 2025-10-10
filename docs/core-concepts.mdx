@@ -121,20 +121,123 @@ const { activeStep, totalSteps, progress } = useContext(OnboardingProgressContex
 
 ### ProgressBar Component
 
-Add `<ProgressBar />` once in your `OnboardingProvider`:
+The ProgressBar is **automatically included** in `OnboardingProvider` and integrates directly with expo-router:
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar />  {/* Global progress indicator */}
+  {/* Progress bar is automatic - no need to add it! */}
   <YourApp />
 </OnboardingProvider>
 ```
 
 The ProgressBar:
-- Reads from progress context automatically
-- Shows/hides based on `step.displayProgressHeader`
-- Animates smoothly with Reanimated
-- Positions itself at the top of safe area
+- **Automatic visibility**: Shows/hides based on `step.displayProgressHeader`
+- **Auto back navigation**: Back button appears when `router.canGoBack()` returns true
+- **Native integration**: Uses Reanimated for smooth 300ms animations
+- **Smart positioning**: Positions at top of safe area automatically
+
+**Control back navigation**: Use `router.push()` vs `router.replace()` in your step handlers to control when users can navigate back (see [Navigation Control](#navigation-control) below)
+
+## Navigation Control
+
+Control when users can navigate back by choosing the right routing method in your `onContinue` handlers.
+
+### Router Methods
+
+**`router.push(path)`** - Allows back navigation
+- Adds route to navigation stack
+- ProgressBar back button will appear on subsequent screens
+- Use for normal step-by-step progression where users can review answers
+
+**`router.replace(path)`** - Prevents back navigation
+- Replaces current route in navigation stack
+- ProgressBar back button will NOT appear (no history)
+- Use when you don't want users returning to previous step
+
+### Example: Standard Onboarding Flow
+
+```typescript
+// app/onboarding/[questionId].tsx
+import {
+  useOnboardingQuestions,
+  OnboardingPage,
+} from "@rocapine/react-native-onboarding-studio";
+import { useLocalSearchParams, useRouter } from "expo-router";
+
+export default function QuestionPage() {
+  const { questionId } = useLocalSearchParams();
+  const router = useRouter();
+
+  const { step, isLastStep } = useOnboardingQuestions({
+    stepNumber: parseInt(questionId as string, 10),
+  });
+
+  const onContinue = () => {
+    if (isLastStep) {
+      // Exit onboarding - prevent going back
+      router.replace("/");
+    } else {
+      // Normal progression - allow back navigation
+      router.push(`/onboarding/${parseInt(questionId as string, 10) + 1}`);
+    }
+  };
+
+  return <OnboardingPage step={step} onContinue={onContinue} />;
+}
+```
+
+### When to Use Each Method
+
+✅ **Use `router.replace()` when:**
+- Entering the first step (no previous step exists)
+- After critical steps you don't want users to revisit
+- Exiting onboarding to main app
+- After irreversible actions (data submission, account creation)
+- Preventing users from re-entering completed flows
+
+✅ **Use `router.push()` when:**
+- Normal step-by-step progression
+- Users should review/change previous answers
+- Building multi-step forms with editable data
+
+### First Step Pattern
+
+Prevent back button on the first onboarding step:
+
+```typescript
+// app/onboarding/index.tsx
+export default function OnboardingStart() {
+  const router = useRouter();
+
+  const handleStart = () => {
+    // Use replace - no back button will appear
+    router.replace("/onboarding/1");
+  };
+
+  return <WelcomeScreen onStart={handleStart} />;
+}
+```
+
+### Conditional Back Navigation
+
+Disable back navigation for specific steps:
+
+```typescript
+const onContinue = () => {
+  const nextStep = currentStep + 1;
+
+  // Disable back navigation after payment step
+  if (currentStep === PAYMENT_STEP) {
+    router.replace(`/onboarding/${nextStep}`);
+  } else {
+    router.push(`/onboarding/${nextStep}`);
+  }
+};
+```
+
+:::tip
+The ProgressBar automatically adapts to your routing choices - you don't need any additional configuration!
+:::
 
 ## Step Types
 

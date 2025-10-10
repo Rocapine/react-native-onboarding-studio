@@ -69,18 +69,33 @@ Central routing component that renders the appropriate page based on step type.
 
 ### ProgressBar
 
-Global progress indicator component. Add once in your `OnboardingProvider`.
+Global progress indicator **automatically included** in `OnboardingProvider`.
 
+**Features:**
+- Automatically shows/hides based on `step.displayProgressHeader`
+- Integrates with expo-router for automatic back navigation
+- Smooth Reanimated animations (300ms)
+- Three-column layout: back button | progress bar | spacer
+
+**Configuration:**
+
+The ProgressBar cannot be configured via props - it automatically integrates with your expo-router navigation stack. Control back navigation behavior using `router.push()` vs `router.replace()` in your step handlers.
+
+See [Navigation Control](./core-concepts.mdx#navigation-control) for details.
+
+**Customization:**
+
+You can customize colors via theme tokens:
 ```typescript
-<OnboardingProvider {...props}>
-  <ProgressBar />
-  <YourApp />
-</OnboardingProvider>
+<OnboardingProvider
+  theme={{
+    colors: {
+      primary: "#007AFF",           // Progress fill color
+      neutral: { lower: "#E5E5E5" } // Track background
+    }
+  }}
+>
 ```
-
-#### Props
-
-None. Reads from progress context automatically.
 
 ---
 

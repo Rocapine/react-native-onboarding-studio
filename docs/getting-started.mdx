@@ -50,7 +50,6 @@ Wrap your app with `OnboardingProvider` in your root layout (e.g., `app/_layout.
 import {
   OnboardingProvider,
   OnboardingStudioClient,
-  ProgressBar,
 } from "@rocapine/react-native-onboarding-studio";
 import { Stack } from "expo-router";
 
@@ -69,14 +68,15 @@ export default function RootLayout() {
         onboardingId: "your-onboarding-id", // From Rocapine dashboard
       }}
     >
-      {/* Global progress bar - add once here */}
-      <ProgressBar />
-
       <Stack screenOptions={{ headerShown: false }} />
     </OnboardingProvider>
   );
 }
 ```
+
+:::tip Progress Bar Included
+The progress bar is **automatically included** in `OnboardingProvider` - no need to add it manually! It will show/hide based on your step configuration.
+:::
 
 ### Step 2: Create an Onboarding Screen
 
