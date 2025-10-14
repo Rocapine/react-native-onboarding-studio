@@ -9,7 +9,7 @@ export const LoaderStepSchema = z.object({
 export const LoaderStepPayloadSchema = z.object({
   title: z.string(),
   steps: z.array(LoaderStepSchema),
-  didYouKnowImages: z.array(MediaSourceSchema).optional(),
+  didYouKnowImages: z.array(MediaSourceSchema).nullish(),
   duration: z.number().optional().default(2000),
   variant: z
     .enum(["bars", "circle", "texts_fading"])
@@ -25,7 +25,7 @@ export const LoaderStepTypeSchema = z.object({
   payload: LoaderStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type LoaderStepType = z.infer<typeof LoaderStepTypeSchema>;

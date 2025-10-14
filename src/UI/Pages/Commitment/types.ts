@@ -7,9 +7,9 @@ export const CommitmentItemSchema = z.object({
 
 export const CommitmentStepPayloadSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional(),
-  description: z.string().optional(),
-  commitments: z.array(CommitmentItemSchema).optional(),
+  subtitle: z.string().nullish(),
+  description: z.string().nullish(),
+  commitments: z.array(CommitmentItemSchema).nullish(),
   signatureCaption: z.string().default("Your signature is not recorded"),
   variant: z.enum(["signature", "simple"]).default("signature"),
 });
@@ -22,7 +22,7 @@ export const CommitmentStepTypeSchema = z.object({
   payload: CommitmentStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type CommitmentStepType = z.infer<typeof CommitmentStepTypeSchema>;

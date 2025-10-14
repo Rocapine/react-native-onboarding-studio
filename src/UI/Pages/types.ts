@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CustomPayloadSchema = z.record(z.string(), z.any()).nullable();
+export const CustomPayloadSchema = z.record(z.string(), z.any()).nullish();
 
 export const MediaSourceSchema = z.union([
   z.object({

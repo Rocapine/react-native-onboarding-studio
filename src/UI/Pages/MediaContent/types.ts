@@ -1,11 +1,15 @@
 import { z } from "zod";
-import { CustomPayloadSchema, MediaSourceSchema, SocialProofSchema } from "../types";
+import {
+  CustomPayloadSchema,
+  MediaSourceSchema,
+  SocialProofSchema,
+} from "../types";
 
 export const MediaContentStepPayloadSchema = z.object({
   mediaSource: MediaSourceSchema,
   title: z.string(),
-  description: z.string().nullable(),
-  socialProof: SocialProofSchema.nullable(),
+  description: z.string().nullish(),
+  socialProof: SocialProofSchema.nullish(),
 });
 
 export const MediaContentStepTypeSchema = z.object({
@@ -16,7 +20,7 @@ export const MediaContentStepTypeSchema = z.object({
   payload: MediaContentStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type MediaContentStepType = z.infer<typeof MediaContentStepTypeSchema>;

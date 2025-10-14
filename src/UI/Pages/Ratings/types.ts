@@ -16,7 +16,7 @@ export const RatingsStepTypeSchema = z.object({
   payload: RatingsStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type RatingsStepType = z.infer<typeof RatingsStepTypeSchema>;

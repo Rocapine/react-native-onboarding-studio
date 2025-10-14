@@ -62,6 +62,7 @@ npm start
 The example app uses a local file dependency (`"file:.."`), so changes to the SDK require a rebuild.
 
 **Workflow:**
+
 1. Make changes to SDK (`src/`)
 2. Run `npm run build` in root
 3. Reload example app
@@ -159,12 +160,12 @@ export const NewTypeStepSchema = z.object({
   displayProgressHeader: z.boolean(),
   payload: z.object({
     title: z.string(),
-    subtitle: z.string().optional(),
+    subtitle: z.string().nullish(),
     // ... your fields
   }),
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable().optional(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type NewTypeStepType = z.infer<typeof NewTypeStepSchema>;
@@ -251,8 +252,8 @@ export * from "./NewType";
 export type OnboardingStepType =
   | QuestionStepType
   | MediaContentStepType
-  | NewTypeStepType // Add here
-  // ...
+  | NewTypeStepType; // Add here
+// ...
 ```
 
 ### 7. Add to Router

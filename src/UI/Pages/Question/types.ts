@@ -4,16 +4,16 @@ import { CustomPayloadSchema, InfoBoxSchema } from "../types";
 export const AnswerSchema = z.object({
   label: z.string(),
   value: z.string(),
-  icon: z.string().nullable(),
-  description: z.string().nullable(),
+  icon: z.string().nullish(),
+  description: z.string().nullish(),
 });
 
 export const QuestionStepPayloadSchema = z.object({
   answers: z.array(AnswerSchema),
   title: z.string(),
-  subtitle: z.string().nullable(),
+  subtitle: z.string().nullish(),
   multipleAnswer: z.boolean(),
-  infoBox: InfoBoxSchema.nullable(),
+  infoBox: InfoBoxSchema.nullish(),
 });
 
 export const QuestionStepTypeSchema = z.object({
@@ -23,7 +23,7 @@ export const QuestionStepTypeSchema = z.object({
   displayProgressHeader: z.boolean(),
   payload: QuestionStepPayloadSchema,
   customPayload: CustomPayloadSchema,
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type QuestionStepType = z.infer<typeof QuestionStepTypeSchema>;

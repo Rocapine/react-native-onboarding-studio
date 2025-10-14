@@ -13,7 +13,7 @@ export const PickerTypeEnum = z.enum([
 
 export const PickerStepPayloadSchema = z.object({
   title: z.string(),
-  description: z.string().nullable(),
+  description: z.string().nullish(),
   pickerType: z.union([PickerTypeEnum, z.string()]),
 });
 
@@ -25,7 +25,7 @@ export const PickerStepTypeSchema = z.object({
   payload: PickerStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type PickerStepType = z.infer<typeof PickerStepTypeSchema>;

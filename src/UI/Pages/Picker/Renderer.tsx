@@ -107,7 +107,7 @@ type WeightPickerProps = {
   step: PickerStepType;
   onContinue: (value?: string | number) => void;
   title: string;
-  description: string | null;
+  description: string | null | undefined;
   theme: Theme;
 };
 
@@ -194,7 +194,7 @@ type HeightPickerProps = {
   step: PickerStepType;
   onContinue: (value?: string | number) => void;
   title: string;
-  description: string | null;
+  description: string | null | undefined;
   theme: Theme;
 };
 
@@ -335,7 +335,7 @@ type NamePickerProps = {
   step: PickerStepType;
   onContinue: (value?: string | number) => void;
   title: string;
-  description: string | null;
+  description: string | null | undefined;
   theme: Theme;
 };
 
@@ -416,7 +416,7 @@ type DatePickerProps = {
   step: PickerStepType;
   onContinue: (value?: string | number) => void;
   title: string;
-  description: string | null;
+  description: string | null | undefined;
   theme: Theme;
 };
 

@@ -177,7 +177,7 @@ const QuestionStepSchema = z.object({
   type: z.literal("Question"),
   payload: z.object({
     title: z.string(),
-    subtitle: z.string().optional(),
+    subtitle: z.string().nullish(),
     answers: z.array(/* ... */),
     // ...
   }),

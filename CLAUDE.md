@@ -115,6 +115,7 @@ Available page types:
 - Three-column responsive layout: back button (flex: 1) | progress bar (flex: 5) | spacer (flex: 1)
 
 **Back Navigation:**
+
 - Uses `useRouter()` from expo-router internally
 - Back button appears automatically when `router.canGoBack()` returns `true`
 - Renders a chevron-left icon using `lucide-react-native`
@@ -390,11 +391,13 @@ colors: {
 ### Color Customization Examples
 
 **Override primary color:**
+
 ```typescript
 <OnboardingProvider theme={{ colors: { primary: "#007AFF" } }} />
 ```
 
 **Mode-specific colors:**
+
 ```typescript
 <OnboardingProvider
   lightTheme={{ colors: { primary: "#007AFF" } }}
@@ -403,13 +406,14 @@ colors: {
 ```
 
 **Nested color overrides:**
+
 ```typescript
 <OnboardingProvider
   theme={{
     colors: {
       neutral: { lowest: "#F5F5F5" },
-      text: { primary: "#1A1A1A" }
-    }
+      text: { primary: "#1A1A1A" },
+    },
   }}
 />
 ```
@@ -480,6 +484,7 @@ textStyles: {
 **IMPORTANT:** The SDK accepts font names but does not load fonts. You must load custom fonts in your app using `expo-font` or React Native's asset linking.
 
 **Step 1: Load fonts in your app**
+
 ```typescript
 import { useFonts } from 'expo-font';
 
@@ -496,16 +501,17 @@ export default function App() {
 ```
 
 **Step 2: Customize font families**
+
 ```typescript
 <OnboardingProvider
   theme={{
     typography: {
       fontFamily: {
-        title: "Poppins-Bold",    // Used by heading1, heading2
-        text: "Roboto-Regular",   // Used by body, button, etc.
-        tagline: "Poppins-Bold"   // Used by special text
-      }
-    }
+        title: "Poppins-Bold", // Used by heading1, heading2
+        text: "Roboto-Regular", // Used by body, button, etc.
+        tagline: "Poppins-Bold", // Used by special text
+      },
+    },
   }}
 />
 ```
@@ -513,33 +519,36 @@ export default function App() {
 ### Typography Token Customization
 
 **Override font sizes:**
+
 ```typescript
 <OnboardingProvider
   theme={{
     typography: {
       fontSize: {
-        xl: 28,        // heading2 size
-        "2xl": 36,     // heading1 size
-      }
-    }
+        xl: 28, // heading2 size
+        "2xl": 36, // heading1 size
+      },
+    },
   }}
 />
 ```
 
 **Override font weights:**
+
 ```typescript
 <OnboardingProvider
   theme={{
     typography: {
       fontWeight: {
-        semibold: "700",  // Make semibold bolder
-      }
-    }
+        semibold: "700", // Make semibold bolder
+      },
+    },
   }}
 />
 ```
 
 **Override text styles:**
+
 ```typescript
 <OnboardingProvider
   theme={{
@@ -549,10 +558,10 @@ export default function App() {
           fontSize: 40,
           fontWeight: "700",
           lineHeight: 1.2,
-          fontFamily: "title"
-        }
-      }
-    }
+          fontFamily: "title",
+        },
+      },
+    },
   }}
 />
 ```
@@ -608,10 +617,12 @@ function MyComponent() {
 
   return (
     <View style={{ backgroundColor: theme.colors.surface.lowest }}>
-      <Text style={{
-        color: theme.colors.text.primary,
-        fontSize: theme.typography.fontSize.xl,
-      }}>
+      <Text
+        style={{
+          color: theme.colors.text.primary,
+          fontSize: theme.typography.fontSize.xl,
+        }}
+      >
         Hello
       </Text>
     </View>
@@ -622,23 +633,30 @@ function MyComponent() {
 ### Using Semantic Text Styles
 
 ```typescript
-import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-studio";
+import {
+  useTheme,
+  getTextStyle,
+} from "@rocapine/react-native-onboarding-studio";
 
 function MyComponent() {
   const { theme } = useTheme();
 
   return (
     <View>
-      <Text style={[
-        getTextStyle(theme, "heading1"),
-        { color: theme.colors.text.primary }
-      ]}>
+      <Text
+        style={[
+          getTextStyle(theme, "heading1"),
+          { color: theme.colors.text.primary },
+        ]}
+      >
         Title
       </Text>
-      <Text style={[
-        getTextStyle(theme, "body"),
-        { color: theme.colors.text.secondary }
-      ]}>
+      <Text
+        style={[
+          getTextStyle(theme, "body"),
+          { color: theme.colors.text.secondary },
+        ]}
+      >
         Body text
       </Text>
     </View>
@@ -651,13 +669,13 @@ function MyComponent() {
 ## Complete Example
 
 ```typescript
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
 import { OnboardingProvider } from "@rocapine/react-native-onboarding-studio";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'CustomFont-Bold': require('./assets/fonts/CustomFont-Bold.ttf'),
-    'CustomFont-Regular': require('./assets/fonts/CustomFont-Regular.ttf'),
+    "CustomFont-Bold": require("./assets/fonts/CustomFont-Bold.ttf"),
+    "CustomFont-Regular": require("./assets/fonts/CustomFont-Regular.ttf"),
   });
 
   if (!fontsLoaded) return null;
@@ -668,7 +686,7 @@ export default function App() {
       theme={{
         colors: {
           primary: "#FF5733",
-          text: { primary: "#1A1A1A" }
+          text: { primary: "#1A1A1A" },
         },
         typography: {
           fontFamily: {
@@ -680,10 +698,10 @@ export default function App() {
               fontSize: 36,
               fontWeight: "700",
               lineHeight: 1.2,
-              fontFamily: "title"
-            }
-          }
-        }
+              fontFamily: "title",
+            },
+          },
+        },
       }}
     >
       <YourApp />
@@ -714,8 +732,8 @@ const myTheme = {
     ...typography,
     fontFamily: {
       ...typography.fontFamily,
-      title: "CustomFont-Bold"
-    }
+      title: "CustomFont-Bold",
+    },
   },
 };
 ```
@@ -845,11 +863,13 @@ The SDK provides a powerful component customization system that allows users to 
 ### Architecture
 
 **CustomComponentsContext** (`src/infra/provider/CustomComponentsContext.tsx`)
+
 - React Context for distributing custom components throughout the app
 - Provides `CustomComponents` interface defining all customizable components
 - Exports `useCustomComponents()` hook for accessing custom components in renderers
 
 **Integration Points:**
+
 1. `OnboardingProvider` accepts `customComponents` prop
 2. `CustomComponentsProvider` wraps the app
 3. Renderers use `useCustomComponents()` to access custom implementations
@@ -860,6 +880,7 @@ The SDK provides a powerful component customization system that allows users to 
 All custom components must implement specific interfaces that define their props:
 
 **QuestionAnswerButtonProps** (`src/UI/Pages/Question/components.tsx`)
+
 ```typescript
 interface QuestionAnswerButtonProps {
   answer: { label: string; value: string };
@@ -873,6 +894,7 @@ interface QuestionAnswerButtonProps {
 ```
 
 **QuestionAnswersListProps** (`src/UI/Pages/Question/components.tsx`)
+
 ```typescript
 interface QuestionAnswersListProps {
   answers: Array<{ label: string; value: string }>;
@@ -888,6 +910,7 @@ interface QuestionAnswersListProps {
 Each customizable component has a default implementation exported for composition:
 
 **DefaultQuestionAnswerButton** (`src/UI/Pages/Question/components.tsx`)
+
 - Standard button with theme integration
 - Rounded corners (borderRadius: 16)
 - Semantic text styles (body)
@@ -895,6 +918,7 @@ Each customizable component has a default implementation exported for compositio
 - 20px vertical padding, 24px horizontal padding
 
 **DefaultQuestionAnswersList** (`src/UI/Pages/Question/components.tsx`)
+
 - Container with 10px gap between items
 - Maps over answers and renders DefaultQuestionAnswerButton for each
 - Respects custom button component if provided via context
@@ -906,7 +930,12 @@ Each customizable component has a default implementation exported for compositio
 Replace button appearance while keeping list logic:
 
 ```typescript
-const MinimalButton = ({ answer, selected, onPress, theme }: QuestionAnswerButtonProps) => (
+const MinimalButton = ({
+  answer,
+  selected,
+  onPress,
+  theme,
+}: QuestionAnswerButtonProps) => (
   <TouchableOpacity
     onPress={onPress}
     style={{
@@ -917,11 +946,13 @@ const MinimalButton = ({ answer, selected, onPress, theme }: QuestionAnswerButto
       backgroundColor: selected ? theme.colors.primary : "transparent",
     }}
   >
-    <Text style={{ fontSize: 24 }}>{ answer.label}</Text>
+    <Text style={{ fontSize: 24 }}>{answer.label}</Text>
   </TouchableOpacity>
 );
 
-<OnboardingProvider customComponents={{ QuestionAnswerButton: MinimalButton }} />
+<OnboardingProvider
+  customComponents={{ QuestionAnswerButton: MinimalButton }}
+/>;
 ```
 
 #### Pattern 2: Animated List
@@ -929,12 +960,20 @@ const MinimalButton = ({ answer, selected, onPress, theme }: QuestionAnswerButto
 Full control over list rendering with animations:
 
 ```typescript
-const AnimatedList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswersListProps) => {
+const AnimatedList = ({
+  answers,
+  selected,
+  onAnswerPress,
+  theme,
+}: QuestionAnswersListProps) => {
   const animations = useRef(answers.map(() => new Animated.Value(0))).current;
 
   useEffect(() => {
-    Animated.stagger(150,
-      animations.map(anim => Animated.spring(anim, { toValue: 1, useNativeDriver: true }))
+    Animated.stagger(
+      150,
+      animations.map((anim) =>
+        Animated.spring(anim, { toValue: 1, useNativeDriver: true })
+      )
     ).start();
   }, []);
 
@@ -945,10 +984,14 @@ const AnimatedList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswe
           key={answer.value}
           style={{
             opacity: animations[index],
-            transform: [{ translateY: animations[index].interpolate({
-              inputRange: [0, 1],
-              outputRange: [20, 0]
-            })}]
+            transform: [
+              {
+                translateY: animations[index].interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [20, 0],
+                }),
+              },
+            ],
           }}
         >
           <DefaultQuestionAnswerButton
@@ -966,7 +1009,7 @@ const AnimatedList = ({ answers, selected, onAnswerPress, theme }: QuestionAnswe
   );
 };
 
-<OnboardingProvider customComponents={{ QuestionAnswersList: AnimatedList }} />
+<OnboardingProvider customComponents={{ QuestionAnswersList: AnimatedList }} />;
 ```
 
 #### Pattern 3: Wrapping Default Components
@@ -976,7 +1019,7 @@ Extend default behavior:
 ```typescript
 const TrackedButton = (props: QuestionAnswerButtonProps) => {
   const handlePress = () => {
-    analytics.track('answer_selected', { value: props.answer.value });
+    analytics.track("answer_selected", { value: props.answer.value });
     props.onPress();
   };
 
@@ -993,6 +1036,7 @@ The system resolves components in this order:
 3. **Default Implementation** - Built-in SDK styling
 
 This priority system ensures:
+
 - List customization overrides everything
 - Button customization works with default list logic
 - No custom components means full default behavior
@@ -1005,8 +1049,10 @@ Renderers follow this pattern for custom component support:
 const QuestionRendererBase = ({ step, onContinue }: QuestionRendererProps) => {
   const { theme } = useTheme();
   const customComponents = useCustomComponents();
-  const AnswersList = customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
-  const AnswerButton = customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+  const AnswersList =
+    customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+  const AnswerButton =
+    customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
 
   return (
     <OnboardingTemplate>
@@ -1030,6 +1076,7 @@ const QuestionRendererBase = ({ step, onContinue }: QuestionRendererProps) => {
 To add a new customizable component:
 
 1. **Define Props Interface** in the component's file:
+
    ```typescript
    export interface NewComponentProps {
      // Define all props the component receives
@@ -1037,6 +1084,7 @@ To add a new customizable component:
    ```
 
 2. **Create Default Implementation**:
+
    ```typescript
    export const DefaultNewComponent: React.FC<NewComponentProps> = (props) => {
      // Default rendering logic
@@ -1044,6 +1092,7 @@ To add a new customizable component:
    ```
 
 3. **Add to CustomComponents Interface**:
+
    ```typescript
    export interface CustomComponents {
      // Existing components...
@@ -1052,6 +1101,7 @@ To add a new customizable component:
    ```
 
 4. **Update Renderer** to use custom component:
+
    ```typescript
    const customComponents = useCustomComponents();
    const Component = customComponents.NewComponent || DefaultNewComponent;
@@ -1067,12 +1117,14 @@ To add a new customizable component:
 The `example/components/` directory contains reference implementations:
 
 **MinimalAnswerButton.tsx**
+
 - Matches Figma minimal design
 - 96px height, top/bottom borders only
 - No border-radius
 - 24px font size
 
 **AnimatedAnswersList.tsx**
+
 - Staggered entrance animation (150ms delay)
 - Slide + fade effect
 - Uses React Native Animated API
@@ -1107,6 +1159,7 @@ When testing custom components:
 ### Future Extensibility
 
 The system is designed to support more customizable components:
+
 - Carousel slide components
 - Picker input components
 - MediaContent renderers

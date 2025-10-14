@@ -4,7 +4,7 @@ import { CustomPayloadSchema } from "../types";
 export const CarouselScreenSchema = z.object({
   mediaUrl: z.string(),
   title: z.string(),
-  subtitle: z.string().nullable(),
+  subtitle: z.string().nullish(),
 });
 
 export const CarouselStepPayloadSchema = z.object({
@@ -19,7 +19,7 @@ export const CarouselStepTypeSchema = z.object({
   payload: CarouselStepPayloadSchema,
   customPayload: CustomPayloadSchema,
   continueButtonLabel: z.string().optional().default("Continue"),
-  figmaUrl: z.string().nullable(),
+  figmaUrl: z.string().nullish(),
 });
 
 export type CarouselStepType = z.infer<typeof CarouselStepTypeSchema>;
