@@ -15,6 +15,7 @@ export const darkTokens = {
       low: "#4f4f4f",
       lower: "#3d3d3d",
       lowest: "#262626",
+      lowestest: "#000000",
       medium: "#6d6d6d",
     },
     surface: {

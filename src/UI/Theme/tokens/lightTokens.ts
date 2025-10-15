@@ -15,6 +15,7 @@ export const lightTokens = {
       low: "#b0b0b0",
       lower: "#e7e7e7",
       lowest: "#f6f6f6",
+      lowestest: "#ffffff",
       medium: "#6d6d6d",
     },
     surface: {

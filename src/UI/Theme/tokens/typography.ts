@@ -1,6 +1,5 @@
 export const typography = {
   fontFamily: {
-    tagline: "Inter",
     text: "Inter",
     title: "Inter",
   },
@@ -75,21 +74,5 @@ export const typography = {
       lineHeight: 1.5,
       fontFamily: "text" as const,
     },
-  },
-};
-
-export const brand1 = {
-  fontFamily: {
-    tagline: "Inter",
-    text: "Inter",
-    title: "Inter",
-  },
-};
-
-export const brand2 = {
-  fontFamily: {
-    tagline: "Montserrat",
-    text: "Ubuntu",
-    title: "Ubuntu",
   },
 };

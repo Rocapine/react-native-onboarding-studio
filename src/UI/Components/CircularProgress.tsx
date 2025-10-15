@@ -136,7 +136,7 @@ const createStyles = (theme: Theme, width: number) =>
     },
     percentageText: {
       fontFamily: theme.typography.fontFamily.title,
-      fontSize: theme.typography.fontSize["4xl"],
+      fontSize: theme.typography.textStyles.heading1.fontSize,
       fontWeight: theme.typography.fontWeight.bold,
       color: theme.colors.text.primary,
       textAlign: "center",

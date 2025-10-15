@@ -620,7 +620,7 @@ function MyComponent() {
       <Text
         style={{
           color: theme.colors.text.primary,
-          fontSize: theme.typography.fontSize.xl,
+          fontSize: theme.typography.textStyles.heading3.fontSize,
         }}
       >
         Hello

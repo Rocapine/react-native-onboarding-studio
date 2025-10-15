@@ -30,7 +30,7 @@ export const OnboardingTemplate = ({
       style={[
         styles.container,
         {
-          backgroundColor: theme.colors.surface.lowest,
+          backgroundColor: theme.colors.neutral.lowest,
           paddingTop: step.displayProgressHeader ? top + 40 : top
         },
       ]}
