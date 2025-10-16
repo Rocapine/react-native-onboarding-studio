@@ -14,7 +14,6 @@ interface OnboardingProviderProps {
   children: React.ReactNode;
   client: OnboardingStudioClient;
   initialColorScheme?: ColorScheme;
-  isSandbox?: boolean;
   locale?: string;
   getStepsParams?: Record<string, any>;
   cacheKey?: string;
@@ -53,7 +52,6 @@ export const OnboardingProvider = ({
   children,
   client,
   initialColorScheme = "light",
-  isSandbox = false,
   locale = "en",
   getStepsParams = {},
   cacheKey = "rocapine-onboarding-studio",
@@ -98,7 +96,6 @@ export const OnboardingProvider = ({
                 totalSteps,
                 setTotalSteps,
                 client,
-                isSandbox,
                 locale,
                 getStepsParams,
                 cacheKey,
@@ -120,17 +117,15 @@ export const OnboardingProgressContext = createContext<{
   totalSteps: number;
   setTotalSteps: (steps: number) => void;
   client: OnboardingStudioClient | null;
-  isSandbox: boolean;
   locale: string;
   getStepsParams: Record<string, any>;
   cacheKey: string;
 }>({
   activeStep: { number: 0, displayProgressHeader: false },
-  setActiveStep: () => {},
+  setActiveStep: () => { },
   totalSteps: 0,
-  setTotalSteps: () => {},
+  setTotalSteps: () => { },
   client: null,
-  isSandbox: false,
   locale: "en",
   getStepsParams: {},
   cacheKey: "rocapine-onboarding-studio",

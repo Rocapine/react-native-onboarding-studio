@@ -17,7 +17,6 @@ export const useOnboardingQuestions = ({
   // Get all config from context
   const {
     client,
-    isSandbox,
     locale,
     getStepsParams,
     cacheKey,
@@ -30,7 +29,7 @@ export const useOnboardingQuestions = ({
     queryKey: ["onboardingQuestions"],
     queryFn: async () => {
       // Try to get data from AsyncStorage first for production
-      if (!isSandbox) {
+      if (!(client?.options?.isSanbdox || false)) {
         try {
           const cachedData = await AsyncStorage.getItem(cacheKey);
           if (cachedData) {

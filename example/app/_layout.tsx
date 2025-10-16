@@ -38,7 +38,6 @@ export default function RootLayout() {
   return (
     <OnboardingProvider
       client={client}
-      isSandbox={true}
       locale="en"
       getStepsParams={{
         myconfig: "myconfig",
