@@ -141,7 +141,7 @@ const createStyles = (theme: Theme) =>
       width: "100%",
     },
     text: {
-      fontFamily: theme.typography.fontFamily.text,
+      fontFamily: theme.typography.textStyles.heading3.fontFamily,
       fontSize: theme.typography.textStyles.heading3.fontSize,
       fontWeight: theme.typography.fontWeight.medium,
       textAlign: "center",

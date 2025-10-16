@@ -135,7 +135,7 @@ const createStyles = (theme: Theme, width: number) =>
       height: "100%",
     },
     percentageText: {
-      fontFamily: theme.typography.fontFamily.title,
+      fontFamily: theme.typography.textStyles.heading1.fontFamily,
       fontSize: theme.typography.textStyles.heading1.fontSize,
       fontWeight: theme.typography.fontWeight.bold,
       color: theme.colors.text.primary,

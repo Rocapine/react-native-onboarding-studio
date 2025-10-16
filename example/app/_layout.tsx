@@ -56,6 +56,14 @@ export default function RootLayout() {
             // title: "Futura-Bold",  // Used by heading1, heading2 (titles)
             // text: "System", // Use system font for body text
           },
+          textStyles: {
+            body: {
+              fontSize: 16,
+              fontWeight: "400",
+              lineHeight: 24,
+              fontFamily: "text",
+            },
+          }
         },
       }}
     >

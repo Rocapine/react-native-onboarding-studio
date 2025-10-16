@@ -24,7 +24,7 @@ export type TextStyle = {
   fontSize: number;
   fontWeight: "400" | "500" | "600" | "700" | "800";
   lineHeight: number;
-  fontFamily: "text" | "title";
+  fontFamily: string;
 };
 
 export type TextStyles = {
@@ -39,10 +39,6 @@ export type TextStyles = {
 };
 
 export type TypographyTokens = {
-  fontFamily: {
-    text: string;
-    title: string;
-  };
   fontWeight: {
     regular: "400";
     medium: "500";
