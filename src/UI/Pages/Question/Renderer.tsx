@@ -81,12 +81,17 @@ const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme }: Questi
   const AnswerButton =
     customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
 
+  console.log("style", [
+    getTextStyle(theme, "heading1"),
+    styles.title,
+    { color: theme.colors.text.primary },
+  ])
   return (
     <OnboardingTemplate
       step={step}
-      onContinue={onContinue || (() => {})}
+      onContinue={handleContinue || (() => { })}
       theme={theme}
-      button={multipleAnswer ? { text: "Continue" } : undefined}
+      button={multipleAnswer && isAnySelected ? { text: "Continue" } : undefined}
     >
       <View style={styles.container}>
         {/* Main Content */}

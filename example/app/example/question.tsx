@@ -1,6 +1,7 @@
 import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { defaultTheme } from "@rocapine/react-native-onboarding-studio";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -63,6 +64,7 @@ export default function QuestionExample() {
       <OnboardingStudio.QuestionRenderer
         step={step}
         onContinue={(answers) => console.log("Selected:", answers)}
+        theme={defaultTheme}
       />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
