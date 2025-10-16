@@ -1,18 +1,6 @@
+import { TypographyTokens } from "../types";
+
 export const typography = {
-  fontFamily: {
-    text: "Inter",
-    title: "Inter",
-  },
-  fontSize: {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 20,
-    xl: 24,
-    "2xl": 32,
-    "3xl": 40,
-    "4xl": 72,
-  },
   fontWeight: {
     regular: "400" as const,
     medium: "500" as const,
@@ -30,49 +18,49 @@ export const typography = {
       fontSize: 32,
       fontWeight: "600" as const,
       lineHeight: 1.25,
-      fontFamily: "title" as const,
+      fontFamily: "Inter",
     },
     heading2: {
       fontSize: 24,
       fontWeight: "600" as const,
       lineHeight: 1.3,
-      fontFamily: "title" as const,
+      fontFamily: "Inter",
     },
     heading3: {
       fontSize: 18,
       fontWeight: "500" as const,
       lineHeight: 1.3,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
     body: {
       fontSize: 16,
       fontWeight: "400" as const,
       lineHeight: 1.3,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
     bodyMedium: {
       fontSize: 16,
       fontWeight: "500" as const,
       lineHeight: 1.3,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
     label: {
       fontSize: 14,
       fontWeight: "500" as const,
       lineHeight: 1.3,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
     caption: {
       fontSize: 12,
       fontWeight: "400" as const,
       lineHeight: 1.3,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
     button: {
       fontSize: 16,
       fontWeight: "500" as const,
       lineHeight: 1.5,
-      fontFamily: "text" as const,
+      fontFamily: "Inter",
     },
   },
-};
+} satisfies TypographyTokens;
