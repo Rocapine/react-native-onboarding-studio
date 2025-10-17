@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { MinimalAnswerButton } from "@/components/MinimalAnswerButton";
+import { fallbackOnboarding } from "@/assets/fallback-onboarding";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -16,6 +17,7 @@ const client = new OnboardingStudioClient(
   {
     appVersion: "1.0.0",
     isSanbdox: true,
+    fallbackOnboarding
   }
 );
 

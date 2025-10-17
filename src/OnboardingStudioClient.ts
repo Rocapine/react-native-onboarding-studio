@@ -56,8 +56,24 @@ export class OnboardingStudioClient {
 
     const url = `${this.baseUrl}/get-onboarding-steps?${urlParams.toString()}`;
     console.info("OnboardingStudioClient getSteps url", url);
-    const response = await fetch(url);
-    if (!response.ok) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch onboarding steps: ${response.status} ${response.statusText}`
+        );
+      }
+      const data = await response.json();
+      return {
+        data,
+        headers: {
+          "ONBS-Onboarding-Id": response.headers.get("ONBS-Onboarding-Id"),
+          "ONBS-Audience-Id": response.headers.get("ONBS-Audience-Id"),
+          "ONBS-Onboarding-Name": response.headers.get("ONBS-Onboarding-Name"),
+        },
+      };
+    } catch (error) {
+      console.error(error);
       if (this.options.fallbackOnboarding) {
         return {
           data: this.options.fallbackOnboarding,
@@ -68,18 +84,7 @@ export class OnboardingStudioClient {
           },
         };
       }
-      throw new Error(
-        `Failed to fetch onboarding steps: ${response.status} ${response.statusText}`
-      );
+      throw error;
     }
-    const data = await response.json();
-    return {
-      data,
-      headers: {
-        "ONBS-Onboarding-Id": response.headers.get("ONBS-Onboarding-Id"),
-        "ONBS-Audience-Id": response.headers.get("ONBS-Audience-Id"),
-        "ONBS-Onboarding-Name": response.headers.get("ONBS-Onboarding-Name"),
-      },
-    };
   }
 }
