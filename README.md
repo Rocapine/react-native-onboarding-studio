@@ -45,7 +45,7 @@ export default function RootLayout() {
     <OnboardingProvider
       client={client}
       locale="en"
-      getStepsParams={{ onboardingId: "your-onboarding-id" }}
+      customAudienceParams={{ onboardingId: "your-onboarding-id" }}
     >
       <ProgressBar />
       <YourApp />
@@ -123,7 +123,7 @@ Customize colors, typography, and semantic styles:
 <OnboardingProvider
   theme={{
     colors: { primary: "#FF5733" },
-    typography: { fontFamily: { title: "CustomFont-Bold" } }
+    typography: { fontFamily: { title: "CustomFont-Bold" } },
   }}
 />
 ```
@@ -177,11 +177,11 @@ export default function OnboardingScreen() {
 
 Install these only if you're using the specific screen types:
 
-| Screen Type | Package | Install Command |
-|-------------|---------|-----------------|
-| **Picker** | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
-| **Ratings** | `expo-store-review` | `npx expo install expo-store-review` |
-| **Commitment** (signature) | `@shopify/react-native-skia` | `npx expo install @shopify/react-native-skia` |
+| Screen Type                | Package                       | Install Command                                |
+| -------------------------- | ----------------------------- | ---------------------------------------------- |
+| **Picker**                 | `@react-native-picker/picker` | `npx expo install @react-native-picker/picker` |
+| **Ratings**                | `expo-store-review`           | `npx expo install expo-store-review`           |
+| **Commitment** (signature) | `@shopify/react-native-skia`  | `npx expo install @shopify/react-native-skia`  |
 
 ---
 

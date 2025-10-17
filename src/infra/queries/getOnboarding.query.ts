@@ -6,14 +6,14 @@ const cacheKey = "rocapine-onboarding-studio";
 export const getOnboardingQuery = (
   client: OnboardingStudioClient,
   locale: string,
-  getStepsParams: Record<string, any>
+  customAudienceParams: Record<string, any>
 ) => {
   return {
     queryKey: [
       "onboardingQuestions",
       client.projectId,
       locale,
-      JSON.stringify(getStepsParams),
+      JSON.stringify(customAudienceParams),
     ],
     queryFn: async () => {
       // Try to get data from AsyncStorage first for production
@@ -31,7 +31,7 @@ export const getOnboardingQuery = (
       // Fetch from API
       const { data, headers } = await client!.getSteps(
         { locale },
-        getStepsParams
+        customAudienceParams
       );
 
       console.info("onbs-onboarding-name", headers["ONBS-Onboarding-Name"]);

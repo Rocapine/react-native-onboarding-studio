@@ -59,7 +59,7 @@ const client = new OnboardingStudioClient("your-project-id", {
 <OnboardingProvider
   client={client}
   locale="en"
-  getStepsParams={{ onboardingId: "your-onboarding-id" }}
+  customAudienceParams={{ onboardingId: "your-onboarding-id" }}
 >
   <ProgressBar />
   <YourApp />

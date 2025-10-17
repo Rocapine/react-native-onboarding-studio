@@ -64,7 +64,7 @@ export default function RootLayout() {
     <OnboardingProvider
       client={client}
       locale="en"
-      getStepsParams={{
+      customAudienceParams={{
         onboardingId: "your-onboarding-id", // From Rocapine dashboard
       }}
     >
@@ -167,7 +167,7 @@ const client = new OnboardingStudioClient(projectId, {
 | `client` | `OnboardingStudioClient` | Required | Client instance |
 | `isSandbox` | `boolean` | `false` | Enable sandbox mode |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
-| `getStepsParams` | `object` | `{}` | Additional API parameters |
+| `customAudienceParams` | `object` | `{}` | Additional API parameters |
 | `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage key |
 | `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme |
 | `theme` | `ThemeTokens` | - | Custom theme for both modes |

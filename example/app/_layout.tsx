@@ -41,7 +41,7 @@ export default function RootLayout() {
     <OnboardingProvider
       client={client}
       locale="en"
-      getStepsParams={{
+      customAudienceParams={{
         myconfig: "myconfig",
         onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
       }}

@@ -15,12 +15,12 @@ export const useOnboardingQuestions = ({
   totalSteps: number;
 } => {
   // Get all config from context
-  const { client, locale, getStepsParams, setActiveStep, setTotalSteps } =
+  const { client, locale, customAudienceParams, setActiveStep, setTotalSteps } =
     useContext(OnboardingProgressContext);
 
   // Build query with config from context
   const { data: onboardingSteps } = useSuspenseQuery<OnboardingStepType[]>(
-    getOnboardingQuery(client, locale, getStepsParams)
+    getOnboardingQuery(client, locale, customAudienceParams)
   );
 
   useFocusEffect(

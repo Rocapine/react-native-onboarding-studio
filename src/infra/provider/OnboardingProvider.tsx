@@ -22,7 +22,7 @@ interface OnboardingProviderProps {
   client: OnboardingStudioClient;
   initialColorScheme?: ColorScheme;
   locale?: string;
-  getStepsParams?: Record<string, any>;
+  customAudienceParams?: Record<string, any>;
   /**
    * Custom theme to override default theme tokens for both light and dark modes.
    * Partial overrides are supported - only provide the tokens you want to customize.
@@ -59,7 +59,7 @@ export const OnboardingProvider = ({
   client,
   initialColorScheme = "light", // @todo To move in the Onboarding Layout
   locale = "en",
-  getStepsParams = {},
+  customAudienceParams = {},
   theme, // @todo To move in the Onboarding Layout
   lightTheme, // @todo To move in the Onboarding Layout
   darkTheme, // @todo To move in the Onboarding Layout
@@ -71,7 +71,7 @@ export const OnboardingProvider = ({
   });
   const [totalSteps, setTotalSteps] = useState(0);
 
-  queryClient.prefetchQuery(getOnboardingQuery(client, locale, getStepsParams))
+  queryClient.prefetchQuery(getOnboardingQuery(client, locale, customAudienceParams))
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -90,7 +90,7 @@ export const OnboardingProvider = ({
               setTotalSteps,
               client,
               locale,
-              getStepsParams,
+              customAudienceParams,
             }}
           >
             {children}
@@ -108,7 +108,7 @@ export const OnboardingProgressContext = createContext<{
   setTotalSteps: (steps: number) => void;
   client: OnboardingStudioClient;
   locale: string;
-  getStepsParams: Record<string, any>;
+  customAudienceParams: Record<string, any>;
 }>({
   activeStep: { number: 0, displayProgressHeader: false },
   setActiveStep: () => { },
@@ -116,5 +116,5 @@ export const OnboardingProgressContext = createContext<{
   setTotalSteps: () => { },
   client: new OnboardingStudioClient('', {}),
   locale: "en",
-  getStepsParams: {},
+  customAudienceParams: {},
 });
