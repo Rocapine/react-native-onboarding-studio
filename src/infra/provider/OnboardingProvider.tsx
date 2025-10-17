@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
 import { ColorScheme, DeepPartial, Theme } from "../../UI/Theme/types";
@@ -24,7 +23,6 @@ interface OnboardingProviderProps {
   initialColorScheme?: ColorScheme;
   locale?: string;
   getStepsParams?: Record<string, any>;
-  cacheKey?: string;
   /**
    * Custom theme to override default theme tokens for both light and dark modes.
    * Partial overrides are supported - only provide the tokens you want to customize.
@@ -62,7 +60,6 @@ export const OnboardingProvider = ({
   initialColorScheme = "light", // @todo To move in the Onboarding Layout
   locale = "en",
   getStepsParams = {},
-  cacheKey = "rocapine-onboarding-studio", // useless, to remove
   theme, // @todo To move in the Onboarding Layout
   lightTheme, // @todo To move in the Onboarding Layout
   darkTheme, // @todo To move in the Onboarding Layout
@@ -78,30 +75,28 @@ export const OnboardingProvider = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <ThemeProvider
-          initialColorScheme={initialColorScheme}
-          customTheme={theme}
-          customLightTheme={lightTheme}
-          customDarkTheme={darkTheme}
-        >
-          <CustomComponentsProvider components={customComponents}>
-            <OnboardingProgressContext.Provider
-              value={{
-                activeStep,
-                setActiveStep,
-                totalSteps,
-                setTotalSteps,
-                client,
-                locale,
-                getStepsParams,
-              }}
-            >
-              {children}
-            </OnboardingProgressContext.Provider>
-          </CustomComponentsProvider>
-        </ThemeProvider>
-      </SafeAreaProvider>
+      <ThemeProvider
+        initialColorScheme={initialColorScheme}
+        customTheme={theme}
+        customLightTheme={lightTheme}
+        customDarkTheme={darkTheme}
+      >
+        <CustomComponentsProvider components={customComponents}>
+          <OnboardingProgressContext.Provider
+            value={{
+              activeStep,
+              setActiveStep,
+              totalSteps,
+              setTotalSteps,
+              client,
+              locale,
+              getStepsParams,
+            }}
+          >
+            {children}
+          </OnboardingProgressContext.Provider>
+        </CustomComponentsProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
