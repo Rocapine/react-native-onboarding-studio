@@ -9,6 +9,7 @@ import {
   CustomComponents,
 } from "./CustomComponentsContext";
 import { ProgressBar } from "../../UI/Components/ProgressBar";
+import { getOnboardingQuery } from "../queries/getOnboarding.query";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +75,7 @@ export const OnboardingProvider = ({
   });
   const [totalSteps, setTotalSteps] = useState(0);
 
+  queryClient.prefetchQuery(getOnboardingQuery(client, locale, getStepsParams))
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -112,7 +114,7 @@ export const OnboardingProgressContext = createContext<{
   setActiveStep: (step: { number: number; displayProgressHeader: boolean }) => void;
   totalSteps: number;
   setTotalSteps: (steps: number) => void;
-  client: OnboardingStudioClient | null;
+  client: OnboardingStudioClient;
   locale: string;
   getStepsParams: Record<string, any>;
   cacheKey: string;
@@ -121,7 +123,7 @@ export const OnboardingProgressContext = createContext<{
   setActiveStep: () => { },
   totalSteps: 0,
   setTotalSteps: () => { },
-  client: null,
+  client: new OnboardingStudioClient('', {}),
   locale: "en",
   getStepsParams: {},
   cacheKey: "rocapine-onboarding-studio",
