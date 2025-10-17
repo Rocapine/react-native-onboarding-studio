@@ -15,7 +15,7 @@ export default function RootLayout() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface.lowest }]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.neutral.lowest }]}>
       <Pressable style={styles.themeToggle} onPress={toggleTheme}>
         <Text style={styles.themeToggleText}>{colorScheme === "light" ? "🌙" : "☀️"}</Text>
       </Pressable>
@@ -28,7 +28,7 @@ export default function RootLayout() {
       </Pressable>
 
       <Pressable
-        style={[styles.button, { backgroundColor: theme.colors.secondary }]}
+        style={[styles.button, { backgroundColor: theme.colors.primary }]}
         onPress={() => router.push("/example")}
       >
         <Text style={styles.buttonText}>View Examples</Text>

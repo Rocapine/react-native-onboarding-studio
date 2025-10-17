@@ -306,11 +306,11 @@ const createStyles = (theme: Theme) =>
       gap: 40,
     },
     title: {
-      fontFamily: theme.typography.fontFamily.title,
-      fontSize: theme.typography.fontSize["2xl"],
+      fontFamily: theme.typography.textStyles.heading2.fontFamily,
+      fontSize: theme.typography.textStyles.heading2.fontSize,
       fontWeight: theme.typography.fontWeight.semibold,
       lineHeight:
-        theme.typography.fontSize["2xl"] * theme.typography.lineHeight.tight,
+        theme.typography.textStyles.heading2.fontSize * theme.typography.lineHeight.tight,
       color: theme.colors.text.primary,
       textAlign: "center",
       letterSpacing: -0.76,
@@ -327,12 +327,12 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
     },
     stepLabel: {
-      fontFamily: theme.typography.fontFamily.text,
-      fontSize: theme.typography.fontSize.md,
+      fontFamily: theme.typography.textStyles.body.fontFamily,
+      fontSize: theme.typography.textStyles.body.fontSize,
       fontWeight: theme.typography.fontWeight.regular,
       letterSpacing: -0.32,
       lineHeight:
-        theme.typography.fontSize.md * theme.typography.lineHeight.normal,
+        theme.typography.textStyles.body.fontSize * theme.typography.lineHeight.normal,
     },
     checkmark: {
       width: 24,
@@ -368,8 +368,8 @@ const createStyles = (theme: Theme) =>
       marginTop: 20,
     },
     carouselTitle: {
-      fontFamily: theme.typography.fontFamily.text,
-      fontSize: theme.typography.fontSize.md,
+      fontFamily: theme.typography.textStyles.body.fontFamily,
+      fontSize: theme.typography.textStyles.body.fontSize,
       fontWeight: theme.typography.fontWeight.medium,
       color: theme.colors.text.disable,
       textAlign: "center",
@@ -392,8 +392,8 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
     },
     placeholderText: {
-      fontFamily: theme.typography.fontFamily.text,
-      fontSize: theme.typography.fontSize.md,
+      fontFamily: theme.typography.textStyles.body.fontFamily,
+      fontSize: theme.typography.textStyles.body.fontSize,
       color: theme.colors.text.disable,
     },
     buttonContainer: {

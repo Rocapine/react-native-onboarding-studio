@@ -17,7 +17,7 @@ The root provider component that wraps your app and provides onboarding context.
   client={client}
   isSandbox={false}
   locale="en"
-  getStepsParams={{ onboardingId: "abc-123" }}
+  customAudienceParams={{ onboardingId: "abc-123" }}
   cacheKey="rocapine-onboarding-studio"
   initialColorScheme="light"
   theme={{ colors: { primary: "#007AFF" } }}
@@ -35,7 +35,7 @@ The root provider component that wraps your app and provides onboarding context.
 | `children` | `ReactNode` | **Required** | Your app content |
 | `isSandbox` | `boolean` | `false` | Enable sandbox mode for development |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
-| `getStepsParams` | `Record<string, any>` | `{}` | Additional parameters for API |
+| `customAudienceParams` | `Record<string, any>` | `{}` | Additional parameters for API |
 | `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage cache key |
 | `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme mode |
 | `theme` | `ThemeTokens` | - | Custom theme for both light and dark modes |

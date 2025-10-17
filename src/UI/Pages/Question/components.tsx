@@ -57,7 +57,7 @@ export const DefaultQuestionAnswerButton: React.FC<
   <TouchableOpacity
     style={[
       styles.answerButton,
-      { backgroundColor: theme.colors.neutral.lowest },
+      { backgroundColor: theme.colors.neutral.lowest, borderColor: theme.colors.neutral.lower },
       selected && [
         styles.answerButtonSelected,
         {
@@ -117,8 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
-    borderWidth: 2,
-    borderColor: "transparent",
+    borderWidth: 1,
   },
   answerButtonSelected: {},
   answerText: {

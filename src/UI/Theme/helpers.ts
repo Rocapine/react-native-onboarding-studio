@@ -14,10 +14,9 @@ export function getTextStyle(
   styleName: keyof TextStyles
 ): TextStyle {
   const style = theme.typography.textStyles[styleName];
-  const fontFamily = theme.typography.fontFamily[style.fontFamily];
 
   return {
-    fontFamily,
+    fontFamily: style.fontFamily,
     fontSize: style.fontSize,
     fontWeight: style.fontWeight,
     lineHeight: style.fontSize * style.lineHeight,

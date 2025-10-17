@@ -1,38 +1,35 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, LayoutChangeEvent } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { OnboardingProgressContext } from "../../infra/provider/OnboardingProvider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "../Theme/useTheme";
 import { ChevronLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { defaultTheme, Theme } from "../Theme";
 
 interface ProgressBarProps {
-  value?: number;
-  height?: number;
   backgroundColor?: string;
   progressColor?: string;
-  animated?: boolean;
+  progressPercentage: number;
+  theme?: Theme;
+  isProgressBarVisible?: boolean
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
-  height = 12,
   backgroundColor,
   progressColor,
-  animated = true,
+  progressPercentage = 0,
+  theme = defaultTheme,
+  isProgressBarVisible = true,
 }) => {
+  const animated = true;
   const router = useRouter();
-  const { theme } = useTheme();
-  const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
   const { top } = useSafeAreaInsets();
-  const [containerWidth, setContainerWidth] = useState(0);
 
-  const progressPercentage = totalSteps > 0 ? (activeStep.number / totalSteps) : 0;
-
+  const height = 12
   // Use Reanimated shared value for smooth animations
   const progress = useSharedValue(0);
 
@@ -53,16 +50,12 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     };
   });
 
-  const onLayoutContainer = (event: LayoutChangeEvent) => {
-    setContainerWidth(event.nativeEvent.layout.width);
-  };
-
   // Use theme colors with fallback to props
   const trackBgColor = backgroundColor || theme.colors.neutral.lower;
   const barColor = progressColor || theme.colors.primary;
 
   return (
-    activeStep.displayProgressHeader && (
+    isProgressBarVisible && (
       <View style={[styles.container, { paddingTop: top }]}>
         <View style={styles.progressBarContainer}>
           {/* Left section: Back button */}
@@ -86,7 +79,6 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           <View style={styles.progressSection}>
             <View
               style={[styles.track, { height, backgroundColor: trackBgColor }]}
-              onLayout={onLayoutContainer}
             >
               <Animated.View
                 style={[

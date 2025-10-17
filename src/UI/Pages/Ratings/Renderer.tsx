@@ -141,7 +141,7 @@ const RatingsRendererBase = ({ step, onContinue, theme = defaultTheme }: Ratings
                         {
                           zIndex: 3 - index,
                           marginLeft: index > 0 ? -10 : 0,
-                          borderColor: theme.colors.surface.lowest,
+                          borderColor: theme.colors.neutral.lowestest,
                           backgroundColor: theme.colors.neutral.low,
                         },
                       ]}

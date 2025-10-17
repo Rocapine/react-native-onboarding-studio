@@ -113,10 +113,10 @@ const AnimatedTextItem = ({
     const scale =
       isActive && index === totalItems - 1
         ? withSequence(
-            withTiming(1, { duration: 1000 }),
-            withTiming(1.05, { duration: 1000 }),
-            withTiming(1, { duration: 1000 })
-          )
+          withTiming(1, { duration: 1000 }),
+          withTiming(1.05, { duration: 1000 }),
+          withTiming(1, { duration: 1000 })
+        )
         : 1;
 
     return {
@@ -141,12 +141,12 @@ const createStyles = (theme: Theme) =>
       width: "100%",
     },
     text: {
-      fontFamily: theme.typography.fontFamily.text,
-      fontSize: theme.typography.fontSize.xl,
+      fontFamily: theme.typography.textStyles.heading3.fontFamily,
+      fontSize: theme.typography.textStyles.heading3.fontSize,
       fontWeight: theme.typography.fontWeight.medium,
       textAlign: "center",
       lineHeight:
-        theme.typography.fontSize.xl * theme.typography.lineHeight.normal,
+        theme.typography.textStyles.heading3.fontSize * theme.typography.lineHeight.normal,
       letterSpacing: 0.3,
     },
   });

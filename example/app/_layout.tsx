@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { MinimalAnswerButton } from "@/components/MinimalAnswerButton";
+import { fallbackOnboarding } from "@/assets/fallback-onboarding";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -15,7 +16,8 @@ const client = new OnboardingStudioClient(
   "438d5493-1b72-4e12-9523-d9835ee98a52",
   {
     appVersion: "1.0.0",
-    isSanbdox: true,
+    isSandbox: true,
+    fallbackOnboarding
   }
 );
 
@@ -38,9 +40,8 @@ export default function RootLayout() {
   return (
     <OnboardingProvider
       client={client}
-      isSandbox={true}
       locale="en"
-      getStepsParams={{
+      customAudienceParams={{
         myconfig: "myconfig",
         onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
       }}
@@ -53,10 +54,14 @@ export default function RootLayout() {
           primary: "red", // Custom primary color
         },
         typography: {
-          fontFamily: {
-            // title: "Futura-Bold",  // Used by heading1, heading2 (titles)
-            // text: "System", // Use system font for body text
-          },
+          textStyles: {
+            body: {
+              fontSize: 16,
+              fontWeight: "400",
+              lineHeight: 1.2,
+              fontFamily: "Futura-Bold",
+            },
+          }
         },
       }}
     >

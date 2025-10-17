@@ -56,7 +56,7 @@ npm start
   - `client`: OnboardingStudioClient instance (required)
   - `isSandbox`: Enable sandbox mode (default: false)
   - `locale`: Locale for fetching steps (default: "en")
-  - `getStepsParams`: Additional params for getSteps API call
+  - `customAudienceParams`: Additional params for getSteps API call
   - `cacheKey`: AsyncStorage key for caching (default: "rocapine-onboarding-studio")
   - `initialColorScheme`: Theme color scheme (default: "light")
   - `theme`: Custom theme to override both light and dark modes (optional)
@@ -223,7 +223,7 @@ export default function RootLayout() {
       client={client}
       isSandbox={true}
       locale="en"
-      getStepsParams={{
+      customAudienceParams={{
         onboardingId: "your-onboarding-id",
       }}
       // Optional: Customize theme
@@ -620,7 +620,7 @@ function MyComponent() {
       <Text
         style={{
           color: theme.colors.text.primary,
-          fontSize: theme.typography.fontSize.xl,
+          fontSize: theme.typography.textStyles.heading3.fontSize,
         }}
       >
         Hello

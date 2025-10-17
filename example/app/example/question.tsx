@@ -1,68 +1,72 @@
 import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { defaultTheme } from "@rocapine/react-native-onboarding-studio";
 
 export const unstable_settings = {
   anchor: "(tabs)",
 };
 
+const stepPayload = {
+  title: "What are your fitness goals?",
+  subtitle: "Select all that apply",
+  multipleAnswer: true,
+  answers: [
+    {
+      label: "Lose weight",
+      value: "lose_weight",
+      icon: null,
+      description: null,
+    },
+    {
+      label: "Build muscle",
+      value: "build_muscle",
+      icon: null,
+      description: null,
+    },
+    {
+      label: "Improve endurance",
+      value: "improve_endurance",
+      icon: null,
+      description: null,
+    },
+    {
+      label: "Stay active",
+      value: "stay_active",
+      icon: null,
+      description: null,
+    },
+    {
+      label: "None of the above",
+      value: "None of the above",
+      icon: null,
+      description: null,
+    },
+  ],
+  infoBox: null,
+} satisfies OnboardingStudio.QuestionStepType["payload"];
+
+export const step = {
+  id: "question-1",
+  type: "Question",
+  name: "Question",
+  displayProgressHeader: true,
+  payload: stepPayload,
+  customPayload: null,
+  figmaUrl: null,
+} satisfies OnboardingStudio.QuestionStepType;
+
+
 export default function QuestionExample() {
   const router = useRouter();
 
-  const stepPayload = {
-    title: "What are your fitness goals?",
-    subtitle: "Select all that apply",
-    multipleAnswer: true,
-    answers: [
-      {
-        label: "Lose weight",
-        value: "lose_weight",
-        icon: null,
-        description: null,
-      },
-      {
-        label: "Build muscle",
-        value: "build_muscle",
-        icon: null,
-        description: null,
-      },
-      {
-        label: "Improve endurance",
-        value: "improve_endurance",
-        icon: null,
-        description: null,
-      },
-      {
-        label: "Stay active",
-        value: "stay_active",
-        icon: null,
-        description: null,
-      },
-      {
-        label: "None of the above",
-        value: "None of the above",
-        icon: null,
-        description: null,
-      },
-    ],
-    infoBox: null,
-  } satisfies OnboardingStudio.QuestionStepType["payload"];
-
-  const step = {
-    id: "question-1",
-    type: "Question",
-    name: "Question",
-    displayProgressHeader: true,
-    payload: stepPayload,
-    customPayload: null,
-    figmaUrl: null,
-  } satisfies OnboardingStudio.QuestionStepType;
 
   return (
     <View style={{ flex: 1, backgroundColor: "blue" }}>
       <OnboardingStudio.QuestionRenderer
         step={step}
         onContinue={(answers) => console.log("Selected:", answers)}
+        theme={defaultTheme}
       />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>

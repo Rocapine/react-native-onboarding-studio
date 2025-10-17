@@ -27,7 +27,7 @@ export class OnboardingStudioClient {
     userDefinedParams?: UserDefinedParams
   ): Promise<{ data: GetStepsResponse; headers: GetStepsResponseHeaders }> {
     console.info("OnboardingStudioClient getSteps");
-    const isSandbox = this.options.isSanbdox;
+    const isSandbox = this.options.isSandbox;
 
     const urlParams = new URLSearchParams();
     // Add userDefinedParams to URL
@@ -56,20 +56,35 @@ export class OnboardingStudioClient {
 
     const url = `${this.baseUrl}/get-onboarding-steps?${urlParams.toString()}`;
     console.info("OnboardingStudioClient getSteps url", url);
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch onboarding steps: ${response.status} ${response.statusText}`
-      );
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch onboarding steps: ${response.status} ${response.statusText}`
+        );
+      }
+      const data = await response.json();
+      return {
+        data,
+        headers: {
+          "ONBS-Onboarding-Id": response.headers.get("ONBS-Onboarding-Id"),
+          "ONBS-Audience-Id": response.headers.get("ONBS-Audience-Id"),
+          "ONBS-Onboarding-Name": response.headers.get("ONBS-Onboarding-Name"),
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      if (this.options.fallbackOnboarding) {
+        return {
+          data: this.options.fallbackOnboarding,
+          headers: {
+            "ONBS-Onboarding-Id": "fallback",
+            "ONBS-Audience-Id": "fallback",
+            "ONBS-Onboarding-Name": "fallback",
+          },
+        };
+      }
+      throw error;
     }
-    const data = await response.json();
-    return {
-      data,
-      headers: {
-        "ONBS-Onboarding-Id": response.headers.get("ONBS-Onboarding-Id"),
-        "ONBS-Audience-Id": response.headers.get("ONBS-Audience-Id"),
-        "ONBS-Onboarding-Name": response.headers.get("ONBS-Onboarding-Name"),
-      },
-    };
   }
 }

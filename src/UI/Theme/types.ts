@@ -1,12 +1,6 @@
 export type ColorTokens = {
   primary: string;
-  secondary: string;
   disable: string;
-  tertiary: {
-    tertiary1: string;
-    tertiary2: string;
-    tertiary3: string;
-  };
   neutral: {
     high: string;
     higher: string;
@@ -14,17 +8,8 @@ export type ColorTokens = {
     low: string;
     lower: string;
     lowest: string;
+    lowestest: string;
     medium: string;
-  };
-  surface: {
-    high: string;
-    higher: string;
-    highest: string;
-    low: string;
-    lower: string;
-    lowest: string;
-    medium: string;
-    opposite: string;
   };
   text: {
     disable: string;
@@ -39,7 +24,7 @@ export type TextStyle = {
   fontSize: number;
   fontWeight: "400" | "500" | "600" | "700" | "800";
   lineHeight: number;
-  fontFamily: "tagline" | "text" | "title";
+  fontFamily: string;
 };
 
 export type TextStyles = {
@@ -54,21 +39,6 @@ export type TextStyles = {
 };
 
 export type TypographyTokens = {
-  fontFamily: {
-    tagline: string;
-    text: string;
-    title: string;
-  };
-  fontSize: {
-    xs: number;
-    sm: number;
-    md: number;
-    lg: number;
-    xl: number;
-    "2xl": number;
-    "3xl": number;
-    "4xl": number;
-  };
   fontWeight: {
     regular: "400";
     medium: "500";

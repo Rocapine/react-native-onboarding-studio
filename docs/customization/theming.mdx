@@ -398,7 +398,7 @@ function MyComponent() {
     <View style={{ backgroundColor: theme.colors.surface.lowest }}>
       <Text style={{
         color: theme.colors.text.primary,
-        fontSize: theme.typography.fontSize.xl,
+        fontSize: theme.typography.textStyles.heading3.fontSize,
       }}>
         Hello
       </Text>
@@ -463,7 +463,7 @@ export default function RootLayout() {
     <OnboardingProvider
       client={client}
       locale="en"
-      getStepsParams={{ onboardingId: "your-onboarding-id" }}
+      customAudienceParams={{ onboardingId: "your-onboarding-id" }}
       theme={{
         colors: {
           primary: "#FF5733",

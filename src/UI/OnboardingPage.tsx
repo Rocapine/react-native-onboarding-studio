@@ -30,7 +30,7 @@ export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps
     case 'Question':
       return <QuestionRenderer step={step} onContinue={onContinue} theme={theme} />;
     default:
-      if (client?.options?.isSanbdox) {
+      if (client?.options?.isSandbox) {
         // @ts-ignore
         const stepType = step.type;
         return <View>

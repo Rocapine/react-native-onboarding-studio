@@ -398,7 +398,7 @@ const NamePicker = ({
                   style={[
                     styles.nameInput,
                     {
-                      backgroundColor: theme.colors.surface.lower,
+                      backgroundColor: theme.colors.neutral.lowest,
                       color: theme.colors.text.primary,
                     },
                   ]}
