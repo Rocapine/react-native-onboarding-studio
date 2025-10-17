@@ -58,6 +58,16 @@ export class OnboardingStudioClient {
     console.info("OnboardingStudioClient getSteps url", url);
     const response = await fetch(url);
     if (!response.ok) {
+      if (this.options.fallbackOnboarding) {
+        return {
+          data: this.options.fallbackOnboarding,
+          headers: {
+            "ONBS-Onboarding-Id": "fallback",
+            "ONBS-Audience-Id": "fallback",
+            "ONBS-Onboarding-Name": "fallback",
+          },
+        };
+      }
       throw new Error(
         `Failed to fetch onboarding steps: ${response.status} ${response.statusText}`
       );

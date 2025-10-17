@@ -4,6 +4,7 @@ export type OnboardingStudioClientOptions = {
   appVersion?: string;
   isSanbdox?: boolean;
   baseUrl?: string;
+  fallbackOnboarding?: GetStepsResponse;
 };
 
 export type OnboardingOptions = {
