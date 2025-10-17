@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo } from "react";
+import { createContext, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "../../UI/Theme/ThemeProvider";
@@ -8,7 +8,6 @@ import {
   CustomComponentsProvider,
   CustomComponents,
 } from "./CustomComponentsContext";
-import { ProgressBar } from "../../UI/Components/ProgressBar";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
 
 const queryClient = new QueryClient({
@@ -98,7 +97,6 @@ export const OnboardingProvider = ({
                 getStepsParams,
               }}
             >
-              <ProgressBar />
               {children}
             </OnboardingProgressContext.Provider>
           </CustomComponentsProvider>

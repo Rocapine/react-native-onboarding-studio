@@ -6,7 +6,7 @@ export const useOnboardingNavigation = () => {
   const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
   const progressPercentage =
     totalSteps > 0 ? activeStep.number / totalSteps : 0;
-  const theme = useTheme();
+  const { theme } = useTheme();
   const isProgressBarVisible = activeStep.displayProgressHeader;
   return {
     progressPercentage,
