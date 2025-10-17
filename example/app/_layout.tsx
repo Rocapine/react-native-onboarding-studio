@@ -58,7 +58,7 @@ export default function RootLayout() {
             body: {
               fontSize: 16,
               fontWeight: "400",
-              lineHeight: 24,
+              lineHeight: 1.2,
               fontFamily: "Futura-Bold",
             },
           }
