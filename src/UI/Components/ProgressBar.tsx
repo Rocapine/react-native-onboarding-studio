@@ -46,7 +46,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   // Animated style for the progress bar
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      width: `${progress.value * 100}%`,
+      width: `${progress.value}%`,
     };
   });
 
