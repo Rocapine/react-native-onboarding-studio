@@ -27,7 +27,7 @@ export class OnboardingStudioClient {
     userDefinedParams?: UserDefinedParams
   ): Promise<{ data: GetStepsResponse; headers: GetStepsResponseHeaders }> {
     console.info("OnboardingStudioClient getSteps");
-    const isSandbox = this.options.isSanbdox;
+    const isSandbox = this.options.isSandbox;
 
     const urlParams = new URLSearchParams();
     // Add userDefinedParams to URL

@@ -2,7 +2,7 @@ import { OnboardingStepType } from "./UI/types";
 
 export type OnboardingStudioClientOptions = {
   appVersion?: string;
-  isSanbdox?: boolean;
+  isSandbox?: boolean;
   baseUrl?: string;
   fallbackOnboarding?: GetStepsResponse;
 };

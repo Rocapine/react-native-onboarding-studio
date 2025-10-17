@@ -17,7 +17,7 @@ export const getOnboardingQuery = (
     ],
     queryFn: async () => {
       // Try to get data from AsyncStorage first for production
-      if (!(client?.options?.isSanbdox || false)) {
+      if (!(client?.options?.isSandbox || false)) {
         try {
           const cachedData = await AsyncStorage.getItem(cacheKey);
           if (cachedData) {

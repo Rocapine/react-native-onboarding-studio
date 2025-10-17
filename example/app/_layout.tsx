@@ -16,7 +16,7 @@ const client = new OnboardingStudioClient(
   "438d5493-1b72-4e12-9523-d9835ee98a52",
   {
     appVersion: "1.0.0",
-    isSanbdox: true,
+    isSandbox: true,
     fallbackOnboarding
   }
 );
