@@ -51,14 +51,14 @@ interface OnboardingProviderProps {
 export const OnboardingProvider = ({
   children,
   client,
-  initialColorScheme = "light",
+  initialColorScheme = "light", // @todo To move in the Onboarding Layout
   locale = "en",
   getStepsParams = {},
-  cacheKey = "rocapine-onboarding-studio",
-  theme,
-  lightTheme,
-  darkTheme,
-  customComponents,
+  cacheKey = "rocapine-onboarding-studio", // useless, to remove
+  theme, // @todo To move in the Onboarding Layout
+  lightTheme, // @todo To move in the Onboarding Layout
+  darkTheme, // @todo To move in the Onboarding Layout
+  customComponents, // @todo To move in the Onboarding Layout
 }: OnboardingProviderProps) => {
   const [activeStep, setActiveStep] = useState({
     number: 0,
