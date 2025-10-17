@@ -51,13 +51,12 @@ npm start
 - Accepts `OnboardingStudioClient` instance and configuration
 - Manages query state, caching with AsyncStorage, and progress context
 - **Automatically includes ProgressBar** - no need to add it separately
-- Internally wraps with `QueryClientProvider`, `SafeAreaProvider`, and `ThemeProvider`
+- Internally wraps with `QueryClientProvider` and `ThemeProvider`
 - Configuration props:
   - `client`: OnboardingStudioClient instance (required)
   - `isSandbox`: Enable sandbox mode (default: false)
   - `locale`: Locale for fetching steps (default: "en")
   - `customAudienceParams`: Additional params for getSteps API call
-  - `cacheKey`: AsyncStorage key for caching (default: "rocapine-onboarding-studio")
   - `initialColorScheme`: Theme color scheme (default: "light")
   - `theme`: Custom theme to override both light and dark modes (optional)
   - `lightTheme`: Custom theme tokens for light mode only (optional)
@@ -214,7 +213,7 @@ import { Stack } from "expo-router";
 
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
-  isSanbdox: true,
+  isSandbox: true,
 });
 
 export default function RootLayout() {
