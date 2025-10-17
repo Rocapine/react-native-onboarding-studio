@@ -10,6 +10,14 @@ import {
 } from "./CustomComponentsContext";
 import { ProgressBar } from "../../UI/Components/ProgressBar";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+})
+
 interface OnboardingProviderProps {
   children: React.ReactNode;
   client: OnboardingStudioClient;
@@ -66,18 +74,6 @@ export const OnboardingProvider = ({
   });
   const [totalSteps, setTotalSteps] = useState(0);
 
-  // Create query client instance (one per provider)
-  const queryClient = useMemo(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: Infinity,
-          },
-        },
-      }),
-    []
-  );
 
   return (
     <QueryClientProvider client={queryClient}>
