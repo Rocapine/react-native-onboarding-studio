@@ -1,7 +1,6 @@
 import { useCallback, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useFocusEffect } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OnboardingProgressContext } from "../provider/OnboardingProvider";
 import { OnboardingStepType } from "../../UI/types";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
@@ -16,14 +15,8 @@ export const useOnboardingQuestions = ({
   totalSteps: number;
 } => {
   // Get all config from context
-  const {
-    client,
-    locale,
-    getStepsParams,
-    cacheKey,
-    setActiveStep,
-    setTotalSteps,
-  } = useContext(OnboardingProgressContext);
+  const { client, locale, getStepsParams, setActiveStep, setTotalSteps } =
+    useContext(OnboardingProgressContext);
 
   // Build query with config from context
   const { data: onboardingSteps } = useSuspenseQuery<OnboardingStepType[]>(

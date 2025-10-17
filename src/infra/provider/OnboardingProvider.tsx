@@ -96,7 +96,6 @@ export const OnboardingProvider = ({
                 client,
                 locale,
                 getStepsParams,
-                cacheKey,
               }}
             >
               <ProgressBar />
@@ -117,7 +116,6 @@ export const OnboardingProgressContext = createContext<{
   client: OnboardingStudioClient;
   locale: string;
   getStepsParams: Record<string, any>;
-  cacheKey: string;
 }>({
   activeStep: { number: 0, displayProgressHeader: false },
   setActiveStep: () => { },
@@ -126,5 +124,4 @@ export const OnboardingProgressContext = createContext<{
   client: new OnboardingStudioClient('', {}),
   locale: "en",
   getStepsParams: {},
-  cacheKey: "rocapine-onboarding-studio",
 });
