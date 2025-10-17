@@ -57,7 +57,7 @@ import { Stack } from "expo-router";
 // Initialize the client with your project ID
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
-  isSanbdox: false, // Set to true for development
+  isSandbox: false, // Set to true for development
 });
 
 export default function RootLayout() {
@@ -155,7 +155,7 @@ Your onboarding flow is now ready to use. The SDK will:
 ```typescript
 const client = new OnboardingStudioClient(projectId, {
   appVersion: "1.0.0",    // Your app version
-  isSanbdox: false,       // Enable sandbox mode
+  isSandbox: false,       // Enable sandbox mode
   platform: "ios",        // Platform (ios/android)
 });
 ```
@@ -168,7 +168,6 @@ const client = new OnboardingStudioClient(projectId, {
 | `isSandbox` | `boolean` | `false` | Enable sandbox mode |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
 | `customAudienceParams` | `object` | `{}` | Additional API parameters |
-| `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage key |
 | `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme |
 | `theme` | `ThemeTokens` | - | Custom theme for both modes |
 | `lightTheme` | `ThemeTokens` | - | Custom theme for light mode |

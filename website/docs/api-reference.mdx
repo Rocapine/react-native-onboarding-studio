@@ -18,7 +18,6 @@ The root provider component that wraps your app and provides onboarding context.
   isSandbox={false}
   locale="en"
   customAudienceParams={{ onboardingId: "abc-123" }}
-  cacheKey="rocapine-onboarding-studio"
   initialColorScheme="light"
   theme={{ colors: { primary: "#007AFF" } }}
   customComponents={{ QuestionAnswerButton: CustomButton }}
@@ -36,7 +35,6 @@ The root provider component that wraps your app and provides onboarding context.
 | `isSandbox` | `boolean` | `false` | Enable sandbox mode for development |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
 | `customAudienceParams` | `Record<string, any>` | `{}` | Additional parameters for API |
-| `cacheKey` | `string` | `"rocapine-onboarding-studio"` | AsyncStorage cache key |
 | `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme mode |
 | `theme` | `ThemeTokens` | - | Custom theme for both light and dark modes |
 | `lightTheme` | `ThemeTokens` | - | Custom theme tokens for light mode only |
@@ -206,7 +204,7 @@ new OnboardingStudioClient(
   projectId: string,
   options?: {
     appVersion?: string;
-    isSanbdox?: boolean;
+    isSandbox?: boolean;
     platform?: "ios" | "android";
   }
 )
@@ -218,7 +216,7 @@ new OnboardingStudioClient(
 |-------|------|---------|-------------|
 | `projectId` | `string` | **Required** | Your Rocapine project ID |
 | `options.appVersion` | `string` | - | Your app version |
-| `options.isSanbdox` | `boolean` | `false` | Enable sandbox mode |
+| `options.isSandbox` | `boolean` | `false` | Enable sandbox mode |
 | `options.platform` | `"ios" \| "android"` | Auto-detected | Platform identifier |
 
 #### Methods
