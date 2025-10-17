@@ -81,11 +81,6 @@ const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme }: Questi
   const AnswerButton =
     customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
 
-  console.log("style", [
-    getTextStyle(theme, "heading1"),
-    styles.title,
-    { color: theme.colors.text.primary },
-  ])
   return (
     <OnboardingTemplate
       step={step}
