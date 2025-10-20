@@ -125,7 +125,13 @@ Hook for accessing onboarding steps in your pages.
 ```typescript
 import { useOnboardingQuestions } from "@rocapine/react-native-onboarding-studio";
 
-const { step, isLastStep, totalSteps } = useOnboardingQuestions({
+const {
+  step,
+  isLastStep,
+  stepsLength,
+  onboardingMetadata,
+  steps
+} = useOnboardingQuestions({
   stepNumber: 1,
 });
 ```
@@ -142,7 +148,9 @@ const { step, isLastStep, totalSteps } = useOnboardingQuestions({
 |----------|------|-------------|
 | `step` | `OnboardingStepType` | Current step data |
 | `isLastStep` | `boolean` | True if this is the last step |
-| `totalSteps` | `number` | Total number of steps |
+| `stepsLength` | `number` | Total number of steps |
+| `onboardingMetadata` | `OnboardingStepMetadata` | Metadata from API (id, name, audienceId, etc.) |
+| `steps` | `OnboardingStepType[]` | Array of all steps |
 
 ---
 
@@ -293,6 +301,34 @@ type OnboardingStepType =
   | RatingsStepType
   | CommitmentStepType;
 ```
+
+---
+
+### OnboardingStepMetadata
+
+Metadata returned from the API containing information about the onboarding flow:
+
+```typescript
+interface OnboardingStepMetadata {
+  id: string;
+  name?: string;
+  audienceId?: string;
+  audienceName?: string;
+  audienceOrder?: number;
+  locale?: string;
+  draft?: boolean;
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Unique onboarding ID |
+| `name` | `string?` | Display name of the onboarding |
+| `audienceId` | `string?` | Targeted audience ID |
+| `audienceName` | `string?` | Targeted audience name |
+| `audienceOrder` | `number?` | Audience priority order |
+| `locale` | `string?` | Locale of the onboarding |
+| `draft` | `boolean?` | Whether this is a draft version |
 
 ---
 

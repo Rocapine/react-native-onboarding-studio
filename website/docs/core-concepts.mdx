@@ -53,7 +53,13 @@ The SDK:
 When you call `useOnboardingQuestions({ stepNumber: 1 })`:
 
 ```typescript
-const { step, isLastStep, totalSteps } = useOnboardingQuestions({ stepNumber: 1 });
+const {
+  step,
+  isLastStep,
+  stepsLength,
+  onboardingMetadata,
+  steps
+} = useOnboardingQuestions({ stepNumber: 1 });
 ```
 
 The SDK:

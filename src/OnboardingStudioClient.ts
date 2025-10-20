@@ -1,5 +1,5 @@
 import {
-  GetStepsResponse,
+  Onboarding,
   GetStepsResponseHeaders,
   OnboardingOptions,
   OnboardingStudioClientOptions,
@@ -25,7 +25,7 @@ export class OnboardingStudioClient {
   async getSteps(
     onboardingOptions?: OnboardingOptions,
     userDefinedParams?: UserDefinedParams
-  ): Promise<{ data: GetStepsResponse; headers: GetStepsResponseHeaders }> {
+  ): Promise<{ data: Onboarding; headers: GetStepsResponseHeaders }> {
     console.info("OnboardingStudioClient getSteps");
     const isSandbox = this.options.isSandbox;
 

@@ -1,2 +1,2 @@
-export { useOnboardingQuestions } from "./useOnboardingQuestions";
-export { useOnboardingNavigation } from "./useOnboardingNavigation";
+export { useOnboardingStep } from "./useOnboardingStep";
+export { useOnboarding } from "./useOnboarding";

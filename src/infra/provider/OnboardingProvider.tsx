@@ -8,6 +8,7 @@ import {
   CustomComponents,
 } from "./CustomComponentsContext";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
+import { Onboarding, OnboardingMetadata } from "../../types";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,8 +71,9 @@ export const OnboardingProvider = ({
     displayProgressHeader: false,
   });
   const [totalSteps, setTotalSteps] = useState(0);
+  const [onboarding, setOnboarding] = useState<Onboarding | null>(null);
 
-  queryClient.prefetchQuery(getOnboardingQuery(client, locale, customAudienceParams))
+  queryClient.prefetchQuery(getOnboardingQuery(client, locale, customAudienceParams, setOnboarding))
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -91,6 +93,8 @@ export const OnboardingProvider = ({
               client,
               locale,
               customAudienceParams,
+              onboarding,
+              setOnboarding,
             }}
           >
             {children}
@@ -109,6 +113,8 @@ export const OnboardingProgressContext = createContext<{
   client: OnboardingStudioClient;
   locale: string;
   customAudienceParams: Record<string, any>;
+  onboarding: Onboarding | null;
+  setOnboarding: (onboarding: Onboarding) => void;
 }>({
   activeStep: { number: 0, displayProgressHeader: false },
   setActiveStep: () => { },
@@ -117,4 +123,6 @@ export const OnboardingProgressContext = createContext<{
   client: new OnboardingStudioClient('', {}),
   locale: "en",
   customAudienceParams: {},
+  onboarding: null,
+  setOnboarding: () => { },
 });

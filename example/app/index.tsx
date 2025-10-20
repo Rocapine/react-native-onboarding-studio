@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme, useOnboarding } from "@rocapine/react-native-onboarding-studio";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -9,6 +9,7 @@ export const unstable_settings = {
 export default function RootLayout() {
   const router = useRouter();
   const { theme, colorScheme, toggleTheme } = useTheme();
+  const { } = useOnboarding();
 
   const handleStartOnboarding = () => {
     router.push("/onboarding/1");

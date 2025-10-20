@@ -67,9 +67,15 @@ npm start
 
 - Hook to access onboarding steps in your pages
 - Accepts `stepNumber` parameter
-- Returns `{ step, isLastStep, totalSteps }`
+- Returns `{ step, isLastStep, stepsLength, onboardingMetadata, steps }`
+  - `step`: Current step data
+  - `isLastStep`: Boolean indicating if this is the last step
+  - `stepsLength`: Total number of steps
+  - `onboardingMetadata`: Metadata from the API (id, name, audienceId, etc.)
+  - `steps`: Array of all steps
 - Automatically manages progress context (activeStep, totalSteps)
 - Uses React Query's `useSuspenseQuery` for data fetching
+- Strongly typed with TypeScript
 
 **OnboardingPage** (`src/UI/OnboardingPage.tsx`)
 

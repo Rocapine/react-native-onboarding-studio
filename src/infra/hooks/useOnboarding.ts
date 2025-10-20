@@ -2,8 +2,10 @@ import { useContext } from "react";
 import { useTheme } from "../../UI";
 import { OnboardingProgressContext } from "../provider/OnboardingProvider";
 
-export const useOnboardingNavigation = () => {
-  const { activeStep, totalSteps } = useContext(OnboardingProgressContext);
+export const useOnboarding = () => {
+  const { activeStep, totalSteps, onboarding } = useContext(
+    OnboardingProgressContext
+  );
   const progressPercentage =
     totalSteps > 0 ? Math.round((100 * activeStep.number) / totalSteps) : 0;
   const { theme } = useTheme();
@@ -12,5 +14,6 @@ export const useOnboardingNavigation = () => {
     progressPercentage,
     theme,
     isProgressBarVisible,
+    onboarding,
   };
 };

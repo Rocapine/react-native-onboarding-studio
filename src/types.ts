@@ -4,7 +4,7 @@ export type OnboardingStudioClientOptions = {
   appVersion?: string;
   isSandbox?: boolean;
   baseUrl?: string;
-  fallbackOnboarding?: GetStepsResponse;
+  fallbackOnboarding?: Onboarding;
 };
 
 export type OnboardingOptions = {
@@ -15,7 +15,7 @@ export type UserDefinedParams = {
   [key: string]: string;
 };
 
-export interface OnboardingStepMetadata {
+export interface OnboardingMetadata {
   id: string;
   name?: string;
   audienceId?: string;
@@ -25,8 +25,8 @@ export interface OnboardingStepMetadata {
   draft?: boolean;
 }
 
-export interface GetStepsResponse {
-  metadata: OnboardingStepMetadata;
+export interface Onboarding {
+  metadata: OnboardingMetadata;
   steps: OnboardingStepType[];
   configuration: any;
 }
