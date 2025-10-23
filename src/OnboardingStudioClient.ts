@@ -7,7 +7,7 @@ import {
 } from "./types";
 
 import { Platform } from "react-native";
-import { OnboardingStepType } from "./UI";
+import { BaseStepType, OnboardingStepType } from "./UI";
 
 export class OnboardingStudioClient {
   private baseUrl: string;
@@ -23,7 +23,7 @@ export class OnboardingStudioClient {
       "https://takbcvjljqialzqyksic.supabase.co/functions/v1";
   }
 
-  async getSteps<StepType extends OnboardingStepType = OnboardingStepType>(
+  async getSteps<StepType extends BaseStepType = OnboardingStepType>(
     onboardingOptions?: OnboardingOptions,
     userDefinedParams?: UserDefinedParams
   ): Promise<{ data: Onboarding<StepType>; headers: GetStepsResponseHeaders }> {

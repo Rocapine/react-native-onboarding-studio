@@ -31,9 +31,7 @@ type BaseStepProperties = {
   name: string;
   displayProgressHeader: boolean;
   payload: Record<string, any>;
-  customPayload: Record<string, any>;
-  continueButtonLabel: string;
-  figmaUrl: string;
+  customPayload?: Record<string, any>;
 };
 
 export type StepType = BaseStepProperties["type"];
@@ -136,7 +134,7 @@ export interface CarouselStepType extends BaseStepProperties {
   payload: {
     screens: CarouselScreenType[];
   };
-  customPayload: {
+  customPayload?: {
     type?: "default" | "story";
     screens: CarouselCustomPayloadScreenType[];
     defaultStoryDuration?: number;

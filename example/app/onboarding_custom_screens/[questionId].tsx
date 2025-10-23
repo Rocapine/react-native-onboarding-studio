@@ -33,5 +33,6 @@ export default function QuestionPage() {
     }
   };
 
+  // @ts-ignore
   return <OnboardingPage step={step} onContinue={onContinue} />;
 }

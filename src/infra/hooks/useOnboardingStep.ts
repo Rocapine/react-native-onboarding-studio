@@ -2,12 +2,12 @@ import { useCallback, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useFocusEffect } from "expo-router";
 import { OnboardingProgressContext } from "../provider/OnboardingProvider";
-import { OnboardingStepType } from "../../UI/types";
+import { OnboardingStepType, BaseStepType } from "../../UI/types";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
 import { Onboarding, OnboardingMetadata } from "../../types";
 
 export const useOnboardingStep = <
-  StepType extends OnboardingStepType = OnboardingStepType
+  StepType extends BaseStepType = OnboardingStepType
 >({
   stepNumber,
 }: {
@@ -35,7 +35,7 @@ export const useOnboardingStep = <
       client,
       locale,
       customAudienceParams,
-      setOnboarding
+      setOnboarding as (onboarding: Onboarding<StepType>) => void
     )
   );
   const steps = data.steps;

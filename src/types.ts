@@ -25,9 +25,7 @@ export interface OnboardingMetadata {
   draft?: boolean;
 }
 
-export interface Onboarding<
-  StepType extends OnboardingStepType = OnboardingStepType
-> {
+export interface Onboarding<StepType = OnboardingStepType> {
   metadata: OnboardingMetadata;
   steps: StepType[];
   configuration: any;
