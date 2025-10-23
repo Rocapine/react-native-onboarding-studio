@@ -2,20 +2,22 @@ import { useCallback, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useFocusEffect } from "expo-router";
 import { OnboardingProgressContext } from "../provider/OnboardingProvider";
-import { OnboardingStepType } from "../../UI/types";
+import { OnboardingStepType, BaseStepType } from "../../UI/types";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
 import { Onboarding, OnboardingMetadata } from "../../types";
 
-export const useOnboardingStep = ({
+export const useOnboardingStep = <
+  StepType extends BaseStepType = OnboardingStepType
+>({
   stepNumber,
 }: {
   stepNumber: number;
 }): {
-  step: OnboardingStepType;
+  step: StepType;
   isLastStep: boolean;
   stepsLength: number;
   onboardingMetadata: OnboardingMetadata;
-  steps: OnboardingStepType[];
+  steps: StepType[];
 } => {
   // Get all config from context
   const {
@@ -28,8 +30,13 @@ export const useOnboardingStep = ({
   } = useContext(OnboardingProgressContext);
 
   // Build query with config from context
-  const { data } = useSuspenseQuery<Onboarding>(
-    getOnboardingQuery(client, locale, customAudienceParams, setOnboarding)
+  const { data } = useSuspenseQuery<Onboarding<StepType>>(
+    getOnboardingQuery<StepType>(
+      client,
+      locale,
+      customAudienceParams,
+      setOnboarding as (onboarding: Onboarding<StepType>) => void
+    )
   );
   const steps = data.steps;
   const onboardingMetadata = data.metadata;

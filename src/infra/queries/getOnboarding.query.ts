@@ -2,14 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
 import { Onboarding, OnboardingMetadata } from "../../types";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import { BaseStepType } from "../../UI";
 
 const cacheKey = "rocapine-onboarding-studio";
 
-export const getOnboardingQuery = (
+export const getOnboardingQuery = <StepType extends BaseStepType>(
   client: OnboardingStudioClient,
   locale: string,
   customAudienceParams: Record<string, any>,
-  setOnboarding?: (onboarding: Onboarding) => void
+  setOnboarding?: (onboarding: Onboarding<StepType>) => void
 ) => {
   return {
     queryKey: [
@@ -18,7 +19,7 @@ export const getOnboardingQuery = (
       locale,
       JSON.stringify(customAudienceParams),
     ],
-    queryFn: async (): Promise<Onboarding> => {
+    queryFn: async (): Promise<Onboarding<StepType>> => {
       // Try to get data from AsyncStorage first for production
       if (!(client?.options?.isSandbox || false)) {
         try {
@@ -33,7 +34,7 @@ export const getOnboardingQuery = (
       }
 
       // Fetch from API
-      const { data, headers } = await client!.getSteps(
+      const { data, headers } = await client!.getSteps<StepType>(
         { locale },
         customAudienceParams
       );

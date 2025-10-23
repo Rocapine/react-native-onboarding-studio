@@ -7,6 +7,7 @@ import {
 } from "./types";
 
 import { Platform } from "react-native";
+import { BaseStepType, OnboardingStepType } from "./UI";
 
 export class OnboardingStudioClient {
   private baseUrl: string;
@@ -22,10 +23,10 @@ export class OnboardingStudioClient {
       "https://takbcvjljqialzqyksic.supabase.co/functions/v1";
   }
 
-  async getSteps(
+  async getSteps<StepType extends BaseStepType = OnboardingStepType>(
     onboardingOptions?: OnboardingOptions,
     userDefinedParams?: UserDefinedParams
-  ): Promise<{ data: Onboarding; headers: GetStepsResponseHeaders }> {
+  ): Promise<{ data: Onboarding<StepType>; headers: GetStepsResponseHeaders }> {
     console.info("OnboardingStudioClient getSteps");
     const isSandbox = this.options.isSandbox;
 
@@ -76,7 +77,7 @@ export class OnboardingStudioClient {
       console.error(error);
       if (this.options.fallbackOnboarding) {
         return {
-          data: this.options.fallbackOnboarding,
+          data: this.options.fallbackOnboarding as Onboarding<StepType>,
           headers: {
             "ONBS-Onboarding-Id": "fallback",
             "ONBS-Audience-Id": "fallback",
