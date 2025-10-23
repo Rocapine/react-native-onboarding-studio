@@ -24,6 +24,7 @@ export const getOnboardingQuery = (
         try {
           const cachedData = await AsyncStorage.getItem(cacheKey);
           if (cachedData) {
+            setOnboarding && setOnboarding(JSON.parse(cachedData));
             return JSON.parse(cachedData);
           }
         } catch (error) {
