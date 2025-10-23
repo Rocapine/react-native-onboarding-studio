@@ -4,7 +4,7 @@ export type OnboardingStudioClientOptions = {
   appVersion?: string;
   isSandbox?: boolean;
   baseUrl?: string;
-  fallbackOnboarding?: Onboarding;
+  fallbackOnboarding?: Onboarding<OnboardingStepType>;
 };
 
 export type OnboardingOptions = {
@@ -25,9 +25,11 @@ export interface OnboardingMetadata {
   draft?: boolean;
 }
 
-export interface Onboarding {
+export interface Onboarding<
+  StepType extends OnboardingStepType = OnboardingStepType
+> {
   metadata: OnboardingMetadata;
-  steps: OnboardingStepType[];
+  steps: StepType[];
   configuration: any;
 }
 
