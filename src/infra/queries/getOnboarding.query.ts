@@ -16,6 +16,8 @@ export const getOnboardingQuery = <StepType extends BaseStepType>(
     queryKey: [
       "onboardingQuestions",
       client.projectId,
+      client.options.isSandbox,
+      client.options.baseUrl,
       locale,
       JSON.stringify(customAudienceParams),
     ],
