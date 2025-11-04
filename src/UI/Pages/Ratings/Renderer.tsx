@@ -114,7 +114,7 @@ const RatingsRendererBase = ({ step, onContinue, theme = defaultTheme }: Ratings
 
           {/* Review Section */}
           <View style={styles.reviewSection}>
-            <View style={[styles.reviewCard, { backgroundColor: theme.colors.neutral.lowest }]}>
+            <View style={[styles.reviewCard, { backgroundColor: theme.colors.neutral.lowestest }]}>
               <View style={styles.reviewAuthor}>
                 <View style={[styles.avatar, { backgroundColor: theme.colors.neutral.low }]}>
                   <Text style={[styles.avatarText, { color: theme.colors.text.opposite }]}>
