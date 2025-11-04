@@ -43,26 +43,26 @@ export default function RootLayout() {
       locale="en"
       customAudienceParams={{
         myconfig: "myconfig",
-        onboardingId: "1be1af53-70f2-4310-9352-fdd7ca6b43eb",
+        onboardingId: "6e5c6818-b9a1-44e8-a5c3-a27f7cfccbb3",
       }}
       customComponents={{
         QuestionAnswerButton: MinimalAnswerButton,
       }}
       // Demonstrate theme customization with custom font
       theme={{
-        colors: {
-          primary: "red", // Custom primary color
-        },
-        typography: {
-          textStyles: {
-            body: {
-              fontSize: 16,
-              fontWeight: "400",
-              lineHeight: 1.2,
-              fontFamily: "Futura-Bold",
-            },
-          }
-        },
+        // colors: {
+        //   primary: "red", // Custom primary color
+        // },
+        // typography: {
+        //   textStyles: {
+        //     body: {
+        //       fontSize: 16,
+        //       fontWeight: "400",
+        //       lineHeight: 1.2,
+        //       fontFamily: "Futura-Bold",
+        //     },
+        //   }
+        // },
       }}
     >
       <Stack screenOptions={{ headerShown: false }} />
