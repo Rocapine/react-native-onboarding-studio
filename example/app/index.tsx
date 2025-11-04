@@ -25,14 +25,14 @@ export default function RootLayout() {
       <Text style={[styles.subtitle, { color: theme.colors.text.secondary }]}>Get started with your journey</Text>
 
       <Pressable style={[styles.button, { backgroundColor: theme.colors.primary }]} onPress={handleStartOnboarding}>
-        <Text style={styles.buttonText}>Start the onboarding</Text>
+        <Text style={[styles.buttonText, { color: theme.colors.text.opposite }]}>Start the onboarding</Text>
       </Pressable>
 
       <Pressable
         style={[styles.button, { backgroundColor: theme.colors.primary }]}
         onPress={() => router.push("/example")}
       >
-        <Text style={styles.buttonText}>View Examples</Text>
+        <Text style={[styles.buttonText, { color: theme.colors.text.opposite }]}>View Examples</Text>
       </Pressable>
     </View>
   );
