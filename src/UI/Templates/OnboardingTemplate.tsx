@@ -23,7 +23,7 @@ export const OnboardingTemplate = ({
   button,
   theme = defaultTheme,
 }: OnboardingTemplateProps) => {
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
 
   return (
     <View
@@ -31,7 +31,8 @@ export const OnboardingTemplate = ({
         styles.container,
         {
           backgroundColor: theme.colors.neutral.lowest,
-          paddingTop: step.displayProgressHeader ? top + 40 : top
+          paddingTop: step.displayProgressHeader ? top + 40 : top,
+          paddingBottom: bottom
         },
       ]}
     >
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     paddingHorizontal: 32,
-    paddingBottom: 8,
     gap: 24,
     alignItems: "center",
   },
