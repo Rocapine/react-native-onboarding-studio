@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import { useTheme, useOnboarding } from "@rocapine/react-native-onboarding-studio";
+import { useOnboarding } from "@rocapine/react-native-onboarding";
+import { useTheme } from "@rocapine/react-native-onboarding-ui";
 
 export const unstable_settings = {
   anchor: "(tabs)",

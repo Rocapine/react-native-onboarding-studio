@@ -1,7 +1,7 @@
 import {
   useOnboardingStep,
-  OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export const unstable_settings = {

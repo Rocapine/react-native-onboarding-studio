@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet } from "react-native";
 import {
   QuestionAnswersListProps,
   DefaultQuestionAnswerButton,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding-ui";
 
 /**
  * Animated answers list with staggered entrance animation.

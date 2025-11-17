@@ -1,4 +1,4 @@
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingUi from "@rocapine/react-native-onboarding-ui";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -26,7 +26,7 @@ export default function LoaderExample() {
       { type: "image" as const, url: "https://picsum.photos/300/200?random=3" },
     ],
     duration: 1000,
-  } satisfies OnboardingStudio.LoaderStepType["payload"];
+  } satisfies OnboardingUi.LoaderStepType["payload"];
 
   const step = {
     id: "loader-1",
@@ -37,7 +37,7 @@ export default function LoaderExample() {
     customPayload: null,
     continueButtonLabel: "Access my profile",
     figmaUrl: null,
-  } satisfies OnboardingStudio.LoaderStepType;
+  } satisfies OnboardingUi.LoaderStepType;
 
   const handleContinue = () => {
     console.log("Loader completed!");
@@ -46,7 +46,7 @@ export default function LoaderExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.LoaderRenderer
+      <OnboardingUi.LoaderRenderer
         step={step}
         onContinue={handleContinue}
       />

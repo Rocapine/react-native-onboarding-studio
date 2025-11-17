@@ -1,4 +1,4 @@
-import { GetStepsResponse } from "@rocapine/react-native-onboarding-studio";
+import { Onboarding } from "@rocapine/react-native-onboarding";
 import { step as questionStep } from "../app/example/question";
 import { step as commitmentStep } from "../app/example/commitment";
 
@@ -8,4 +8,4 @@ export const fallbackOnboarding = {
   },
   steps: [questionStep, commitmentStep],
   configuration: {},
-} satisfies GetStepsResponse;
+} satisfies Onboarding;

@@ -1,17 +1,22 @@
-import { OnboardingStudioClient } from "../OnboardingStudioClient";
 import { OnboardingStepType } from "./types";
-import { RatingsRenderer, PickerRenderer, CommitmentRenderer, CarouselRenderer, LoaderRenderer, MediaContentRenderer, QuestionRenderer } from "./Pages";
+import { RatingsRenderer, PickerRenderer, CommitmentRenderer, CarouselRenderer, LoaderRenderer, MediaContentRenderer, QuestionRenderer, QuestionAnswerButtonProps, QuestionAnswersListProps } from "./Pages";
 import { View, Text, Button } from 'react-native';
 import { useTheme } from "./Theme/useTheme";
+import { Theme } from "./Theme";
 
 
 interface OnboardingPageProps {
   step: OnboardingStepType;
   onContinue: (args?: any) => void;
-  client?: OnboardingStudioClient;
+  isSandbox?: boolean;
+  theme?: Theme;
+  customComponents?: {
+    QuestionAnswerButton?: React.ComponentType<QuestionAnswerButtonProps>;
+    QuestionAnswersList?: React.ComponentType<QuestionAnswersListProps>;
+  };
 }
 
-export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps) => {
+export const OnboardingPage = ({ step, onContinue, isSandbox }: OnboardingPageProps) => {
   const { theme } = useTheme();
 
   switch (step.type) {
@@ -30,7 +35,7 @@ export const OnboardingPage = ({ step, onContinue, client }: OnboardingPageProps
     case 'Question':
       return <QuestionRenderer step={step} onContinue={onContinue} theme={theme} />;
     default:
-      if (client?.options?.isSandbox) {
+      if (isSandbox) {
         // @ts-ignore
         const stepType = step.type;
         return <View>

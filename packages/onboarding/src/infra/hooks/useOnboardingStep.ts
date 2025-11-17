@@ -2,9 +2,9 @@ import { useCallback, useContext } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useFocusEffect } from "expo-router";
 import { OnboardingProgressContext } from "../provider/OnboardingProvider";
-import { OnboardingStepType, BaseStepType } from "../../UI/types";
 import { getOnboardingQuery } from "../queries/getOnboarding.query";
-import { Onboarding, OnboardingMetadata } from "../../types";
+import { BaseStepType, Onboarding, OnboardingMetadata } from "../../types";
+import { OnboardingStepType } from "../../steps/types";
 
 export const useOnboardingStep = <
   StepType extends BaseStepType = OnboardingStepType

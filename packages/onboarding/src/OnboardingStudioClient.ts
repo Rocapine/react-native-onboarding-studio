@@ -1,13 +1,14 @@
+import { OnboardingStepType } from "./steps/types";
 import {
   Onboarding,
   GetStepsResponseHeaders,
   OnboardingOptions,
   OnboardingStudioClientOptions,
   UserDefinedParams,
+  BaseStepType,
 } from "./types";
 
 import { Platform } from "react-native";
-import { BaseStepType, OnboardingStepType } from "./UI";
 
 export class OnboardingStudioClient {
   private baseUrl: string;

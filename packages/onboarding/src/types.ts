@@ -1,10 +1,23 @@
-import { OnboardingStepType } from "./UI/types";
+/**
+ * Base step type that all onboarding steps must conform to.
+ * This is the minimal interface required by the headless SDK.
+ */
+export type BaseStepType = {
+  id: string;
+  type: string;
+  name: string;
+  displayProgressHeader?: boolean;
+  payload?: any;
+  customPayload?: any;
+  continueButtonLabel?: string;
+  figmaUrl?: string | null;
+};
 
-export type OnboardingStudioClientOptions = {
+export type OnboardingStudioClientOptions<StepType extends BaseStepType = BaseStepType> = {
   appVersion?: string;
   isSandbox?: boolean;
   baseUrl?: string;
-  fallbackOnboarding?: Onboarding<OnboardingStepType>;
+  fallbackOnboarding?: Onboarding<StepType>;
 };
 
 export type OnboardingOptions = {
@@ -25,7 +38,7 @@ export interface OnboardingMetadata {
   draft?: boolean;
 }
 
-export interface Onboarding<StepType = OnboardingStepType> {
+export interface Onboarding<StepType extends BaseStepType = BaseStepType> {
   metadata: OnboardingMetadata;
   steps: StepType[];
   configuration: any;

@@ -1,7 +1,7 @@
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingUi from "@rocapine/react-native-onboarding-ui";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { defaultTheme } from "@rocapine/react-native-onboarding-studio";
+import { defaultTheme } from "@rocapine/react-native-onboarding-ui";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -44,7 +44,7 @@ const stepPayload = {
     },
   ],
   infoBox: null,
-} satisfies OnboardingStudio.QuestionStepType["payload"];
+} satisfies OnboardingUi.QuestionStepType["payload"];
 
 export const step = {
   id: "question-1",
@@ -54,7 +54,7 @@ export const step = {
   payload: stepPayload,
   customPayload: null,
   figmaUrl: null,
-} satisfies OnboardingStudio.QuestionStepType;
+} satisfies OnboardingUi.QuestionStepType;
 
 
 export default function QuestionExample() {
@@ -63,7 +63,7 @@ export default function QuestionExample() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "blue" }}>
-      <OnboardingStudio.QuestionRenderer
+      <OnboardingUi.QuestionRenderer
         step={step}
         onContinue={(answers) => console.log("Selected:", answers)}
         theme={defaultTheme}

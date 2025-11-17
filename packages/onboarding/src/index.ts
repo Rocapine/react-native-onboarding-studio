@@ -1,4 +1,6 @@
+// Core client and types
 export { OnboardingStudioClient } from "./OnboardingStudioClient";
 export * from "./types";
-export * from "./UI";
+
+// Hooks and providers
 export * from "./infra";

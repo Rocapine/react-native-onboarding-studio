@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OnboardingStudioClient } from "../../OnboardingStudioClient";
-import { Onboarding, OnboardingMetadata } from "../../types";
+import { BaseStepType, Onboarding, OnboardingMetadata } from "../../types";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { BaseStepType } from "../../UI";
 
 const cacheKey = "rocapine-onboarding-studio";
 

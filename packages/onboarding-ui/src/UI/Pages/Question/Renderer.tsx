@@ -11,20 +11,24 @@ import { OnboardingTemplate } from "../../Templates/OnboardingTemplate";
 import { getTextStyle } from "../../Theme/helpers";
 import { Theme } from "../../Theme/types";
 import { defaultTheme } from "../../Theme/defaultTheme";
-import { useCustomComponents } from "../../../infra/provider/CustomComponentsContext";
 import {
   DefaultQuestionAnswerButton,
   DefaultQuestionAnswersList,
+  QuestionAnswerButtonProps,
+  QuestionAnswersListProps,
 } from "./components";
 
 interface QuestionRendererProps {
   step: QuestionStepType;
   onContinue?: (...args: any[]) => void;
   theme?: Theme;
+  customComponents?: {
+    QuestionAnswerButton?: React.ComponentType<QuestionAnswerButtonProps>;
+    QuestionAnswersList?: React.ComponentType<QuestionAnswersListProps>;
+  };
 }
 
-const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme }: QuestionRendererProps) => {
-  const customComponents = useCustomComponents();
+const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme, customComponents }: QuestionRendererProps) => {
 
   // Validate the schema
   const validatedData = QuestionStepTypeSchema.parse(step);
@@ -77,9 +81,9 @@ const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme }: Questi
 
   // Priority: Custom full list > Custom button (via DefaultList) > Default implementation
   const AnswersList =
-    customComponents.QuestionAnswersList || DefaultQuestionAnswersList;
+    customComponents?.QuestionAnswersList || DefaultQuestionAnswersList;
   const AnswerButton =
-    customComponents.QuestionAnswerButton || DefaultQuestionAnswerButton;
+    customComponents?.QuestionAnswerButton || DefaultQuestionAnswerButton;
 
   return (
     <OnboardingTemplate
@@ -121,31 +125,13 @@ const QuestionRendererBase = ({ step, onContinue, theme = defaultTheme }: Questi
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* Use custom list if provided, otherwise use default list which respects custom button */}
-            {customComponents.QuestionAnswersList ? (
-              <AnswersList
-                answers={answers}
-                selected={selected}
-                onAnswerPress={onAnswerSelected}
-                multipleAnswer={multipleAnswer}
-                theme={theme}
-              />
-            ) : (
-              <View style={styles.answersContainer}>
-                {answers.map((answer, index) => (
-                  <AnswerButton
-                    key={answer.value}
-                    answer={answer}
-                    selected={selected[answer.value]}
-                    onPress={() => onAnswerSelected(answer.value)}
-                    theme={theme}
-                    index={index}
-                    isFirst={index === 0}
-                    isLast={index === answers.length - 1}
-                  />
-                ))}
-              </View>
-            )}
+            <AnswersList
+              answers={answers}
+              selected={selected}
+              onAnswerPress={onAnswerSelected}
+              multipleAnswer={multipleAnswer}
+              theme={theme}
+            />
           </ScrollView>
         </View>
       </View>

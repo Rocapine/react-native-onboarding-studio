@@ -1,4 +1,4 @@
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingUi from '@rocapine/react-native-onboarding-ui';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -21,7 +21,7 @@ export default function MediaContentExample() {
       content: 'This app changed my life! Highly recommended for everyone.',
       authorName: 'John Doe',
     },
-  } satisfies OnboardingStudio.MediaContentStepType['payload'];
+  } satisfies OnboardingUi.MediaContentStepType['payload'];
 
   const step = {
     id: 'media-content-1',
@@ -32,7 +32,7 @@ export default function MediaContentExample() {
     customPayload: null,
     continueButtonLabel: 'Continue',
     figmaUrl: null,
-  } satisfies OnboardingStudio.MediaContentStepType;
+  } satisfies OnboardingUi.MediaContentStepType;
 
   const handleContinue = () => {
     console.log('MediaContent completed!');
@@ -41,7 +41,7 @@ export default function MediaContentExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.MediaContentRenderer step={step} onContinue={handleContinue} />
+      <OnboardingUi.MediaContentRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>
