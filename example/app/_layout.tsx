@@ -6,8 +6,8 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { MinimalAnswerButton } from "@/components/MinimalAnswerButton";
 import { fallbackOnboarding } from "@/assets/fallback-onboarding";
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -46,7 +46,9 @@ export default function RootLayout() {
         onboardingId: "6e5c6818-b9a1-44e8-a5c3-a27f7cfccbb3",
       }}
     >
-      <Stack screenOptions={{ headerShown: false }} />
+      <ThemeProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ThemeProvider>
     </OnboardingProvider>
   );
 }

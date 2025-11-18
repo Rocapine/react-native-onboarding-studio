@@ -1,5 +1,6 @@
 import {
   OnboardingPage,
+  useTheme,
 } from "@rocapine/react-native-onboarding-ui";
 import { useOnboardingStep } from "@rocapine/react-native-onboarding";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -10,9 +11,8 @@ export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-
-
 export default function QuestionPage() {
+  const { theme } = useTheme();
   const { questionId } = useLocalSearchParams();
   console.log("questionId", questionId);
   const { step, isLastStep } = useOnboardingStep<OnboardingStep>({
@@ -32,7 +32,7 @@ export default function QuestionPage() {
   };
 
   // @ts-ignore
-  return <OnboardingPage step={step} onContinue={onContinue} isSandbox={true} customComponents={{
+  return <OnboardingPage theme={theme} step={step} onContinue={onContinue} isSandbox={true} customComponents={{
     QuestionAnswerButton: MinimalAnswerButton,
   }} />;
 }
