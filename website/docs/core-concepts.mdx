@@ -12,8 +12,8 @@ The SDK is built with three main layers:
 
 ```
 ┌─────────────────────────────────────┐
-│     Your React Native App          │
-│  (Navigation, Routing, Business)   │
+│     Your React Native App           │
+│  (Navigation, Routing, Business)    │
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐
@@ -25,7 +25,7 @@ The SDK is built with three main layers:
                │
 ┌──────────────▼──────────────────────┐
 │      CMS Backend                    │
-│  (Supabase - Rocapine Studio)       │
+│  (Supabase - Onboarding Studio)     │
 └─────────────────────────────────────┘
 ```
 
@@ -192,7 +192,9 @@ If data doesn't match the schema, you'll get a clear error message.
 Enable sandbox mode during development:
 
 ```typescript
-<OnboardingProvider isSandbox={true} />
+const client = new OnboardingStudioClient("your-project-id", {
+  isSandbox: true,
+});
 ```
 
 **Sandbox Features:**
@@ -214,7 +216,7 @@ Fetch onboarding content in different languages:
 <OnboardingProvider locale="fr" />
 ```
 
-The locale is passed to the CMS API, which returns localized content based on your Rocapine Studio configuration.
+The locale is passed to the CMS API, which returns localized content based on your Onboarding Studio configuration.
 
 ## Custom Headers
 

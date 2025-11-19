@@ -15,12 +15,8 @@ The root provider component that wraps your app and provides onboarding context.
 ```typescript
 <OnboardingProvider
   client={client}
-  isSandbox={false}
   locale="en"
   customAudienceParams={{ onboardingId: "abc-123" }}
-  initialColorScheme="light"
-  theme={{ colors: { primary: "#007AFF" } }}
-  customComponents={{ QuestionAnswerButton: CustomButton }}
 >
   <YourApp />
 </OnboardingProvider>
@@ -31,15 +27,8 @@ The root provider component that wraps your app and provides onboarding context.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `client` | `OnboardingStudioClient` | **Required** | Client instance for API communication |
-| `children` | `ReactNode` | **Required** | Your app content |
-| `isSandbox` | `boolean` | `false` | Enable sandbox mode for development |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
 | `customAudienceParams` | `Record<string, any>` | `{}` | Additional parameters for API |
-| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme mode |
-| `theme` | `ThemeTokens` | - | Custom theme for both light and dark modes |
-| `lightTheme` | `ThemeTokens` | - | Custom theme tokens for light mode only |
-| `darkTheme` | `ThemeTokens` | - | Custom theme tokens for dark mode only |
-| `customComponents` | `CustomComponents` | - | Custom UI component overrides |
 
 ---
 
@@ -51,7 +40,8 @@ Central routing component that renders the appropriate page based on step type.
 <OnboardingPage
   step={step}
   onContinue={handleContinue}
-  client={client}
+  theme={theme}
+  customComponents={customComponents}
 />
 ```
 
@@ -61,7 +51,8 @@ Central routing component that renders the appropriate page based on step type.
 |------|------|-------------|
 | `step` | `OnboardingStepType` | Step data to render |
 | `onContinue` | `(args?: any) => void` | Callback when user continues |
-| `client` | `OnboardingStudioClient` | Optional client for sandbox detection |
+| `theme` | `Theme` | Theme for the onboarding |
+| `customComponents` | `CustomComponents` | Custom components for the onboarding |
 
 ---
 
@@ -71,7 +62,7 @@ Global progress indicator component. Add once in your `OnboardingProvider`.
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar />
+  <ProgressBar isProgressBarVisible={isProgressBarVisible} progressPercentage={progressPercentage} />
   <YourApp />
 </OnboardingProvider>
 ```
@@ -159,7 +150,7 @@ const {
 Hook for accessing theme tokens and utilities.
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme } from "@rocapine/react-native-onboarding-studio-ui";
 
 const { theme, colorScheme, setColorScheme } = useTheme();
 ```

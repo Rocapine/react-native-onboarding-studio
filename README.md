@@ -23,8 +23,7 @@ Build beautiful, customizable onboarding flows that update instantly without app
 ### Installation
 
 ```bash
-npm install @rocapine/react-native-onboarding-studio
-npx expo install expo-router
+npm install @rocapine/react-native-onboarding
 ```
 
 ### Setup

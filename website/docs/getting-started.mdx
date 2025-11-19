@@ -58,7 +58,7 @@ import { Stack } from "expo-router";
 // Initialize the client with your project ID
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
-  isSandbox: false, // Set to true for development
+  isSandbox: true, // Set to true for development
   fallbackOnboarding: onboardingExample,
 });
 
@@ -173,7 +173,7 @@ Your onboarding flow is now ready to use. The SDK will:
 ```typescript
 const client = new OnboardingStudioClient(projectId, {
   appVersion: "1.0.0",    // Your app version
-  isSandbox: false,       // Enable sandbox mode
+  isSandbox: true,       // Enable sandbox mode
   platform: "ios",        // Platform (ios/android)
 });
 ```
@@ -182,15 +182,9 @@ const client = new OnboardingStudioClient(projectId, {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `client` | `OnboardingStudioClient` | Required | Client instance |
 | `isSandbox` | `boolean` | `false` | Enable sandbox mode |
-| `locale` | `string` | `"en"` | Locale for fetching steps |
-| `customAudienceParams` | `object` | `{}` | Additional API parameters |
-| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme |
-| `theme` | `ThemeTokens` | - | Custom theme for both modes |
-| `lightTheme` | `ThemeTokens` | - | Custom theme for light mode |
-| `darkTheme` | `ThemeTokens` | - | Custom theme for dark mode |
-| `customComponents` | `CustomComponents` | - | Custom UI components |
+| `appVersion` | `string` | - | Your app version |
+| `fallbackOnboarding` | `Onboarding` | - | Fallback onboarding if the onboarding is not found |
 
 ## Example Project
 
