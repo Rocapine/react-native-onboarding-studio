@@ -27,7 +27,7 @@ The SDK handles state management and data flow, while you control the presentati
 Replace individual answer buttons in Question screens.
 
 ```typescript
-import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
+import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding";
 
 const CustomButton: React.FC<QuestionAnswerButtonProps> = ({
   answer,
@@ -83,7 +83,7 @@ Replace the entire answers list for complete control (animations, layout, etc.).
 import {
   QuestionAnswersListProps,
   DefaultQuestionAnswerButton,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 const AnimatedList: React.FC<QuestionAnswersListProps> = ({
   answers,
@@ -184,7 +184,7 @@ Replace button appearance while keeping default list logic:
 
 ```typescript
 import { TouchableOpacity, Text } from "react-native";
-import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
+import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding";
 
 const MinimalButton: React.FC<QuestionAnswerButtonProps> = ({
   answer,
@@ -228,7 +228,7 @@ import { View, Animated } from "react-native";
 import {
   QuestionAnswersListProps,
   DefaultQuestionAnswerButton,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 const AnimatedList: React.FC<QuestionAnswersListProps> = ({
   answers,
@@ -294,7 +294,7 @@ const AnimatedList: React.FC<QuestionAnswersListProps> = ({
 Extend default behavior (e.g., analytics):
 
 ```typescript
-import { DefaultQuestionAnswerButton } from "@rocapine/react-native-onboarding-studio";
+import { DefaultQuestionAnswerButton } from "@rocapine/react-native-onboarding";
 
 const TrackedButton: React.FC<QuestionAnswerButtonProps> = (props) => {
   const handlePress = () => {
@@ -326,7 +326,7 @@ Use these to compose or extend the default styling:
 ### DefaultQuestionAnswerButton
 
 ```typescript
-import { DefaultQuestionAnswerButton } from "@rocapine/react-native-onboarding-studio";
+import { DefaultQuestionAnswerButton } from "@rocapine/react-native-onboarding";
 ```
 
 **Features:**
@@ -339,7 +339,7 @@ import { DefaultQuestionAnswerButton } from "@rocapine/react-native-onboarding-s
 ### DefaultQuestionAnswersList
 
 ```typescript
-import { DefaultQuestionAnswersList } from "@rocapine/react-native-onboarding-studio";
+import { DefaultQuestionAnswersList } from "@rocapine/react-native-onboarding";
 ```
 
 **Features:**
@@ -359,7 +359,7 @@ Matching a specific Figma design with top/bottom borders only:
 // components/MinimalAnswerButton.tsx
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
+import { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding";
 
 export const MinimalAnswerButton: React.FC<QuestionAnswerButtonProps> = ({
   answer,
@@ -422,7 +422,7 @@ import { View, Animated, StyleSheet } from "react-native";
 import {
   QuestionAnswersListProps,
   DefaultQuestionAnswerButton,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 export const AnimatedAnswersList: React.FC<QuestionAnswersListProps> = ({
   answers,

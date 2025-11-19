@@ -8,6 +8,48 @@ Welcome to **Rocapine Onboarding Studio SDK** - A CMS-driven onboarding system f
 
 Build beautiful, customizable onboarding flows that update instantly without app releases.
 
+## 🏗️ Architecture Philosophy
+
+**Onboarding Studio is headless-first**, meaning the core SDK provides all the data fetching, caching, and state management you need, while giving you complete control over the UI.
+
+### Headless Core
+The `@rocapine/react-native-onboarding` package provides:
+- Data fetching from your CMS
+- Caching and offline support
+- Progress tracking
+- Type-safe hooks and utilities
+- No UI components included
+
+### Optional Pre-built Components
+The `@rocapine/react-native-onboarding-ui` package offers:
+- Ready-to-use screen components for all page types
+- Pre-styled components that work out of the box
+- Fully customizable through theming and component overrides
+- Perfect for rapid prototyping or when you want a quick start
+
+### Choose Your Approach
+
+**Option 1: Use Pre-built Components** (Recommended for most users)
+```typescript
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
+
+// Use the pre-built component
+<OnboardingPage step={step} onContinue={handleContinue} />
+```
+
+**Option 2: Build Your Own UI** (Headless approach)
+```typescript
+import { useOnboardingStep } from "@rocapine/react-native-onboarding";
+
+// Use the hooks to build custom UI
+const { step } = useOnboardingStep({ stepNumber: 1 });
+
+// Render your own custom UI based on step.type and step.payload
+<YourCustomQuestionScreen step={step} />
+```
+
+You can even mix both approaches - use pre-built components for some screens and custom renderers for others!
+
 ## ✨ Features
 
 - 🎨 **Pre-built Components** - Ready-to-use screens (ratings, pickers, carousels, media content, and more)
@@ -46,9 +88,11 @@ import {
   OnboardingProvider,
   OnboardingStudioClient,
   useOnboardingQuestions,
+} from "@rocapine/react-native-onboarding";
+import {
   OnboardingPage,
   ProgressBar,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding-ui";
 
 // Initialize client
 const client = new OnboardingStudioClient("your-project-id", {

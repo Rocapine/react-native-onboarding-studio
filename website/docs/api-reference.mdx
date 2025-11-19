@@ -10,17 +10,15 @@ Complete API documentation for all exported components, hooks, and types.
 
 ### OnboardingProvider
 
-The root provider component that wraps your app and provides onboarding context.
+The root provider component that wraps your app and provides onboarding context for data fetching.
 
 ```typescript
+import { OnboardingProvider } from "@rocapine/react-native-onboarding";
+
 <OnboardingProvider
   client={client}
-  isSandbox={false}
   locale="en"
   customAudienceParams={{ onboardingId: "abc-123" }}
-  initialColorScheme="light"
-  theme={{ colors: { primary: "#007AFF" } }}
-  customComponents={{ QuestionAnswerButton: CustomButton }}
 >
   <YourApp />
 </OnboardingProvider>
@@ -31,15 +29,39 @@ The root provider component that wraps your app and provides onboarding context.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `client` | `OnboardingStudioClient` | **Required** | Client instance for API communication |
-| `children` | `ReactNode` | **Required** | Your app content |
-| `isSandbox` | `boolean` | `false` | Enable sandbox mode for development |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
 | `customAudienceParams` | `Record<string, any>` | `{}` | Additional parameters for API |
-| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial theme mode |
-| `theme` | `ThemeTokens` | - | Custom theme for both light and dark modes |
-| `lightTheme` | `ThemeTokens` | - | Custom theme tokens for light mode only |
-| `darkTheme` | `ThemeTokens` | - | Custom theme tokens for dark mode only |
-| `customComponents` | `CustomComponents` | - | Custom UI component overrides |
+
+---
+
+### ThemeProvider
+
+The theme provider component that wraps your app and provides theme context. Import from the UI SDK.
+
+```typescript
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<ThemeProvider
+  initialColorScheme="light"
+  customTheme={{
+    colors: { primary: "#FF5733" },
+    typography: {
+      fontFamily: { title: "Poppins-Bold" }
+    }
+  }}
+>
+  <YourApp />
+</ThemeProvider>
+```
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial color scheme |
+| `customTheme` | `DeepPartial<Theme>` | - | Custom theme to override both light and dark mode tokens |
+| `customLightTheme` | `DeepPartial<Theme>` | - | Custom theme tokens for light mode only |
+| `customDarkTheme` | `DeepPartial<Theme>` | - | Custom theme tokens for dark mode only |
 
 ---
 
@@ -51,7 +73,8 @@ Central routing component that renders the appropriate page based on step type.
 <OnboardingPage
   step={step}
   onContinue={handleContinue}
-  client={client}
+  theme={theme}
+  customComponents={customComponents}
 />
 ```
 
@@ -61,18 +84,22 @@ Central routing component that renders the appropriate page based on step type.
 |------|------|-------------|
 | `step` | `OnboardingStepType` | Step data to render |
 | `onContinue` | `(args?: any) => void` | Callback when user continues |
-| `client` | `OnboardingStudioClient` | Optional client for sandbox detection |
+| `theme` | `Theme` | Optional theme override (defaults to theme from ThemeProvider) |
+| `customComponents` | `CustomComponents` | Custom components for the onboarding |
+| `isSandbox` | `boolean` | Enable sandbox mode for development |
 
 ---
 
 ### ProgressBar
 
-Global progress indicator component. Add once in your `OnboardingProvider`.
+Global progress indicator component. Add once in your app layout, typically inside both providers.
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar />
-  <YourApp />
+  <ThemeProvider>
+    <ProgressBar isProgressBarVisible={isProgressBarVisible} progressPercentage={progressPercentage} />
+    <YourApp />
+  </ThemeProvider>
 </OnboardingProvider>
 ```
 
@@ -95,7 +122,7 @@ import {
   LoaderRenderer,
   RatingsRenderer,
   CommitmentRenderer,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 ```
 
 **Common Props:**
@@ -123,7 +150,7 @@ Example:
 Hook for accessing onboarding steps in your pages.
 
 ```typescript
-import { useOnboardingQuestions } from "@rocapine/react-native-onboarding-studio";
+import { useOnboardingQuestions } from "@rocapine/react-native-onboarding";
 
 const {
   step,
@@ -156,12 +183,12 @@ const {
 
 ### useTheme
 
-Hook for accessing theme tokens and utilities.
+Hook for accessing theme tokens and utilities. Import from the UI SDK.
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme } from "@rocapine/react-native-onboarding-ui";
 
-const { theme, colorScheme, setColorScheme } = useTheme();
+const { theme, colorScheme, toggleTheme } = useTheme();
 ```
 
 #### Returns
@@ -170,7 +197,7 @@ const { theme, colorScheme, setColorScheme } = useTheme();
 |----------|------|-------------|
 | `theme` | `Theme` | Current theme tokens (colors + typography) |
 | `colorScheme` | `"light" \| "dark"` | Current color scheme |
-| `setColorScheme` | `(scheme) => void` | Function to change color scheme |
+| `toggleTheme` | `() => void` | Function to toggle between light and dark mode |
 
 ---
 
@@ -179,7 +206,7 @@ const { theme, colorScheme, setColorScheme } = useTheme();
 Hook for accessing custom component overrides.
 
 ```typescript
-import { useCustomComponents } from "@rocapine/react-native-onboarding-studio";
+import { useCustomComponents } from "@rocapine/react-native-onboarding";
 
 const customComponents = useCustomComponents();
 const Button = customComponents.QuestionAnswerButton || DefaultButton;
@@ -200,7 +227,7 @@ const Button = customComponents.QuestionAnswerButton || DefaultButton;
 Client for communicating with the Rocapine CMS backend.
 
 ```typescript
-import { OnboardingStudioClient } from "@rocapine/react-native-onboarding-studio";
+import { OnboardingStudioClient } from "@rocapine/react-native-onboarding";
 
 const client = new OnboardingStudioClient(projectId, options);
 ```
@@ -249,7 +276,7 @@ const { steps, headers } = await client.getSteps({
 Utility function to get semantic text styles from theme.
 
 ```typescript
-import { getTextStyle } from "@rocapine/react-native-onboarding-studio";
+import { getTextStyle } from "@rocapine/react-native-onboarding";
 
 const textStyle = getTextStyle(theme, "heading1");
 ```
@@ -469,7 +496,7 @@ Export default components for composition:
 import {
   DefaultQuestionAnswerButton,
   DefaultQuestionAnswersList,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 ```
 
 These allow you to wrap or extend the default implementations while maintaining the base styling.
@@ -481,7 +508,7 @@ These allow you to wrap or extend the default implementations while maintaining 
 ### isQuestionStep
 
 ```typescript
-import { isQuestionStep } from "@rocapine/react-native-onboarding-studio";
+import { isQuestionStep } from "@rocapine/react-native-onboarding";
 
 if (isQuestionStep(step)) {
   // TypeScript knows this is QuestionStepType

@@ -1,23 +1,21 @@
 import {
-  useOnboardingStep,
   OnboardingPage,
-  LoaderStepType,
-  CommitmentStepType,
-} from "@rocapine/react-native-onboarding-studio";
+  useTheme,
+} from "@rocapine/react-native-onboarding-ui";
+import { useOnboardingStep } from "@rocapine/react-native-onboarding";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect } from "react";
 import { OnboardingStep } from "./types";
+import { MinimalAnswerButton } from "@/components/MinimalAnswerButton";
 
 export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-
-
 export default function QuestionPage() {
+  const { theme } = useTheme();
   const { questionId } = useLocalSearchParams();
   console.log("questionId", questionId);
-  const { step, isLastStep, onboardingMetadata } = useOnboardingStep<OnboardingStep>({
+  const { step, isLastStep } = useOnboardingStep<OnboardingStep>({
     stepNumber: parseInt(questionId as string, 10),
   });
 
@@ -34,5 +32,7 @@ export default function QuestionPage() {
   };
 
   // @ts-ignore
-  return <OnboardingPage step={step} onContinue={onContinue} />;
+  return <OnboardingPage theme={theme} step={step} onContinue={onContinue} isSandbox={true} customComponents={{
+    QuestionAnswerButton: MinimalAnswerButton,
+  }} />;
 }

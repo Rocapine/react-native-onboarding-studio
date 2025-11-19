@@ -1,4 +1,4 @@
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingStudio from '@rocapine/react-native-onboarding-ui';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 

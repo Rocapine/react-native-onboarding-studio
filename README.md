@@ -1,4 +1,4 @@
-# @rocapine/react-native-onboarding-studio
+# @rocapine/react-native-onboarding
 
 **A CMS-driven onboarding system for React Native mobile apps.**
 
@@ -23,8 +23,7 @@ Build beautiful, customizable onboarding flows that update instantly without app
 ### Installation
 
 ```bash
-npm install @rocapine/react-native-onboarding-studio
-npx expo install expo-router
+npm install @rocapine/react-native-onboarding
 ```
 
 ### Setup
@@ -34,7 +33,7 @@ import {
   OnboardingProvider,
   OnboardingStudioClient,
   ProgressBar,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
@@ -60,7 +59,7 @@ export default function RootLayout() {
 import {
   useOnboardingQuestions,
   OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 export default function OnboardingScreen() {
   const { step, isLastStep } = useOnboardingQuestions({ stepNumber: 1 });
@@ -170,6 +169,17 @@ export default function OnboardingScreen() {
 - **Commitment** - User commitment and agreement screens
 
 [Learn more about page types →](./docs/page-types.mdx)
+
+---
+
+## 🗺️ Roadmap
+
+We're actively working on the following features:
+
+- 🎨 **More Screen Templates** - Additional pre-built screen types for common onboarding patterns
+- 📊 **Analytics Integration** - Built-in analytics to track onboarding completion and user engagement
+- 📁 **Asset Storage Management** - Improved handling of images, videos, and animations with optimized loading and caching
+- ✅ **Onboarding Completion Status** - Better handling of `userHasCompleted` onboarding status with persistence and state management
 
 ---
 

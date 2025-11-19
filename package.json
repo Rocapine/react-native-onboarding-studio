@@ -1,14 +1,21 @@
 {
-  "name": "@rocapine/react-native-onboarding-studio",
-  "version": "0.3.7",
-  "description": "React Native client for Rocapine Onboarding Studio - Fetch and display onboarding steps from your CMS",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "react-native-onboarding-monorepo",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Monorepo for React Native Onboarding Studio packages",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "tsc && cp -r src/assets dist/",
-    "prepare": "npm run build",
-    "watch": "tsc --watch",
-    "patch": "npm version patch && npm run build && npm publish",
+    "build": "npm run build --workspaces",
+    "build:headless": "npm run build --workspace=packages/onboarding",
+    "build:ui": "npm run build --workspace=packages/onboarding-ui",
+    "watch:headless": "npm run watch --workspace=packages/onboarding",
+    "watch:ui": "npm run watch --workspace=packages/onboarding-ui",
+    "publish:headless": "cd packages/onboarding && npm publish --access public",
+    "publish:ui": "cd packages/onboarding-ui && npm publish --access public",
+    "publish:all": "npm run build && npm run publish:headless && npm run publish:ui",
+    "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules",
     "docs:start": "cd website && npm start",
     "docs:build": "cd website && npm run build",
     "docs:serve": "cd website && npm run serve",
@@ -18,59 +25,10 @@
     "react-native",
     "onboarding",
     "rocapine",
-    "cms",
-    "onboarding-studio"
+    "monorepo"
   ],
   "author": "Rocapine",
   "license": "MIT",
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.1.0",
-    "@tanstack/react-query": "^5.64.2",
-    "lucide-react-native": "^0.545.0",
-    "react-native-gesture-handler": ">=2.0.0",
-    "react-native-reanimated": ">=3.0.0",
-    "react-native-svg": ">=13.0.0",
-    "zod": "^4.1.11"
-  },
-  "devDependencies": {
-    "@react-native-picker/picker": "^2.11.2",
-    "@shopify/react-native-skia": "^2.3.0",
-    "@types/react": "^19.0.0",
-    "expo-router": "^4.0.0",
-    "expo-store-review": "^9.0.8",
-    "react": "19.1.0",
-    "react-native": "0.81.4",
-    "react-native-gesture-handler": "^2.28.0",
-    "react-native-reanimated": "^4.1.2",
-    "react-native-safe-area-context": "^5.6.1",
-    "react-native-svg": "^15.13.0",
-    "typescript": "^5.0.0"
-  },
-  "peerDependencies": {
-    "@react-native-picker/picker": "*",
-    "@shopify/react-native-skia": ">=1.0.0",
-    "@types/react": "*",
-    "expo-router": ">=3.0.0",
-    "expo-store-review": "*",
-    "react": "*",
-    "react-native": "*"
-  },
-  "peerDependenciesMeta": {
-    "@react-native-picker/picker": {
-      "optional": true
-    },
-    "@shopify/react-native-skia": {
-      "optional": true
-    },
-    "expo-store-review": {
-      "optional": true
-    }
-  },
-  "files": [
-    "dist",
-    "src",
-    "README.md"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rocapine/react-native-onboarding-studio.git"

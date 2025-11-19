@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a React Native library (`@rocapine/react-native-onboarding-studio`) that provides a client SDK for Rocapine Onboarding Studio - a CMS-driven onboarding system for mobile apps. The library fetches onboarding steps from a CMS and renders them as native React Native screens.
+This is a React Native library (`@rocapine/react-native-onboarding`) that provides a client SDK for Rocapine Onboarding Studio - a CMS-driven onboarding system for mobile apps. The library fetches onboarding steps from a CMS and renders them as native React Native screens.
 
 ## Development Commands
 
@@ -214,7 +214,7 @@ In your root `_layout.tsx`, set up the provider:
 import {
   OnboardingProvider,
   OnboardingStudioClient,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 import { Stack } from "expo-router";
 
 const client = new OnboardingStudioClient("your-project-id", {
@@ -259,7 +259,7 @@ In your onboarding pages, use the hook and component:
 import {
   useOnboardingQuestions,
   OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function QuestionPage() {
@@ -287,7 +287,7 @@ export default function QuestionPage() {
 For standalone page examples, you can use individual renderers:
 
 ```typescript
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingStudio from "@rocapine/react-native-onboarding";
 
 const stepPayload = {
   /* ... */
@@ -319,7 +319,7 @@ return (
 
 ### Important Notes
 
-- The example app uses `@rocapine/react-native-onboarding-studio` as a local dependency via `"file:.."`
+- The example app uses `@rocapine/react-native-onboarding` as a local dependency via `"file:.."`
 - After making changes to the library, run `npm run build` in the root, then reload the example app
 - `OnboardingProvider` automatically includes the `ProgressBar` component - **do not add it manually**
 - Control back navigation using `router.push()` vs `router.replace()` in your `onContinue` handlers
@@ -615,7 +615,7 @@ typography: {
 ### Using Colors and Raw Tokens
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme } from "@rocapine/react-native-onboarding";
 
 function MyComponent() {
   const { theme } = useTheme();
@@ -638,10 +638,7 @@ function MyComponent() {
 ### Using Semantic Text Styles
 
 ```typescript
-import {
-  useTheme,
-  getTextStyle,
-} from "@rocapine/react-native-onboarding-studio";
+import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding";
 
 function MyComponent() {
   const { theme } = useTheme();
@@ -675,7 +672,7 @@ function MyComponent() {
 
 ```typescript
 import { useFonts } from "expo-font";
-import { OnboardingProvider } from "@rocapine/react-native-onboarding-studio";
+import { OnboardingProvider } from "@rocapine/react-native-onboarding";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -726,7 +723,7 @@ import {
   lightTokens,
   darkTokens,
   typography,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 const myTheme = {
   colors: {

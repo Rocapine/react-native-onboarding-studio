@@ -9,15 +9,18 @@ Customize colors, typography, and semantic text styles to match your brand.
 ## Quick Start
 
 ```typescript
-<OnboardingProvider
-  client={client}
-  theme={{
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<ThemeProvider
+  customTheme={{
     colors: { primary: "#FF5733" },
     typography: {
       fontFamily: { title: "Poppins-Bold" }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 That's it! Your theme tokens are now applied across all onboarding screens.
@@ -81,18 +84,20 @@ colors: {
 **Override primary color:**
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     colors: { primary: "#007AFF" }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 **Override multiple colors:**
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     colors: {
       primary: "#007AFF",
       secondary: "#5856D6",
@@ -102,14 +107,16 @@ colors: {
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 **Nested overrides:**
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     colors: {
       neutral: {
         lowest: "#F5F5F5",
@@ -121,7 +128,9 @@ colors: {
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 ---
@@ -131,46 +140,50 @@ colors: {
 Customize themes for each mode separately:
 
 ```typescript
-<OnboardingProvider
-  lightTheme={{
+<ThemeProvider
+  customLightTheme={{
     colors: {
       primary: "#007AFF",
       surface: { lowest: "#FFFFFF" },
       text: { primary: "#000000" }
     }
   }}
-  darkTheme={{
+  customDarkTheme={{
     colors: {
       primary: "#0A84FF",
       surface: { lowest: "#000000" },
       text: { primary: "#FFFFFF" }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 **Or use a single theme for both:**
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     colors: { primary: "#FF5733" }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 **Switch modes programmatically:**
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme } from "@rocapine/react-native-onboarding-ui";
 
 function ThemeSwitcher() {
-  const { colorScheme, setColorScheme } = useTheme();
+  const { colorScheme, toggleTheme } = useTheme();
 
   return (
     <Button
       title={`Switch to ${colorScheme === "light" ? "dark" : "light"}`}
-      onPress={() => setColorScheme(colorScheme === "light" ? "dark" : "light")}
+      onPress={toggleTheme}
     />
   );
 }
@@ -194,6 +207,7 @@ The SDK uses three font categories:
 
 ```typescript
 import { useFonts } from 'expo-font';
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -204,8 +218,8 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <OnboardingProvider
-      theme={{
+    <ThemeProvider
+      customTheme={{
         typography: {
           fontFamily: {
             title: "Poppins-Bold",
@@ -215,7 +229,7 @@ export default function RootLayout() {
       }}
     >
       <YourApp />
-    </OnboardingProvider>
+    </ThemeProvider>
   );
 }
 ```
@@ -225,8 +239,8 @@ export default function RootLayout() {
 Override font size tokens:
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     typography: {
       fontSize: {
         xs: 10,
@@ -240,7 +254,9 @@ Override font size tokens:
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 **Default sizes:**
@@ -258,8 +274,8 @@ Override font size tokens:
 Override font weight tokens:
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     typography: {
       fontWeight: {
         regular: "400",
@@ -270,7 +286,9 @@ Override font weight tokens:
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 ### Line Heights
@@ -278,8 +296,8 @@ Override font weight tokens:
 Override line height tokens:
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     typography: {
       lineHeight: {
         tight: 1.2,
@@ -288,7 +306,9 @@ Override line height tokens:
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 ---
@@ -360,8 +380,8 @@ button: {
 ### Override Semantic Styles
 
 ```typescript
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     typography: {
       textStyles: {
         heading1: {
@@ -379,7 +399,9 @@ button: {
       }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 ---
@@ -389,7 +411,7 @@ button: {
 ### Access Theme Tokens
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio";
+import { useTheme } from "@rocapine/react-native-onboarding-ui";
 
 function MyComponent() {
   const { theme } = useTheme();
@@ -410,7 +432,7 @@ function MyComponent() {
 ### Use Semantic Text Styles
 
 ```typescript
-import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-studio";
+import { useTheme, getTextStyle } from "@rocapine/react-native-onboarding-ui";
 
 function MyComponent() {
   const { theme } = useTheme();
@@ -443,8 +465,11 @@ import { useFonts } from 'expo-font';
 import {
   OnboardingProvider,
   OnboardingStudioClient,
+} from "@rocapine/react-native-onboarding";
+import {
+  ThemeProvider,
   ProgressBar,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding-ui";
 
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
@@ -464,40 +489,43 @@ export default function RootLayout() {
       client={client}
       locale="en"
       customAudienceParams={{ onboardingId: "your-onboarding-id" }}
-      theme={{
-        colors: {
-          primary: "#FF5733",
-          secondary: "#5856D6",
-          text: {
-            primary: "#1A1A1A",
-            secondary: "#666666"
+    >
+      <ThemeProvider
+        customTheme={{
+          colors: {
+            primary: "#FF5733",
+            secondary: "#5856D6",
+            text: {
+              primary: "#1A1A1A",
+              secondary: "#666666"
+            },
+            surface: {
+              lowest: "#FFFFFF"
+            }
           },
-          surface: {
-            lowest: "#FFFFFF"
-          }
-        },
-        typography: {
-          fontFamily: {
-            title: "CustomFont-Bold",
-            text: "CustomFont-Regular",
-          },
-          fontSize: {
-            "2xl": 36,
-            xl: 26,
-          },
-          textStyles: {
-            heading1: {
-              fontSize: 36,
-              fontWeight: "700",
-              lineHeight: 1.2,
-              fontFamily: "title"
+          typography: {
+            fontFamily: {
+              title: "CustomFont-Bold",
+              text: "CustomFont-Regular",
+            },
+            fontSize: {
+              "2xl": 36,
+              xl: 26,
+            },
+            textStyles: {
+              heading1: {
+                fontSize: 36,
+                fontWeight: "700",
+                lineHeight: 1.2,
+                fontFamily: "title"
+              }
             }
           }
-        }
-      }}
-    >
-      <ProgressBar />
-      <YourApp />
+        }}
+      >
+        <ProgressBar />
+        <YourApp />
+      </ThemeProvider>
     </OnboardingProvider>
   );
 }
@@ -514,7 +542,7 @@ import {
   lightTokens,
   darkTokens,
   typography,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding-ui";
 
 const myTheme = {
   colors: {
@@ -530,7 +558,9 @@ const myTheme = {
   },
 };
 
-<OnboardingProvider theme={myTheme} />
+<ThemeProvider customTheme={myTheme}>
+  <YourApp />
+</ThemeProvider>
 ```
 
 ---
@@ -541,11 +571,13 @@ The SDK uses deep merging for theme tokens, so you only need to specify what cha
 
 ```typescript
 // This merges with default tokens
-<OnboardingProvider
-  theme={{
+<ThemeProvider
+  customTheme={{
     colors: { primary: "#FF5733" }  // Other colors remain default
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 :::tip

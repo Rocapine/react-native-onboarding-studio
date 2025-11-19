@@ -1,4 +1,4 @@
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingUi from "@rocapine/react-native-onboarding-ui";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -23,7 +23,7 @@ export default function LoaderCircleExample() {
       { type: "image" as const, url: "https://picsum.photos/300/200?random=6" },
     ],
     duration: 2000,
-  } satisfies OnboardingStudio.LoaderStepType["payload"];
+  } satisfies OnboardingUi.LoaderStepType["payload"];
 
   const step = {
     id: "loader-circle-1",
@@ -34,7 +34,7 @@ export default function LoaderCircleExample() {
     customPayload: null,
     continueButtonLabel: "Continue",
     figmaUrl: null,
-  } satisfies OnboardingStudio.LoaderStepType;
+  } satisfies OnboardingUi.LoaderStepType;
 
   const handleContinue = () => {
     console.log("Loader circle completed!");
@@ -43,7 +43,7 @@ export default function LoaderCircleExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.LoaderRenderer
+      <OnboardingUi.LoaderRenderer
         step={step}
         onContinue={handleContinue}
       />

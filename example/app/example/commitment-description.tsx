@@ -1,4 +1,4 @@
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingUi from '@rocapine/react-native-onboarding-ui';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -25,7 +25,7 @@ export default function CommitmentDescriptionExample() {
     customPayload: null,
     continueButtonLabel: "Rate the app",
     figmaUrl: "https://www.figma.com/design/oQ4b8R28pdkIq3nptR30uU/Concept-Base-Template?node-id=7119-2446&m=dev",
-  } satisfies OnboardingStudio.CommitmentStepType;
+  } satisfies OnboardingUi.CommitmentStepType;
 
   const handleContinue = () => {
     console.log('Commitment with description completed!');
@@ -34,7 +34,7 @@ export default function CommitmentDescriptionExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.CommitmentRenderer step={step} onContinue={handleContinue} />
+      <OnboardingUi.CommitmentRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

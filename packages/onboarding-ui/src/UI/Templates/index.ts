@@ -1,0 +1,1 @@
+export { OnboardingTemplate } from "./OnboardingTemplate";

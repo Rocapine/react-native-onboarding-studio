@@ -1,4 +1,4 @@
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingUI from "@rocapine/react-native-onboarding-ui";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -39,7 +39,7 @@ export default function CarouselExample() {
         subtitle: "Stay motivated and reach new heights",
       },
     ],
-  } satisfies OnboardingStudio.CarouselStepType["payload"];
+  } satisfies OnboardingUI.CarouselStepType["payload"];
 
   const step = {
     id: "carousel-1",
@@ -50,7 +50,7 @@ export default function CarouselExample() {
     customPayload: null,
     continueButtonLabel: "Continue",
     figmaUrl: null,
-  } satisfies OnboardingStudio.CarouselStepType;
+  } satisfies OnboardingUI.CarouselStepType;
 
   const handleContinue = () => {
     console.log("Carousel completed!");
@@ -59,7 +59,7 @@ export default function CarouselExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.CarouselRenderer
+      <OnboardingUI.CarouselRenderer
         step={step}
         onContinue={handleContinue}
       />

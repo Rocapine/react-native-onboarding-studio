@@ -145,13 +145,15 @@ or fonts don't appear as expected.
 
 2. **Then configure theme:**
    ```typescript
-   <OnboardingProvider
-     theme={{
+   <ThemeProvider
+     customTheme={{
        typography: {
          fontFamily: { title: "CustomFont" }
        }
      }}
-   />
+   >
+     <YourApp />
+   </ThemeProvider>
    ```
 
 The SDK **does not load fonts** - you must load them using `expo-font` first.
@@ -171,23 +173,25 @@ The SDK **does not load fonts** - you must load them using `expo-font` first.
 1. **Check prop location:**
    ```typescript
    // ✅ Correct
-   <OnboardingProvider theme={{ colors: { primary: "#FF5733" } }} />
+   <ThemeProvider customTheme={{ colors: { primary: "#FF5733" } }}>
+     <YourApp />
+   </ThemeProvider>
 
-   // ❌ Wrong - theme must be on OnboardingProvider
+   // ❌ Wrong - theme must be on ThemeProvider
    <OnboardingPage theme={{ colors: { primary: "#FF5733" } }} />
    ```
 
 2. **Verify deep merge syntax:**
    ```typescript
    // ✅ Correct
-   theme={{
+   customTheme={{
      colors: {
        text: { primary: "#000" }
      }
    }}
 
    // ❌ Wrong - overwrites entire text object
-   theme={{
+   customTheme={{
      colors: {
        text: "#000"
      }
@@ -197,10 +201,12 @@ The SDK **does not load fonts** - you must load them using `expo-font` first.
 3. **Check mode-specific themes:**
    ```typescript
    // If you want different colors per mode:
-   <OnboardingProvider
-     lightTheme={{ colors: { primary: "#007AFF" } }}
-     darkTheme={{ colors: { primary: "#0A84FF" } }}
-   />
+   <ThemeProvider
+     customLightTheme={{ colors: { primary: "#007AFF" } }}
+     customDarkTheme={{ colors: { primary: "#0A84FF" } }}
+   >
+     <YourApp />
+   </ThemeProvider>
    ```
 
 ---
@@ -213,7 +219,7 @@ Use `getTextStyle()` instead of directly accessing text styles:
 
 ```typescript
 // ✅ Correct
-import { getTextStyle } from "@rocapine/react-native-onboarding-studio";
+import { getTextStyle } from "@rocapine/react-native-onboarding-ui";
 
 const textStyle = getTextStyle(theme, "heading1");
 
@@ -231,15 +237,19 @@ const textStyle = theme.textStyles.heading1; // textStyles doesn't exist on them
 
 1. **Verify prop name:**
    ```typescript
-   // ✅ Correct
-   <OnboardingProvider
+   // ✅ Correct - passed to OnboardingPage
+   <OnboardingPage
+     step={step}
+     onContinue={handleContinue}
      customComponents={{
        QuestionAnswerButton: MyButton // Exact name
      }}
    />
 
    // ❌ Wrong
-   <OnboardingProvider
+   <OnboardingPage
+     step={step}
+     onContinue={handleContinue}
      customComponents={{
        questionAnswerButton: MyButton // Wrong casing
      }}
@@ -258,7 +268,9 @@ const textStyle = theme.textStyles.heading1; // textStyles doesn't exist on them
 3. **Verify component priority:**
    ```typescript
    // QuestionAnswersList overrides QuestionAnswerButton
-   <OnboardingProvider
+   <OnboardingPage
+     step={step}
+     onContinue={handleContinue}
      customComponents={{
        QuestionAnswersList: MyList,    // This wins
        QuestionAnswerButton: MyButton, // Ignored
@@ -333,16 +345,20 @@ Always call `onContinue` when done:
 
 1. **Check ProgressBar placement:**
    ```typescript
-   // ✅ Correct - inside OnboardingProvider
+   // ✅ Correct - inside both providers
    <OnboardingProvider>
-     <ProgressBar />
-     <YourApp />
+     <ThemeProvider>
+       <ProgressBar />
+       <YourApp />
+     </ThemeProvider>
    </OnboardingProvider>
 
-   // ❌ Wrong - outside provider
+   // ❌ Wrong - outside providers
    <ProgressBar />
    <OnboardingProvider>
-     <YourApp />
+     <ThemeProvider>
+       <YourApp />
+     </ThemeProvider>
    </OnboardingProvider>
    ```
 
@@ -405,12 +421,12 @@ The SDK handles assets automatically. If you see this error:
 
 1. **Verify SDK installation:**
    ```bash
-   npm install @rocapine/react-native-onboarding-studio
+   npm install @rocapine/react-native-onboarding
    ```
 
 2. **Check for version mismatch:**
    ```bash
-   npm ls @rocapine/react-native-onboarding-studio
+   npm ls @rocapine/react-native-onboarding
    ```
 
 3. **Clear Metro bundler cache:**

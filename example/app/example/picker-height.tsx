@@ -1,4 +1,4 @@
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingUi from '@rocapine/react-native-onboarding-ui';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -13,7 +13,7 @@ export default function HeightPickerExample() {
     title: 'What is your height?',
     description: 'This helps us personalize your fitness plan',
     pickerType: 'height' as const,
-  } satisfies OnboardingStudio.PickerStepType['payload'];
+  } satisfies OnboardingUi.PickerStepType['payload'];
 
   const step = {
     id: 'picker-height-1',
@@ -24,7 +24,7 @@ export default function HeightPickerExample() {
     customPayload: null,
     continueButtonLabel: 'Continue',
     figmaUrl: null,
-  } satisfies OnboardingStudio.PickerStepType;
+  } satisfies OnboardingUi.PickerStepType;
 
   const handleContinue = (value?: string | number) => {
     console.log('Picker completed! Height:', value);
@@ -33,7 +33,7 @@ export default function HeightPickerExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.PickerRenderer step={step} onContinue={handleContinue} />
+      <OnboardingUi.PickerRenderer step={step} onContinue={handleContinue} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

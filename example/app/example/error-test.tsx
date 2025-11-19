@@ -1,4 +1,4 @@
-import * as OnboardingStudio from '@rocapine/react-native-onboarding-studio';
+import * as OnboardingUi from '@rocapine/react-native-onboarding-ui';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -27,7 +27,7 @@ export default function ErrorTestExample() {
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.QuestionRenderer
+      <OnboardingUi.QuestionRenderer
         step={invalidStep}
         onContinue={(answers) => console.log('Selected:', answers)}
       />

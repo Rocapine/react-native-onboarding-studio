@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import type { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-studio";
+import type { QuestionAnswerButtonProps } from "@rocapine/react-native-onboarding-ui";
 
 /**
  * Minimal answer button matching Figma design.

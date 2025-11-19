@@ -23,14 +23,18 @@ The SDK provides three levels of customization, from simple theme changes to com
 - Semantic style overrides
 
 ```typescript
-<OnboardingProvider
-  theme={{
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<ThemeProvider
+  customTheme={{
     colors: { primary: "#FF5733" },
     typography: {
       fontFamily: { title: "MyCustomFont-Bold" }
     }
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 [Learn more about Theming →](./theming.mdx)
@@ -52,12 +56,16 @@ The SDK provides three levels of customization, from simple theme changes to com
 - Unique interaction patterns
 
 ```typescript
-<OnboardingProvider
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<ThemeProvider
   customComponents={{
     QuestionAnswerButton: MyCustomButton,
     QuestionAnswersList: MyAnimatedList,
   }}
-/>
+>
+  <YourApp />
+</ThemeProvider>
 ```
 
 [Learn more about Custom Components →](./custom-components.mdx)
@@ -114,20 +122,21 @@ export default function OnboardingScreen() {
 You can combine multiple customization levels:
 
 ```typescript
-<OnboardingProvider
-  // Level 1: Theme tokens
-  theme={{
-    colors: { primary: "#007AFF" },
-    typography: { fontFamily: { title: "CustomFont" } }
-  }}
-  // Level 2: Custom components
-  customComponents={{
-    QuestionAnswerButton: AnimatedButton,
-  }}
->
-  <YourApp />
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<OnboardingProvider client={client}>
+  <ThemeProvider
+    // Level 1: Theme tokens
+    customTheme={{
+      colors: { primary: "#007AFF" },
+      typography: { fontFamily: { title: "CustomFont" } }
+    }}
+  >
+    <YourApp />
+  </ThemeProvider>
 </OnboardingProvider>
 
+// Level 2: Custom components (passed to OnboardingPage)
 // Level 3: Custom renderer in routing
 export default function OnboardingScreen() {
   const { step } = useOnboardingQuestions({ stepNumber });
@@ -138,7 +147,15 @@ export default function OnboardingScreen() {
   }
 
   // Use SDK rendering with theme + custom components
-  return <OnboardingPage step={step} onContinue={handleContinue} />;
+  return (
+    <OnboardingPage
+      step={step}
+      onContinue={handleContinue}
+      customComponents={{
+        QuestionAnswerButton: AnimatedButton,
+      }}
+    />
+  );
 }
 ```
 

@@ -1,7 +1,7 @@
 import {
   useOnboardingStep,
-  OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export const unstable_settings = {
@@ -12,7 +12,7 @@ export const unstable_settings = {
 export default function QuestionPage() {
   const { questionId } = useLocalSearchParams();
   console.log("questionId", questionId);
-  const { step, isLastStep, onboardingMetadata } = useOnboardingStep({
+  const { step, isLastStep } = useOnboardingStep({
     stepNumber: parseInt(questionId as string, 10),
   });
 

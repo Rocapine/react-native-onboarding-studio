@@ -1,4 +1,4 @@
-import * as OnboardingStudio from "@rocapine/react-native-onboarding-studio";
+import * as OnboardingUi from "@rocapine/react-native-onboarding-ui";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -34,7 +34,7 @@ export default function RatingsExample() {
       { numberOfStar: 2, content: "Great app!", authorName: "Lisa Anderson" },
       { numberOfStar: 1, content: "Love it!", authorName: "David Martinez" },
     ],
-  } satisfies OnboardingStudio.RatingsStepType["payload"];
+  } satisfies OnboardingUi.RatingsStepType["payload"];
 
   const step = {
     id: "1",
@@ -45,11 +45,11 @@ export default function RatingsExample() {
     payload: stepPayload,
     customPayload: null,
     figmaUrl: null,
-  } satisfies OnboardingStudio.RatingsStepType;
+  } satisfies OnboardingUi.RatingsStepType;
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingStudio.RatingsRenderer step={step} />
+      <OnboardingUi.RatingsRenderer step={step} />
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>‹</Text>
       </Pressable>

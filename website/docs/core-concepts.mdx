@@ -8,45 +8,81 @@ Understand how the Rocapine Onboarding Studio SDK works under the hood.
 
 ## Architecture Overview
 
-The SDK is built with three main layers:
+Onboarding Studio follows a **headless-first architecture**, separating data management from UI rendering. This gives you maximum flexibility to use pre-built components or build your own UI.
+
+### Package Structure
+
+The SDK is split into two packages:
+
+1. **`@rocapine/react-native-onboarding`** (Core/Headless)
+   - Data fetching and caching
+   - State management and hooks
+   - Type definitions
+   - No UI components
+
+2. **`@rocapine/react-native-onboarding-ui`** (Optional UI)
+   - Pre-built screen components
+   - Theme system
+   - Styled components for all page types
+
+### Architecture Layers
 
 ```
 ┌─────────────────────────────────────┐
-│     Your React Native App          │
-│  (Navigation, Routing, Business)   │
+│     Your React Native App           │
+│  (Navigation, Routing, Business)    │
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐
-│      SDK Layer                      │
-│  • OnboardingProvider               │
-│  • useOnboardingQuestions           │
-│  • OnboardingPage (Router)          │
+│   UI Layer (Your Choice)            │
+│  • Pre-built: OnboardingPage        │
+│  • Custom: Your own components      │
+│  • Mixed: Both approaches           │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   Core SDK (Headless)               │
+│  • OnboardingProvider (Data)        │
+│  • useOnboardingStep (Hooks)        │
+│  • Caching & State Management       │
+│  • Type-safe data structures        │
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐
 │      CMS Backend                    │
-│  (Supabase - Rocapine Studio)       │
+│  (Supabase - Onboarding Studio)     │
 └─────────────────────────────────────┘
 ```
+
+### Headless-First Benefits
+
+- **Flexibility**: Build completely custom UIs that match your brand
+- **Bundle Size**: Only install UI components you actually use
+- **Incremental Adoption**: Start with pre-built components, migrate to custom UI later
+- **Framework Agnostic**: Core SDK works with any React Native navigation solution
 
 ## How It Works
 
 ### 1. Initialization
 
-When you wrap your app with `OnboardingProvider`:
+When you wrap your app with `OnboardingProvider` and `ThemeProvider`:
 
 ```typescript
 <OnboardingProvider
   client={client}
   customAudienceParams={{ onboardingId: "abc-123" }}
 >
+  <ThemeProvider>
+    <YourApp />
+  </ThemeProvider>
+</OnboardingProvider>
 ```
 
 The SDK:
-1. Initializes React Query for data fetching
-2. Sets up AsyncStorage caching
-3. Prepares theme context
-4. Establishes progress tracking
+1. Initializes React Query for data fetching (OnboardingProvider)
+2. Sets up AsyncStorage caching (OnboardingProvider)
+3. Prepares theme context (ThemeProvider)
+4. Establishes progress tracking (OnboardingProvider)
 
 ### 2. Data Fetching
 
@@ -71,17 +107,40 @@ The SDK:
 
 ### 3. Rendering
 
-When you use `<OnboardingPage step={step} />`:
+You have two options for rendering:
+
+**Option A: Use Pre-built Components** (from `@rocapine/react-native-onboarding-ui`)
 
 ```typescript
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
+
 <OnboardingPage step={step} onContinue={handleContinue} />
 ```
 
-The SDK:
+The pre-built component:
 1. Inspects the `step.type` field
 2. Routes to the appropriate renderer (`QuestionRenderer`, `MediaContentRenderer`, etc.)
 3. Passes step data and callbacks
 4. Handles fallback for unimplemented types (sandbox mode)
+
+**Option B: Build Your Own UI** (Headless approach)
+
+```typescript
+import { useOnboardingStep } from "@rocapine/react-native-onboarding";
+
+const { step } = useOnboardingStep({ stepNumber: 1 });
+
+// Build your own UI based on step.type and step.payload
+switch (step.type) {
+  case "Question":
+    return <YourCustomQuestionUI step={step} />;
+  case "MediaContent":
+    return <YourCustomMediaUI step={step} />;
+  // ... handle other types
+}
+```
+
+This gives you complete control over the UI while still benefiting from the SDK's data fetching, caching, and type safety.
 
 ## Caching Strategy
 
@@ -121,12 +180,14 @@ const { activeStep, totalSteps, progress } = useContext(OnboardingProgressContex
 
 ### ProgressBar Component
 
-Add `<ProgressBar />` once in your `OnboardingProvider`:
+Add `<ProgressBar />` once in your app layout, typically inside both providers:
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar />  {/* Global progress indicator */}
-  <YourApp />
+  <ThemeProvider>
+    <ProgressBar />  {/* Global progress indicator */}
+    <YourApp />
+  </ThemeProvider>
 </OnboardingProvider>
 ```
 
@@ -192,7 +253,9 @@ If data doesn't match the schema, you'll get a clear error message.
 Enable sandbox mode during development:
 
 ```typescript
-<OnboardingProvider isSandbox={true} />
+const client = new OnboardingStudioClient("your-project-id", {
+  isSandbox: true,
+});
 ```
 
 **Sandbox Features:**
@@ -214,7 +277,7 @@ Fetch onboarding content in different languages:
 <OnboardingProvider locale="fr" />
 ```
 
-The locale is passed to the CMS API, which returns localized content based on your Rocapine Studio configuration.
+The locale is passed to the CMS API, which returns localized content based on your Onboarding Studio configuration.
 
 ## Custom Headers
 
@@ -253,7 +316,7 @@ The SDK provides multiple layers of error handling:
 
 ## Theme System
 
-The SDK provides a theme system with:
+The SDK provides a theme system via `ThemeProvider` from the UI SDK with:
 - **Color Tokens**: Semantic color names (primary, neutral, text, etc.)
 - **Typography Tokens**: Font families, sizes, weights, line heights
 - **Semantic Text Styles**: Pre-configured styles (heading1, body, button, etc.)

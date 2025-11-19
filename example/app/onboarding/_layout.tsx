@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
-import { ProgressBar, useOnboarding } from "@rocapine/react-native-onboarding-studio";
+import { useOnboarding } from "@rocapine/react-native-onboarding";
+import { ProgressBar, useTheme } from "@rocapine/react-native-onboarding-ui";
 import { useEffect } from "react";
 
 export default function OnboardingLayout() {
-  const { isProgressBarVisible, progressPercentage, theme, onboarding } = useOnboarding()
+  const { isProgressBarVisible, progressPercentage, onboarding } = useOnboarding()
+  const { theme } = useTheme();
 
   useEffect(() => {
     console.log('onboardingMetadata', onboarding?.metadata);

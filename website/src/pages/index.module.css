@@ -21,3 +21,25 @@
   align-items: center;
   justify-content: center;
 }
+
+.quickStart {
+  padding: 4rem 0;
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.codeBlock {
+  background-color: var(--ifm-code-background);
+  border-radius: var(--ifm-code-border-radius);
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.codeBlock pre {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.codeBlock code {
+  color: var(--ifm-code-color);
+  font-family: var(--ifm-font-family-monospace);
+}
