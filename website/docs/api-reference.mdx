@@ -10,9 +10,11 @@ Complete API documentation for all exported components, hooks, and types.
 
 ### OnboardingProvider
 
-The root provider component that wraps your app and provides onboarding context.
+The root provider component that wraps your app and provides onboarding context for data fetching.
 
 ```typescript
+import { OnboardingProvider } from "@rocapine/react-native-onboarding";
+
 <OnboardingProvider
   client={client}
   locale="en"
@@ -29,6 +31,37 @@ The root provider component that wraps your app and provides onboarding context.
 | `client` | `OnboardingStudioClient` | **Required** | Client instance for API communication |
 | `locale` | `string` | `"en"` | Locale for fetching steps |
 | `customAudienceParams` | `Record<string, any>` | `{}` | Additional parameters for API |
+
+---
+
+### ThemeProvider
+
+The theme provider component that wraps your app and provides theme context. Import from the UI SDK.
+
+```typescript
+import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
+
+<ThemeProvider
+  initialColorScheme="light"
+  customTheme={{
+    colors: { primary: "#FF5733" },
+    typography: {
+      fontFamily: { title: "Poppins-Bold" }
+    }
+  }}
+>
+  <YourApp />
+</ThemeProvider>
+```
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialColorScheme` | `"light" \| "dark"` | `"light"` | Initial color scheme |
+| `customTheme` | `DeepPartial<Theme>` | - | Custom theme to override both light and dark mode tokens |
+| `customLightTheme` | `DeepPartial<Theme>` | - | Custom theme tokens for light mode only |
+| `customDarkTheme` | `DeepPartial<Theme>` | - | Custom theme tokens for dark mode only |
 
 ---
 
@@ -51,19 +84,22 @@ Central routing component that renders the appropriate page based on step type.
 |------|------|-------------|
 | `step` | `OnboardingStepType` | Step data to render |
 | `onContinue` | `(args?: any) => void` | Callback when user continues |
-| `theme` | `Theme` | Theme for the onboarding |
+| `theme` | `Theme` | Optional theme override (defaults to theme from ThemeProvider) |
 | `customComponents` | `CustomComponents` | Custom components for the onboarding |
+| `isSandbox` | `boolean` | Enable sandbox mode for development |
 
 ---
 
 ### ProgressBar
 
-Global progress indicator component. Add once in your `OnboardingProvider`.
+Global progress indicator component. Add once in your app layout, typically inside both providers.
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar isProgressBarVisible={isProgressBarVisible} progressPercentage={progressPercentage} />
-  <YourApp />
+  <ThemeProvider>
+    <ProgressBar isProgressBarVisible={isProgressBarVisible} progressPercentage={progressPercentage} />
+    <YourApp />
+  </ThemeProvider>
 </OnboardingProvider>
 ```
 
@@ -147,12 +183,12 @@ const {
 
 ### useTheme
 
-Hook for accessing theme tokens and utilities.
+Hook for accessing theme tokens and utilities. Import from the UI SDK.
 
 ```typescript
-import { useTheme } from "@rocapine/react-native-onboarding-studio-ui";
+import { useTheme } from "@rocapine/react-native-onboarding-ui";
 
-const { theme, colorScheme, setColorScheme } = useTheme();
+const { theme, colorScheme, toggleTheme } = useTheme();
 ```
 
 #### Returns
@@ -161,7 +197,7 @@ const { theme, colorScheme, setColorScheme } = useTheme();
 |----------|------|-------------|
 | `theme` | `Theme` | Current theme tokens (colors + typography) |
 | `colorScheme` | `"light" \| "dark"` | Current color scheme |
-| `setColorScheme` | `(scheme) => void` | Function to change color scheme |
+| `toggleTheme` | `() => void` | Function to toggle between light and dark mode |
 
 ---
 

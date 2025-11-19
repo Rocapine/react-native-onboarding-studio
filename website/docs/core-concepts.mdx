@@ -18,7 +18,8 @@ The SDK is built with three main layers:
                │
 ┌──────────────▼──────────────────────┐
 │      SDK Layer                      │
-│  • OnboardingProvider               │
+│  • OnboardingProvider (Data)        │
+│  • ThemeProvider (UI)               │
 │  • useOnboardingQuestions           │
 │  • OnboardingPage (Router)          │
 └──────────────┬──────────────────────┘
@@ -33,20 +34,24 @@ The SDK is built with three main layers:
 
 ### 1. Initialization
 
-When you wrap your app with `OnboardingProvider`:
+When you wrap your app with `OnboardingProvider` and `ThemeProvider`:
 
 ```typescript
 <OnboardingProvider
   client={client}
   customAudienceParams={{ onboardingId: "abc-123" }}
 >
+  <ThemeProvider>
+    <YourApp />
+  </ThemeProvider>
+</OnboardingProvider>
 ```
 
 The SDK:
-1. Initializes React Query for data fetching
-2. Sets up AsyncStorage caching
-3. Prepares theme context
-4. Establishes progress tracking
+1. Initializes React Query for data fetching (OnboardingProvider)
+2. Sets up AsyncStorage caching (OnboardingProvider)
+3. Prepares theme context (ThemeProvider)
+4. Establishes progress tracking (OnboardingProvider)
 
 ### 2. Data Fetching
 
@@ -121,12 +126,14 @@ const { activeStep, totalSteps, progress } = useContext(OnboardingProgressContex
 
 ### ProgressBar Component
 
-Add `<ProgressBar />` once in your `OnboardingProvider`:
+Add `<ProgressBar />` once in your app layout, typically inside both providers:
 
 ```typescript
 <OnboardingProvider {...props}>
-  <ProgressBar />  {/* Global progress indicator */}
-  <YourApp />
+  <ThemeProvider>
+    <ProgressBar />  {/* Global progress indicator */}
+    <YourApp />
+  </ThemeProvider>
 </OnboardingProvider>
 ```
 
@@ -255,7 +262,7 @@ The SDK provides multiple layers of error handling:
 
 ## Theme System
 
-The SDK provides a theme system with:
+The SDK provides a theme system via `ThemeProvider` from the UI SDK with:
 - **Color Tokens**: Semantic color names (primary, neutral, text, etc.)
 - **Typography Tokens**: Font families, sizes, weights, line heights
 - **Semantic Text Styles**: Pre-configured styles (heading1, body, button, etc.)
