@@ -1,12 +1,12 @@
 import {
   OnboardingProvider,
   OnboardingStudioClient,
+  onboardingExample,
 } from "@rocapine/react-native-onboarding";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { fallbackOnboarding } from "@/assets/fallback-onboarding";
 import { ThemeProvider } from "@rocapine/react-native-onboarding-ui";
 
 // Keep splash screen visible while fonts load
@@ -17,7 +17,7 @@ const client = new OnboardingStudioClient(
   {
     appVersion: "1.0.0",
     isSandbox: true,
-    fallbackOnboarding
+    fallbackOnboarding: onboardingExample,
   }
 );
 

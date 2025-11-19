@@ -26,8 +26,10 @@ const PickerRendererBase = ({ step, onContinue, theme = defaultTheme }: ContentP
   const validatedData = PickerStepTypeSchema.parse(step);
   const { title, description, pickerType } = validatedData.payload;
 
+  const pickerComponentRequired = pickerType === "weight" || pickerType === "height" || pickerType === "date";
+
   // Check if Picker is available
-  if (!PickerComponent) {
+  if (pickerComponentRequired && !PickerComponent) {
     throw new Error(
       "Picker screens require @react-native-picker/picker. Install it with: npm install @react-native-picker/picker"
     );

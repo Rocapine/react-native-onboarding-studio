@@ -51,6 +51,7 @@ Wrap your app with `OnboardingProvider` in your root layout (e.g., `app/_layout.
 import {
   OnboardingProvider,
   OnboardingStudioClient,
+  onboardingExample,
 } from "@rocapine/react-native-onboarding";
 import { Stack } from "expo-router";
 
@@ -58,22 +59,25 @@ import { Stack } from "expo-router";
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
   isSandbox: false, // Set to true for development
+  fallbackOnboarding: onboardingExample,
 });
 
 export default function RootLayout() {
   return (
     <OnboardingProvider
       client={client}
-      locale="en"
-      customAudienceParams={{
-        onboardingId: "your-onboarding-id", // From Rocapine dashboard
-      }}
     >
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }} >
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          {/* other screens... */}
+      </Stack>
     </OnboardingProvider>
   );
 }
 ```
+
+
 ### Step 2: Create the Onboarding layout
 
 Create the onboarding layout using the `ProgressBar` component:
