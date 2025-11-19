@@ -12,7 +12,7 @@ export const unstable_settings = {
 export default function QuestionPage() {
   const { questionId } = useLocalSearchParams();
   console.log("questionId", questionId);
-  const { step, isLastStep, onboardingMetadata } = useOnboardingStep({
+  const { step, isLastStep } = useOnboardingStep({
     stepNumber: parseInt(questionId as string, 10),
   });
 

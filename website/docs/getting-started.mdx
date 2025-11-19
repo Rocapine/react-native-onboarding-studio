@@ -9,7 +9,8 @@ Get up and running with Rocapine Onboarding Studio SDK in minutes.
 ## Installation
 
 ```bash
-npm install @rocapine/react-native-onboarding-studio
+npm install @rocapine/react-native-onboarding 
+npm install @rocapine/react-native-onboarding-ui
 ```
 
 ### Required Peer Dependency
@@ -23,7 +24,7 @@ npx expo install expo-router
 ```
 
 :::info Automatic Dependencies
-The SDK automatically includes `react-native-reanimated`, `react-native-gesture-handler`, and `react-native-svg` as dependencies, so you don't need to install them separately.
+The UI SDK automatically includes `react-native-reanimated`, `react-native-gesture-handler`, and `react-native-svg` as dependencies, so you don't need to install them separately.
 :::
 
 ### Optional Dependencies by Screen Type
@@ -50,8 +51,7 @@ Wrap your app with `OnboardingProvider` in your root layout (e.g., `app/_layout.
 import {
   OnboardingProvider,
   OnboardingStudioClient,
-  ProgressBar,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 import { Stack } from "expo-router";
 
 // Initialize the client with your project ID
@@ -69,43 +69,57 @@ export default function RootLayout() {
         onboardingId: "your-onboarding-id", // From Rocapine dashboard
       }}
     >
-      {/* Global progress bar - add once here */}
-      <ProgressBar />
-
       <Stack screenOptions={{ headerShown: false }} />
     </OnboardingProvider>
   );
 }
 ```
+### Step 2: Create the Onboarding layout
 
-### Step 2: Create an Onboarding Screen
+Create the onboarding layout using the `ProgressBar` component:
+
+```typescript
+// app/onboarding/_layout.tsx
+import { useOnboarding } from "@rocapine/react-native-onboarding";
+import { ProgressBar } from "@rocapine/react-native-onboarding-ui";
+import { Stack } from "expo-router";
+
+export default function OnboardingLayout() {
+  const { isProgressBarVisible, progressPercentage } = useOnboarding()
+
+  return (<>
+    <ProgressBar isProgressBarVisible={isProgressBarVisible} progressPercentage={progressPercentage} />
+    <Stack screenOptions={{ headerShown: false }} />
+  </>);
+}
+```
+### Step 3: Create an Onboarding Screen
 
 Create your onboarding screen using the `useOnboardingQuestions` hook:
 
 ```typescript
-// app/onboarding/[questionId].tsx
-import {
-  useOnboardingQuestions,
-  OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+// app/onboarding/[stepNumber].tsx
+import { useOnboardingStep } from "@rocapine/react-native-onboarding";
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
+
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function OnboardingScreen() {
-  const { questionId } = useLocalSearchParams();
+  const { stepNumber } = useLocalSearchParams();
   const router = useRouter();
 
   // Fetch the current step
-  const { step, isLastStep } = useOnboardingQuestions({
-    stepNumber: parseInt(questionId as string, 10),
+  const { step, isLastStep } = useOnboardingStep({
+    stepNumber: parseInt(stepNumber as string, 10),
   });
 
   const handleContinue = () => {
     if (isLastStep) {
       // Navigate to your main app
-      router.push("/home");
+       router.push("/(tabs)"
     } else {
       // Go to next step
-      router.push(`/onboarding/${parseInt(questionId as string, 10) + 1}`);
+      router.push(`/onboarding/${parseInt(stepNumber as string, 10) + 1}`);
     }
   };
 
