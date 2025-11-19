@@ -8,10 +8,25 @@ Get up and running with Rocapine Onboarding Studio SDK in minutes.
 
 ## Installation
 
+### Core Package (Required)
+
+The core package provides data fetching, caching, and hooks - no UI included:
+
 ```bash
-npm install @rocapine/react-native-onboarding 
+npm install @rocapine/react-native-onboarding
+```
+
+### UI Package (Optional)
+
+The UI package provides pre-built components. Install it if you want to use the ready-made screens:
+
+```bash
 npm install @rocapine/react-native-onboarding-ui
 ```
+
+:::info Headless-First Architecture
+Onboarding Studio is **headless-first**. The core package (`@rocapine/react-native-onboarding`) provides all the data management you need, while the UI package (`@rocapine/react-native-onboarding-ui`) offers optional pre-built components. You can use the pre-built components, build your own UI, or mix both approaches.
+:::
 
 ### Required Peer Dependency
 
@@ -41,6 +56,19 @@ Install these only if you're using the specific screen types:
 If you try to use a screen type without its required dependency, you'll see a clear error message telling you exactly what to install.
 :::
 
+## Create Your Project in the Onboarding Studio (CMS)
+
+After installing the SDK, you'll need to create your project in the Onboarding Studio CMS to get your project ID.
+
+1. **Visit the Onboarding Studio CMS**: Go to [https://onboarding-studio.rocapine.io/](https://onboarding-studio.rocapine.io/)
+2. **Sign up or log in** to your account
+3. **Create a new project** - This will give you a unique project ID
+4. **Copy your project ID** - You'll need this to initialize the `OnboardingStudioClient` in your app
+
+:::info
+Your project ID is required to connect your app to the CMS and fetch onboarding flows. Keep it secure and don't commit it to public repositories.
+:::
+
 ## Quick Start
 
 ### Step 1: Set Up the Provider
@@ -56,6 +84,7 @@ import {
 import { Stack } from "expo-router";
 
 // Initialize the client with your project ID
+// Get your project ID from https://onboarding-studio.rocapine.io/
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
   isSandbox: true, // Set to true for development

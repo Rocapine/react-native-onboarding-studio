@@ -8,7 +8,24 @@ Understand how the Rocapine Onboarding Studio SDK works under the hood.
 
 ## Architecture Overview
 
-The SDK is built with three main layers:
+Onboarding Studio follows a **headless-first architecture**, separating data management from UI rendering. This gives you maximum flexibility to use pre-built components or build your own UI.
+
+### Package Structure
+
+The SDK is split into two packages:
+
+1. **`@rocapine/react-native-onboarding`** (Core/Headless)
+   - Data fetching and caching
+   - State management and hooks
+   - Type definitions
+   - No UI components
+
+2. **`@rocapine/react-native-onboarding-ui`** (Optional UI)
+   - Pre-built screen components
+   - Theme system
+   - Styled components for all page types
+
+### Architecture Layers
 
 ```
 ┌─────────────────────────────────────┐
@@ -17,11 +34,18 @@ The SDK is built with three main layers:
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐
-│      SDK Layer                      │
+│   UI Layer (Your Choice)            │
+│  • Pre-built: OnboardingPage        │
+│  • Custom: Your own components      │
+│  • Mixed: Both approaches           │
+└──────────────┬──────────────────────┘
+               │
+┌──────────────▼──────────────────────┐
+│   Core SDK (Headless)               │
 │  • OnboardingProvider (Data)        │
-│  • ThemeProvider (UI)               │
-│  • useOnboardingQuestions           │
-│  • OnboardingPage (Router)          │
+│  • useOnboardingStep (Hooks)        │
+│  • Caching & State Management       │
+│  • Type-safe data structures        │
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐
@@ -29,6 +53,13 @@ The SDK is built with three main layers:
 │  (Supabase - Onboarding Studio)     │
 └─────────────────────────────────────┘
 ```
+
+### Headless-First Benefits
+
+- **Flexibility**: Build completely custom UIs that match your brand
+- **Bundle Size**: Only install UI components you actually use
+- **Incremental Adoption**: Start with pre-built components, migrate to custom UI later
+- **Framework Agnostic**: Core SDK works with any React Native navigation solution
 
 ## How It Works
 
@@ -76,17 +107,40 @@ The SDK:
 
 ### 3. Rendering
 
-When you use `<OnboardingPage step={step} />`:
+You have two options for rendering:
+
+**Option A: Use Pre-built Components** (from `@rocapine/react-native-onboarding-ui`)
 
 ```typescript
+import { OnboardingPage } from "@rocapine/react-native-onboarding-ui";
+
 <OnboardingPage step={step} onContinue={handleContinue} />
 ```
 
-The SDK:
+The pre-built component:
 1. Inspects the `step.type` field
 2. Routes to the appropriate renderer (`QuestionRenderer`, `MediaContentRenderer`, etc.)
 3. Passes step data and callbacks
 4. Handles fallback for unimplemented types (sandbox mode)
+
+**Option B: Build Your Own UI** (Headless approach)
+
+```typescript
+import { useOnboardingStep } from "@rocapine/react-native-onboarding";
+
+const { step } = useOnboardingStep({ stepNumber: 1 });
+
+// Build your own UI based on step.type and step.payload
+switch (step.type) {
+  case "Question":
+    return <YourCustomQuestionUI step={step} />;
+  case "MediaContent":
+    return <YourCustomMediaUI step={step} />;
+  // ... handle other types
+}
+```
+
+This gives you complete control over the UI while still benefiting from the SDK's data fetching, caching, and type safety.
 
 ## Caching Strategy
 
