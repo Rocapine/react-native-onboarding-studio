@@ -8,6 +8,34 @@ import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
 
+function QuickStart() {
+  return (
+    <section className={styles.quickStart}>
+      <div className="container">
+        <div className="row">
+          <div className="col col--8 col--offset-2">
+            <Heading as="h2" className="text--center margin-bottom--lg">
+              🚀 Quick Start
+            </Heading>
+            <div className={styles.codeBlock}>
+              <pre>
+                <code>{`npm install @rocapine/react-native-onboarding`}</code>
+              </pre>
+            </div>
+            <div className="text--center margin-top--lg">
+              <Link
+                className="button button--primary button--lg"
+                to="/docs/getting-started">
+                View Full Documentation →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -20,7 +48,13 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
+            to="/docs/getting-started">
+            Get Started
+          </Link>
+          <Link
+            className="button button--outline button--secondary button--lg"
+            to="/docs/intro"
+            style={{ marginLeft: '1rem' }}>
             Documentation
           </Link>
         </div>
@@ -33,11 +67,12 @@ export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={siteConfig.title}
+      description="Build beautiful, customizable onboarding flows that update instantly without app releases. CMS-driven onboarding system for React Native mobile apps.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <QuickStart />
       </main>
     </Layout>
   );

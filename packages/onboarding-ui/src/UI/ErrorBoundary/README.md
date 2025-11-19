@@ -14,10 +14,13 @@ The Error Boundary is a Higher Order Component (HOC) that wraps all renderers to
 All renderers are automatically wrapped with the `withErrorBoundary` HOC:
 
 ```typescript
-import { QuestionRenderer as QuestionRendererBase } from './Renderer';
-import { withErrorBoundary } from '../../ErrorBoundary';
+import { QuestionRenderer as QuestionRendererBase } from "./Renderer";
+import { withErrorBoundary } from "../../ErrorBoundary";
 
-export const QuestionRenderer = withErrorBoundary(QuestionRendererBase, 'Question');
+export const QuestionRenderer = withErrorBoundary(
+  QuestionRendererBase,
+  "Question"
+);
 ```
 
 When a Zod validation error occurs (e.g., missing required fields, wrong types), the error boundary will display:
@@ -32,17 +35,18 @@ If you pass an invalid payload:
 
 ```typescript
 const invalidStep = {
-  id: 'test',
-  type: 'Question',
+  id: "test",
+  type: "Question",
   payload: {
-    title: 'Test',
+    title: "Test",
     // Missing required 'answers' field
     // Missing required 'multipleAnswer' field
-  }
+  },
 } as any;
 ```
 
 The error boundary will show:
+
 ```
 ⚠️ Invalid Step Payload
 Step Type: Question
@@ -59,11 +63,11 @@ Validation Errors:
 You can also use the ErrorBoundary component directly:
 
 ```typescript
-import { ErrorBoundary } from '@rocapine/react-native-onboarding-studio';
+import { ErrorBoundary } from "@rocapine/react-native-onboarding";
 
 <ErrorBoundary stepType="MyCustomComponent">
   <MyCustomComponent />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ## Testing

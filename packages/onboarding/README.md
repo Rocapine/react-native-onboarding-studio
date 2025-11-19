@@ -1,4 +1,4 @@
-# @rocapine/react-native-onboarding-studio
+# @rocapine/react-native-onboarding
 
 **A CMS-driven onboarding system for React Native mobile apps.**
 
@@ -23,7 +23,7 @@ Build beautiful, customizable onboarding flows that update instantly without app
 ### Installation
 
 ```bash
-npm install @rocapine/react-native-onboarding-studio
+npm install @rocapine/react-native-onboarding
 npx expo install expo-router
 ```
 
@@ -34,7 +34,7 @@ import {
   OnboardingProvider,
   OnboardingStudioClient,
   ProgressBar,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 const client = new OnboardingStudioClient("your-project-id", {
   appVersion: "1.0.0",
@@ -60,7 +60,7 @@ export default function RootLayout() {
 import {
   useOnboardingQuestions,
   OnboardingPage,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 
 export default function OnboardingScreen() {
   const { step, isLastStep } = useOnboardingQuestions({ stepNumber: 1 });

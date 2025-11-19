@@ -33,7 +33,7 @@ The SDK's `OnboardingPage` component routes steps to renderers based on `step.ty
 
 ```typescript
 // app/onboarding/[questionId].tsx
-import { useOnboardingQuestions, OnboardingPage } from "@rocapine/react-native-onboarding-studio";
+import { useOnboardingQuestions, OnboardingPage } from "@rocapine/react-native-onboarding";
 import { MyCustomScreen } from "@/components/MyCustomScreen";
 
 export default function OnboardingScreen() {
@@ -211,7 +211,7 @@ interface CustomRendererProps {
 
 ```typescript
 import { View, Text, Button } from "react-native";
-import { QuestionStepType } from "@rocapine/react-native-onboarding-studio";
+import { QuestionStepType } from "@rocapine/react-native-onboarding";
 
 interface CustomQuestionScreenProps {
   step: QuestionStepType;
@@ -247,7 +247,7 @@ export const CustomQuestionScreen: React.FC<CustomQuestionScreenProps> = ({
 // components/CustomQuestionScreen.tsx
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native";
-import { QuestionStepType, useTheme } from "@rocapine/react-native-onboarding-studio";
+import { QuestionStepType, useTheme } from "@rocapine/react-native-onboarding";
 
 interface Props {
   step: QuestionStepType;
@@ -387,7 +387,7 @@ export default function OnboardingScreen() {
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { Video } from "expo-av";
-import { MediaContentStepType, useTheme } from "@rocapine/react-native-onboarding-studio";
+import { MediaContentStepType, useTheme } from "@rocapine/react-native-onboarding";
 
 interface Props {
   step: MediaContentStepType;

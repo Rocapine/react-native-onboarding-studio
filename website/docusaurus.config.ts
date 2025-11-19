@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Rocapine Onboarding Studio',
-  tagline: 'CMS-driven onboarding for React Native apps',
+  title: '@rocapine/react-native-onboarding',
+  tagline: 'A CMS-driven onboarding system for React Native mobile apps',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -62,10 +62,10 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Rocapine Onboarding',
+      title: 'Onboarding Studio',
       logo: {
-        alt: 'Rocapine Logo',
-        src: 'img/logo.svg',
+        alt: 'Onboarding Studio Logo',
+        src: 'img/onboarding-studio-logo.png',
       },
       items: [
         {
@@ -80,7 +80,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://www.npmjs.com/package/@rocapine/react-native-onboarding-studio',
+          href: 'https://www.npmjs.com/package/@rocapine/react-native-onboarding',
           label: 'npm',
           position: 'right',
         },
@@ -115,7 +115,7 @@ const config: Config = {
             },
             {
               label: 'npm Package',
-              href: 'https://www.npmjs.com/package/@rocapine/react-native-onboarding-studio',
+              href: 'https://www.npmjs.com/package/@rocapine/react-native-onboarding',
             },
             {
               label: 'Contributing',

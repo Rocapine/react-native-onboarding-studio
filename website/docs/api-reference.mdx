@@ -122,7 +122,7 @@ import {
   LoaderRenderer,
   RatingsRenderer,
   CommitmentRenderer,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 ```
 
 **Common Props:**
@@ -150,7 +150,7 @@ Example:
 Hook for accessing onboarding steps in your pages.
 
 ```typescript
-import { useOnboardingQuestions } from "@rocapine/react-native-onboarding-studio";
+import { useOnboardingQuestions } from "@rocapine/react-native-onboarding";
 
 const {
   step,
@@ -206,7 +206,7 @@ const { theme, colorScheme, toggleTheme } = useTheme();
 Hook for accessing custom component overrides.
 
 ```typescript
-import { useCustomComponents } from "@rocapine/react-native-onboarding-studio";
+import { useCustomComponents } from "@rocapine/react-native-onboarding";
 
 const customComponents = useCustomComponents();
 const Button = customComponents.QuestionAnswerButton || DefaultButton;
@@ -227,7 +227,7 @@ const Button = customComponents.QuestionAnswerButton || DefaultButton;
 Client for communicating with the Rocapine CMS backend.
 
 ```typescript
-import { OnboardingStudioClient } from "@rocapine/react-native-onboarding-studio";
+import { OnboardingStudioClient } from "@rocapine/react-native-onboarding";
 
 const client = new OnboardingStudioClient(projectId, options);
 ```
@@ -276,7 +276,7 @@ const { steps, headers } = await client.getSteps({
 Utility function to get semantic text styles from theme.
 
 ```typescript
-import { getTextStyle } from "@rocapine/react-native-onboarding-studio";
+import { getTextStyle } from "@rocapine/react-native-onboarding";
 
 const textStyle = getTextStyle(theme, "heading1");
 ```
@@ -496,7 +496,7 @@ Export default components for composition:
 import {
   DefaultQuestionAnswerButton,
   DefaultQuestionAnswersList,
-} from "@rocapine/react-native-onboarding-studio";
+} from "@rocapine/react-native-onboarding";
 ```
 
 These allow you to wrap or extend the default implementations while maintaining the base styling.
@@ -508,7 +508,7 @@ These allow you to wrap or extend the default implementations while maintaining 
 ### isQuestionStep
 
 ```typescript
-import { isQuestionStep } from "@rocapine/react-native-onboarding-studio";
+import { isQuestionStep } from "@rocapine/react-native-onboarding";
 
 if (isQuestionStep(step)) {
   // TypeScript knows this is QuestionStepType

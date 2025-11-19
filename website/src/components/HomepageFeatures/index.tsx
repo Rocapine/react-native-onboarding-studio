@@ -5,48 +5,78 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  emoji: string;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Pre-built Components',
+    emoji: '🎨',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Ready-to-use screens including ratings, pickers, carousels, media content, and more.
+        Get started quickly with beautiful, production-ready components.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'CMS-Driven',
+    emoji: '🔄',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Update onboarding flows remotely without app releases. Make changes in your CMS
+        and see them instantly in your app.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'React Native',
+    emoji: '📱',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Works seamlessly with Expo and bare React Native projects. Built specifically
+        for mobile app development.
+      </>
+    ),
+  },
+  {
+    title: 'Type-Safe',
+    emoji: '🎯',
+    description: (
+      <>
+        Full TypeScript support with runtime validation. Catch errors at compile time
+        and ensure type safety throughout your onboarding flows.
+      </>
+    ),
+  },
+  {
+    title: 'Offline Support',
+    emoji: '💾',
+    description: (
+      <>
+        Built-in caching with AsyncStorage. Your onboarding flows work offline,
+        providing a seamless experience even without connectivity.
+      </>
+    ),
+  },
+  {
+    title: 'Themeable',
+    emoji: '🎭',
+    description: (
+      <>
+        Customizable colors, typography, and styling. Three levels of customization
+        from theme tokens to complete renderer overrides.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, emoji, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <div className={styles.featureEmoji}>{emoji}</div>
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
