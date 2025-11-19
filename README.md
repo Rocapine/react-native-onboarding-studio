@@ -172,6 +172,17 @@ export default function OnboardingScreen() {
 
 ---
 
+## 🗺️ Roadmap
+
+We're actively working on the following features:
+
+- 🎨 **More Screen Templates** - Additional pre-built screen types for common onboarding patterns
+- 📊 **Analytics Integration** - Built-in analytics to track onboarding completion and user engagement
+- 📁 **Asset Storage Management** - Improved handling of images, videos, and animations with optimized loading and caching
+- ✅ **Onboarding Completion Status** - Better handling of `userHasCompleted` onboarding status with persistence and state management
+
+---
+
 ## 📦 Optional Dependencies
 
 Install these only if you're using the specific screen types:

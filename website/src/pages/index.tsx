@@ -22,11 +22,18 @@ function QuickStart() {
                 <code>{`npm install @rocapine/react-native-onboarding`}</code>
               </pre>
             </div>
-            <div className="text--center margin-top--lg">
+            <div className="text--center margin-top--lg" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link
                 className="button button--primary button--lg"
                 to="/docs/getting-started">
                 View Full Documentation →
+              </Link>
+              <Link
+                className="button button--secondary button--lg"
+                href="https://onboarding-studio.rocapine.io/"
+                target="_blank"
+                rel="noopener noreferrer">
+                Open Onboarding Studio →
               </Link>
             </div>
           </div>
@@ -56,6 +63,14 @@ function HomepageHeader() {
             to="/docs/intro"
             style={{ marginLeft: '1rem' }}>
             Documentation
+          </Link>
+          <Link
+            className="button button--primary button--lg"
+            href="https://onboarding-studio.rocapine.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ marginLeft: '1rem' }}>
+            Open Onboarding Studio →
           </Link>
         </div>
       </div>
